@@ -40,7 +40,7 @@
                                         
     </div>
 
-         <form action="{{ route('supplier.store') }}" method="post">
+         <form enctype="multipart/form-data"  action="{{ route('supplier.store') }}" method="post">
                     @csrf
 
 
@@ -145,7 +145,9 @@
                                                 <div class="form-group">
                                                     <label>
                                                         Bank Details<span class="required"> *</span></label>
-                                                    <input required name="bank_detail" type="text"  tabindex="4" class="form-control" style="width:50%;">
+                                                    <textarea rows="4" cols="50"  required name="bank_detail" type="text"  tabindex="4" class="form-control" style="width:50%;"> 
+
+                                                    </textarea>
                                                      <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator25" style="color:Red;display:none;">Bank Details</span>
                                                 </div>
                                                 <div class="form-group">
@@ -162,12 +164,21 @@
                                                 </div>
                                                
 											   
-											    <div class="form-group">
+											                        <div class="form-group">
                                                     <label>
                                                         Credit Days</label>
-                                                    <input  name="credit_days" type="text" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
+                                                    <input  name="credit_days" type="number" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
                                                     <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Credit Days</span>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label>
+                                                      Attachment</label>
+                                                    <input  name="attachment" type="file" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
+                                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Attachment</span>
+                                                </div>
+
+
 												
 												
                                                

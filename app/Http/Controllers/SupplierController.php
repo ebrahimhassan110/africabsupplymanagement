@@ -11,6 +11,7 @@ use App\Models\SupplierContact;
 use App\Models\WorkType;
 use App\Models\User;
 use App\Models\Institute;
+
 use App\Models\InstituteCustomer;
 use App\Models\PreBooking;
 use Auth;
@@ -78,7 +79,31 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+ 
+    $image = $request->file('attachment');
+
+      $temp= [];
+ 
+      if($image){
+          $imageName = time()."".$image->getClientOriginalName();
+        
+          $image_names[] = $imageName;
+            if($image->move('attachments\supplier', $imageName)){
+           $temp['attachment'] = implode(",", $image_names);
+
+         }
+      }else{
+          $temp['attachment'] = NULL;
+      }
+     $request['attachment'] = $temp['attachment'];
+
+
+
+
         $data = $request->all();
+         unset($data['file']);
+          unset($data['attachment']);
+         $data['attachment'] = $temp['attachment'];
         unset($data['_token']);
          unset($data['submit']);
 		$position=$data['position'];
@@ -90,7 +115,9 @@ class SupplierController extends Controller
 		unset($data['number']);
 		unset($data['email']);
         $data["isDel"] = '0';
-			
+        $cmpname=$data["company_name"];
+		$cmp=  Company::where('name',$cmpname)->get();
+        $data['company_id']=$cmp[0]->id;
        
         $idinserted = DB::table('supplier')->insertGetId(
                 $data

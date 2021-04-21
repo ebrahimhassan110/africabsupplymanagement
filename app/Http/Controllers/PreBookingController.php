@@ -7,6 +7,7 @@ use App\Models\Worktype;
 use App\Models\PreBooking;
 use App\Models\Supplier;
 use App\Models\Company;
+use App\Models\Currency;
 use Spatie\Permission\Models\Role;
 use Auth;
 class PreBookingController extends Controller
@@ -78,7 +79,8 @@ class PreBookingController extends Controller
         //
 		$suppliers = Supplier::get();
 		$companies = Company::get();
-        return view("prebooking.create",compact('suppliers','companies'));
+         $currency = Currency::get();
+        return view("prebooking.create",compact('suppliers','companies','currency'));
 
     }
 
@@ -108,8 +110,28 @@ class PreBookingController extends Controller
             'worktype' => ['required','min:2'],
         ]);
 	*/
+
+
+         $image = $request->file('attachment');
+         $temp= [];
+ 
+      if($image){
+          $imageName = time()."".$image->getClientOriginalName();
+            $image_names[] = $imageName;
+            if($image->move('attachments\prebooking', $imageName)){
+           $temp['attachment'] = implode(",", $image_names);
+         
+         }
+      }else{
+
+          $temp['attachment'] = NULL;
+      }
+     $request['attachment'] = $temp['attachment'];
+
+
         $data = $request->all();
 
+        unset($data['radio']);
         unset($data['_token']);
          unset($data['submit']);
 		 unset($data['cancel']);
