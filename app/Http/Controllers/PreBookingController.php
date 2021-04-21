@@ -25,7 +25,7 @@ class PreBookingController extends Controller
             $all_permission[] = $permission->name;
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
-        $prebookings = PreBooking::whereNull('po_number')->get();
+        $prebookings = PreBooking::whereNull('po_number')->with("supplier")->get();
 		
         return view("prebooking.index",compact('prebookings','all_permission'));
       }
@@ -81,6 +81,19 @@ class PreBookingController extends Controller
         return view("prebooking.create",compact('suppliers','companies'));
 
     }
+
+    public function show($id)
+    {
+        //
+		$prebooking = PreBooking::with("supplier")->where("id",$id)->first();                          
+        
+	 
+        return view("prebooking.show",compact('prebooking'));
+
+    }
+
+
+    
 
     /**
      * Store a newly created resource in storage.
