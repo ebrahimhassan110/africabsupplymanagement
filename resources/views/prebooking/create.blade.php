@@ -61,6 +61,18 @@
                                             <input name="pfi_no" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Number</span>
                                         </div>
+
+                                         <div class="form-group">
+                                            <label>
+                                              Currency<span class="required"> *</span></label>
+                                          <select required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
+								<option value="0">- Select -</option>
+								@foreach($currency as $cmp)    
+                                <option value="{{$cmp->name}}">{{ $cmp->name }} </option>
+									@endforeach
+
+									</select>  
+                                        </div>
 										
 										
 										 <div class="form-group">
@@ -106,7 +118,7 @@
 										 <div class="form-group">
                                             <label>
                                               Advance Payment Date</label>
-                                            <input name="advance_payment_date" type="date" id="advance_payment_date"  class="form-control"  autofocus="" style="width:50%;" required>
+                                            <input name="advance_payment_date" type="date" id="advance_payment_date"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Advance Payment Date</span>
                                         </div>
 										
@@ -115,7 +127,7 @@
 										 <div class="form-group">
                                             <label>
                                                PFI Value<span class="required"> *</span></label>
-                                            <input name="pfi_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                            <input name="pfi_value" id="pfi_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Value</span>
                                         </div>
 										
@@ -141,7 +153,7 @@
 										
 										
 										
-                                        <input type="submit" name="submit" value="Save" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnsave&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ContentPlaceHolder1_btnsave" class="btn btn-primary">
+                                        <input type="submit" name="submit" value="Save"  class="btn btn-primary">
                                         <input type="submit" name="cancel" value="Cancel" id="ctl00_ContentPlaceHolder1_btncancel" class="btn btn-primary">
                                         
                                     </td>
@@ -200,6 +212,7 @@
 										 </div>
 										 
 										 <div hidden id="parttable" >
+									<h3 style="color:red" id="alert" ></h3>	 	
 									<table id="tablepart">
 								<thead>
 								<tr>
@@ -214,14 +227,14 @@
 							  <tbody>
 								<tr>
 								  <th scope="row"><input class="form-control"  type="text" name="partName[]" /></th>
-								  <td><input class="form-control"  type="text" name="partValue[]" /></td>
+								  <td><input class="form-control"  type="text" oninput="validatesum()" name="partValue[]" /></td>
 								  <td><input class="form-control"  type="date" name="partDate[]" /></td>
 								  <td><button type="button" id="addpart">Add  </button></td>
 								  
 								</tr>
 								<tr>
 								  <th scope="row"><input class="form-control"  type="text" name="partName[]" /></th>
-								  <td><input class="form-control"  type="text" name="partValue[]" /></td>
+								  <td><input class="form-control"  type="text" oninput="validatesum()" name="partValue[]" /></td>
 								  <td><input class="form-control"  type="date" name="partDate[]" /></td>
 								  <td></td>
 								  
@@ -295,16 +308,17 @@
 											  
 											  
 											    <div   hidden class="form-group bank_value">
+											    	<h3 style="color:red" id="alert2" ></h3>	
                                             <label>
                                               Bank Value</label>
-                                            <input  name="bank_value" type="text"   class="form-control"  autofocus="" style="width:50%;" >
+                                            <input  name="bank_value" id="bank_value" type="text" oninput="validatesumpartial()"  class="form-control partialvalues"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Bank Value</span>
 											</div>
 									   
 											   <div   hidden class="form-group cash_value">
                                             <label  >
                                               Cash Value</label>
-                                            <input   name="cash_value" type="text"  class="form-control"  autofocus="" style="width:50%;" >
+                                            <input   name="cash_value" id="cash_value" type="text"  oninput="validatesumpartial()" class="form-control partialvalues"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Cash Value</span>
 											</div>
 											
@@ -314,6 +328,14 @@
                                             <input name="narration" type="text"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Narration</span>
 											</div>
+
+
+											  <div class="form-group">
+                                                    <label>
+                                                      Attachment</label>
+                                                    <input required name="attachment" type="file" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
+                                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Attachment</span>
+                                                </div>
 											
 											
 									   
@@ -342,10 +364,74 @@
     
 	
 	
+function validatesum() {
+//  var x = document.getElementById("myInput").value;
+
+var sum=$("#pfi_value").val();
+var sumpart=0;
+    $("input[name='partValue[]']").each(function() {
+     //   alert(this.value);
+     var a= this.value;
+
+     if (a.length) {
+     	a=parseFloat(a);
+     	sumpart=sumpart+a;
+     }
+
+
+    });
+
+     if(sumpart==sum){
+        document.getElementById("alert").innerHTML = "";
+
+     }
+     else{
+     //	alert("The sum do not match");
+     document.getElementById("alert").innerHTML = "The sum of Parts and PFI Value do not match";
+     }
+         
+
+     }
 
 	
 	
-	
+		
+    $("#declaration_type").change(function () {
+        var val = $(this).val(); //get the value
+        if(val=='PARTIAL'){
+		var bank_value=parseFloat($("#bank_value").val());
+		var cash_value=parseFloat($("#cash_value").val());
+		var pfi_value=parseFloat($("#pfi_value").val());
+		var sum=bank_value+cash_value;
+		if(pfi_value!=sum){
+			 document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with PFI Value do not match";
+    
+		}
+		else{
+				 document.getElementById("alert2").innerHTML = "";
+    
+		}
+
+        }
+    });
+
+    function validatesumpartial() {
+
+		var bank_value=parseFloat($("#bank_value").val());
+		var cash_value=parseFloat($("#cash_value").val());
+		var pfi_value=parseFloat($("#pfi_value").val());
+		var sum=bank_value+cash_value;
+		if(pfi_value!=sum){
+			 document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with PFI Value do not match";
+    
+		}
+		else{
+				 document.getElementById("alert2").innerHTML = "";
+    
+		}
+
+
+    }
 	
 	
 	
@@ -437,7 +523,7 @@ $(document).keyup(function (event) {
      //Add row
      tbody.append('<tr>\n\
     <td><input class="form-control"  name="partName[]" type="text"/></td>\n\
-    <td><input class="form-control"  name="partValue[]" type="text"/></td>\n\
+    <td><input class="form-control"  oninput="validatesum()" name="partValue[]" type="text"/></td>\n\
     <td><input class="form-control" name="partDate[]" type="date"/></td> <td></td>\n\
     </tr>');
      })
@@ -456,14 +542,14 @@ var date;
 	//org file
     $box.prop("checked", true);
 	  	 if(val==1){
+
+
 			 var rfp_date=$("#rfp_date").val();
-			 
 			  if(rfp_date=='' || delivery_period_days==''){
 			  alert("Date Request For Proposal required");
 			  $('#checkbox1').prop("checked", false);
-			   
-			}
-			else{
+			    }
+			 else{
 				//$box.prop("checked", true);
 			 $('#checkbox1').prop("checked", true);	
 			 
@@ -473,14 +559,28 @@ var date;
 			var no_of_delivery_days= parseInt(delivery_period_days); 
 			date_delivery.setDate(date.getDate()+no_of_delivery_days);
 			var y=date_delivery.getFullYear();
-			var m=date_delivery.getMonth()+1;
-			var d=date_delivery.getDate();     
-			var datedel=y+"-"+m+"-"+"d";
+			var m=date_delivery.getMonth()+1; 
+			m=String(m);
+
+			if(m.length==1){
+				m="0"+m;
+			}
+			var d=date_delivery.getDate();  
+			d=String(d);
+			if(d.length==1){
+				d="0"+d;
+			}   
+			var datedel=y+"-"+m+"-"+d;
 			 console.log('days'+delivery_period_days);
 			 console.log('date present'+rfp_date);
 			 console.log('date future'+datedel);
+			var dd= new Date(datedel);
+			 console.log('dddate'+dd);
+
 		//add with days and change value
-		 $("#delivery_date").val(date_delivery);
+			 $("#delivery_date").val(datedel);
+
+			
 				}
 		
 		}
@@ -492,8 +592,33 @@ var date;
 			}
 			else{
 			 $('#checkbox2').prop("checked", true);
+			
+			var date = new Date(order_confirmation_date);
+			var date_delivery=new Date();
+			var no_of_delivery_days= parseInt(delivery_period_days); 
+			date_delivery.setDate(date.getDate()+no_of_delivery_days);
+			var y=date_delivery.getFullYear();
+			var m=date_delivery.getMonth()+1; 
+			m=String(m);
+
+			if(m.length==1){
+				m="0"+m;
+			}
+			var d=date_delivery.getDate();  
+			d=String(d);
+			if(d.length==1){
+				d="0"+d;
+			}   
+			var datedel=y+"-"+m+"-"+d;
+			 console.log('days'+delivery_period_days);
+			 console.log('date present'+rfp_date);
+			 console.log('date future'+datedel);
+			var dd= new Date(datedel);
+			 console.log('dddate'+dd);
+
 		//add with days and change value
-		 //$("#delivery_period_days").val('23');
+			 $("#delivery_date").val(datedel);
+
 		}
 			
 		}

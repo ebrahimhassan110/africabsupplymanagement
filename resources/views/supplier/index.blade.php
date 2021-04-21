@@ -43,10 +43,10 @@
                                                     <td class="d-flex flex-row">
                                                         <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/supplier/' . $c->id. '/view') }}" data-customerId="{{ $c->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
                                                       @if(in_array("supplier-edit", $all_permission))
-                                                        <a href="{{ url('/customer/' .  $c->customerId . '/edit') }}" class="btn  mb-1 btn-primary btn-sm">Edit</a>
+                                                        <a href="{{ url('/customer/' .  $c->id . '/edit') }}" class="btn  mb-1 btn-primary btn-sm">Edit</a>
                                                       @endif
                                                       @if(in_array("supplier-delete", $all_permission))
-                                                      <form action="{{ route('customer.destroy', $c->customerId  ) }}" method="POST">
+                                                      <form action="{{ route('supplier.destroy', $c->id  ) }}" method="POST">
                                                           @method('DELETE')
                                                           @csrf
                                                           <button class="btn btn-danger btn-sm">Delete</button>
