@@ -24,7 +24,7 @@
                     </div>
                     <div class="card-body">
                    
-                              <form id="form" action="{{ route('prebooking.store')}}" method="post">
+                              <form id="form" enctype="multipart/form-data"  action="{{ route('prebooking.store')}}" method="post">
 							    <table cellpadding="0" cellspacing="0" border="0" width="100%">
                           
                                 @csrf
@@ -140,10 +140,10 @@
 										
 										
 										
-										 <div class="form-group">
+										 <div hidden  class="form-group">
                                             <label>
                                                Expected Delivery Date<span class="required"> *</span></label>
-                                            <input name="expected_delivery_date" type="date"  class="form-control"  autofocus="" style="width:50%;" required>
+                                            <input name="expected_delivery_date" type="date"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Expected Delivery Date</span>
                                         </div>
 										
@@ -159,7 +159,7 @@
                                     </td>
 									
 									
-									   <td style="width: 50%;" valign="top">
+									   <td style="width: 50%;" valign="top" >
 									   
 									    <div class="form-group">
                                             <label>
@@ -242,7 +242,7 @@
 								</tbody>
 									</table>		
 									</div>
-										 </br>
+										
 										  <div class="form-group">
                                             <label>
                                                INCOTERMS<span class="required"> *</span></label>
@@ -337,21 +337,20 @@
                                                     <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Attachment</span>
                                                 </div>
 											
-											
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 									   
-									   </td>
-                                </tr>
-                            </tbody>
-                         
-                          </table>
-						   </form>
-                      
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+									
 		
         
 @endsection

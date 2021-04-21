@@ -40,7 +40,7 @@
                                         
     </div>
 
-         <form action="{{ route('shipment.store') }}" method="post">
+         <form enctype="multipart/form-data" action="{{ route('shipment.store') }}" method="post">
                     @csrf
 
 
@@ -169,7 +169,7 @@
 												 <div class="form-group">
                                             <label>
                                                 Attachment</label>
-                                            <input type="file" name="file" id="ctl00_ContentPlaceHolder1_fludocument" style="width:50%;">
+                                            <input type="file" name="attachment" id="ctl00_ContentPlaceHolder1_fludocument" style="width:50%;">
 											</div>
                                                
                                             </td>

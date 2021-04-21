@@ -105,14 +105,13 @@ class PreBookingController extends Controller
  
       if($image){
           $imageName = time()."".$image->getClientOriginalName();
-        
-          $image_names[] = $imageName;
+            $image_names[] = $imageName;
             if($image->move('attachments\prebooking', $imageName)){
            $temp['attachment'] = implode(",", $image_names);
-           print_r($temp);
-           return;
+         
          }
       }else{
+
           $temp['attachment'] = NULL;
       }
      $request['attachment'] = $temp['attachment'];
