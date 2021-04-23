@@ -14,13 +14,13 @@ class Supplier extends Model
 	
 
 
-/*
-    public function partner(){
-        return $this->belongsTo(User::class,"partnerincharge","id");
+ 
+    public function company(){
+        return $this->belongsTo(User::class,"company_id","id");
     }
-
-     public function staff(){
-        return $this->belongsTo(User::class,"staffincharge","id");
-    }
-	*/
+// 
+    //  public function staff(){
+    //     return $this->belongsTo(User::class,"staffincharge","id");
+    // }
+ 
 }

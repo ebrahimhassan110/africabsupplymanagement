@@ -26,9 +26,6 @@ class BookingController extends Controller
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
         $prebookings = PreBooking::whereNotNull('po_number')->get();
-		
-		
-		
         return view("prebooking.bookingindex",compact('prebookings','all_permission'));
       }
       else

@@ -8,6 +8,7 @@ use App\Models\PreBooking;
 use App\Models\Supplier;
 use App\Models\Company;
 use App\Models\Currency;
+use App\Models\Shipment;
 use Spatie\Permission\Models\Role;
 use Auth;
 class PreBookingController extends Controller
@@ -26,8 +27,7 @@ class PreBookingController extends Controller
             $all_permission[] = $permission->name;
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
-        $prebookings = PreBooking::whereNull('po_number')->get();
-        
+        $prebookings = PreBooking::whereNull('po_number')->with("supplier")->get();
 		
         return view("prebooking.index",compact('prebookings','all_permission'));
       }
@@ -84,6 +84,19 @@ class PreBookingController extends Controller
         return view("prebooking.create",compact('suppliers','companies','currency'));
 
     }
+
+    public function show($id)
+    {
+        //
+		$prebooking = PreBooking::with("supplier")->where("id",$id)->first();                          
+        
+	 
+        return view("prebooking.show",compact('prebooking'));
+
+    }
+
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -160,6 +173,9 @@ class PreBookingController extends Controller
             return redirect()->route('prebooking.index');
     }
 
+
+   
+
     /**
      * Display the specified resource.
      *
@@ -212,9 +228,36 @@ class PreBookingController extends Controller
      */
     public function destroy($id)
     {
-        $worktypes = Worktype::find($id);
-        $worktypes->delete();
+        $shipment = Shipment::where('booking_id',$id)->count();
+        if($shipment){
+            return redirect()->route('prebooking.index')->with('message', 'can not deleted booking while in use');
+        }else{
+            
+		    $prebooking = PreBooking::find($id);        
+
+            if(!is_null($prebooking))
+            {
+              $prebooking->delete();
+            }
+
+          
+        }
 
         return redirect()->route('prebooking.index')->with('message', 'Successfully deleted');
+    }
+
+    public function removeBooking($id){
+
+        $shipment = Shipment::where('booking_id',$id)->count();
+        if($shipment){
+
+            return redirect()->route('booking.index')->with('message', 'can not deleted booking while in use');
+        }else{
+            $prebooking = PreBooking::find($id);  
+            $prebooking->po_number = NULL;
+            $prebooking->save(); 
+        }
+        return redirect()->route('booking.index')->with('message', 'Successfully deleted');
+
     }
 }

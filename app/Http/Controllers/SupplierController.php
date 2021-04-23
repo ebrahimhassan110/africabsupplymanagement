@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Institute;
 
 use App\Models\InstituteCustomer;
+use App\Models\PreBooking;
 use Auth;
 use Spatie\Permission\Models\Role;
 
@@ -41,7 +42,8 @@ class SupplierController extends Controller
           $all_permission[] = 'dummy text';
 
         $workplans = '';
-        $suppliers =  Supplier::where('isDel','0')->get();
+        $suppliers =  Supplier::where('isDel','0')->with("company")->get();
+       
         $Workstypes =  WorkType::all();
         $partners =  User::all();
         return view('supplier.index',compact('workplans','suppliers','Workstypes','partners','all_permission'));
@@ -61,10 +63,6 @@ class SupplierController extends Controller
       $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
       if ($role->hasPermissionTo('supplier-add')){
           $suppliers =  Supplier::where('isDel','0')->get();
-         // $Workstypes =  WorkType::all();
-         // $partners =  User::where('empTypeId','4')->get();
-         // $staffs =  User::where('empTypeId','7')->get();
-         // $users =  User::all();
           $company =  Company::all();
 
         return view('supplier.create',compact('suppliers','company'));
@@ -176,15 +174,12 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-
-
       $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
-      if ($role->hasPermissionTo('customer-edit')){
-        $customer = Customer::where('customerId',$id)->get();
-        $partners =  User::where('empTypeId','4')->get();
-         $staffs =  User::where('empTypeId','7')->get();
-          $institutes =  InstituteCustomer::where('customer_id',$id)->get();
-        return view('customer.edit', ['customer' => $customer,'partners' => $partners  ,'staffs' => $staffs,'institutes' => $institutes ]);
+      if ($role->hasPermissionTo('supplier-edit')){
+          $companies = Company::get();
+          $supplier =  Supplier::where('isDel','0')->find($id);
+          $supplier_contact = SupplierContact::where('supplier_id',$id)->get();
+          return view('supplier.edit', compact("supplier","companies","supplier_contact"));
       }
       else
           return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
@@ -199,65 +194,55 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //var_dump('bazinga');
-        //die();
 
-        $data = $request->all();
-        unset($data['_token']);
-         unset($data['_method']);
-
-         unset($data['submit']);
-         $institute=$data['institute'];
-          unset($data['institute']);
-
-         $type=$data['type'];
-
-         $typestring = implode(',',$type);
-          unset($data['type']);
-         $data['type']=$typestring;
-
-        $data["created_by"] = Auth::user()->id;
-        $data["isDel"] = '0';
-         $data["name"] = 'Fakhri ttt';
-
-        //return $request;
-        $customer = Customer::find($id);
-       
-        
-        foreach ($data as $key => $value) {
-            $customer->$key=$value;
-        //echo "$key => $value\n";
+        $supplier  = Supplier::find($id);
+        if(!is_null($supplier)){
+          $supplier->supplier_code  = $request->supplier_code;
+          $supplier->supplier_name  = $request->supplier_name;
+          $supplier->company_name  = $request->company_name;
+          $supplier->company_id  = $request->company_name;
+          $supplier->city = $request->city;
+          $supplier->district = $request->district;
+          $supplier->country = $request->country;
+          $supplier->bank_detail = $request->bank_detail;
+          $supplier->advance_terms = $request->advance_terms;
+          $supplier->payment_terms= $request->payment_terms; 
+          $supplier->credit_days = $request->credit_days;
+          $supplier->attachment = $request->attachment;
+          $supplier->save();
         }
-    
-         $customer->save();
 
-
-        $inst = InstituteCustomer::where('customer_id', $id)->get();
-  
-        foreach ($inst as $i) {
-
-           
-            $id=$i->institute_id;
-            //id is istitute id
-        //echo "$key => $value\n";
-            $value=$institute[$id];
-           $data=[];
-
-            $data['institute_name']=$value['name'];
-              $data['institute_no']=$value['no'];
-              $data['institute_control_no']=$value['control_no'];
-              $data['institute_password']=$value['institute_password'];
-               $data['institute_online_password']=$value['password'];
-                  $customer_institute = InstituteCustomer::find($id);
-
-                    foreach ($data as $key => $value) {
-                     $customer_institute->$key=$value;
-                                }
-                $customer_institute->save();
+        if(count($request->position)){
+          $supplier_id = $id;
+          foreach ($request->position as $id=>$part) {
+            $data = [   
+              "position"=>$part,
+              "name"=>$request->name[$id],
+              "number"=>$request->number[$id],
+              "email"=>$request->email[$id],
+            ];
+              $supplier_contact = DB::table("supplier_contact")
+                                ->where('supplier_id', $supplier_id)
+                                ->where("position",$part)
+                                ->first();
+              
+              if($supplier_contact){
+                DB::table("supplier_contact")
+                    ->where('supplier_id', $supplier_id)
+                    ->where("position",$part)
+                    ->update($data);
+              }else{
+                // return $supplier_contact; 
+                $data['supplier_id'] =  $supplier_id;
+                $data['updated_by'] = Auth::id();
+                SupplierContact::create($data);
+              }
             }
+        }
+
 
         $request->session()->flash('message', 'Successfully edited Customer');
-        return redirect()->route('customer.index');
+        return redirect()->route('supplier.index');
     }
 
     /**
@@ -269,11 +254,16 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         //
+         $prebooking = PreBooking::where('supplier_id',$id)->count();
+        if($prebooking){
+            $supplier = Supplier::find($id);
+            if(!is_null($supplier))
+            {
+              $supplier->delete();
+            }
 
-         $customer = Customer::where('customerId',$id);
-        if($customer){
-            $customer->delete();
+            SupplierContact::where("supplier_id",$id)->delete();
         }
-        return redirect()->route('customer.index');
+        return redirect()->route('supplier.index');
     }
 }
