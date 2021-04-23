@@ -58,35 +58,151 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-		/*
-        $request->validate([
-            'file' => 'mimes:pdf,xlx,csv|max:5048',
-        ]);
 
-        $image = $request->file;
-        
-        $data= [];
-        if($image){
-            $imageName = time()."".$image->getClientOriginalName();
-            $image->move('public/attachments/shipments', $imageName);
+
+        $image = $request->file('attachment');
+         $temp= [];
+ 
+      if($image){
+          $imageName = time()."".$image->getClientOriginalName();
             $image_names[] = $imageName;
-            $data['attachment'] = implode(",", $image_names);
-        }else{
-            $data['attachment'] = NULL;
-        }
-		*/
-		print_r($data);
-		die;
+            if($image->move('attachments\shipments', $imageName)){
+           $temp['attachment'] = implode(",", $image_names);
+         
+         }
+      }else{
+
+          $temp['attachment'] = NULL;
+      }
+     $request['attachment'] = $temp['attachment'];
+
+      $data = $request->all();
+
+        unset($data['delivery_type']);
+        unset($data['_token']);
+        unset($data['submit']);
+        unset($data['cancel']);
+       $data["created_by"] = Auth::user()->id;
+
+
+
+    if(isset($data['bl_no_text'])){
+        $bl_no=$data['bl_no_text'];
+        unset($data['bl_no_text']);
+         unset($data['bl_no_select']);
+   }
+   else{
+     $bl_no=$data['bl_no_select'];
+     unset($data['bl_no_select']);
+       unset($data['bl_no_text']);
+
+   }
+      $data['bl_no'] =$bl_no;
+	
+  if($data["order_type"]=='NORMAL'){
+
+    $partId= $data["partId"]; 
+    $partName= $data["partName"]; 
+
+         }
+         else{
+
+        $partId= $data["partId"]; 
+        $partName= $data["partName"]; 
+         $goods_value= $data["goods_value"];
+         $other_expense_value= $data["other_expense_value"];
+         $advance_paid_value= $data["advance_paid_value"];
+          
+
+          //get sum of goods value
+          $gv=0;
+            foreach ($goods_value as $v) {
+        $gv=$gv+$v;
+               }
+               $oe=0;
+           foreach ($other_expense_value as $v) {
+        $oe=$oe+$v;
+               }  
+               $ap=0;
+            foreach ($advance_paid_value as $v) {
+        $ap=$ap+$v;
+               }     
+
+        unset($data['partId']);
+           unset($data['partName']);
+            unset($data['goods_value']);
+             unset($data['other_expense_value']);
+              unset($data['advance_paid_value']);
+
+              //set sum of goods val
+              $data['goods_value']=$gv;
+              $data['other_expense_value']=$oe;
+              $data['advance_paid_value']=$ap;
+
+              //edit booking part values of shpped value
+             $booking_id= $data['booking_id'];  
+            //$prebooking_parts=PreBookingPart::where('prebooking_id',$booking_id)->get();  
+
+            //update part shipped value in prebooking entry
+             foreach ($partId as $key=>$p) {
+               $prebooking_parts = PreBookingPart::find($p);
+               $shipped_value=$prebooking_parts->shipped_value;
+                $valueinc=$goods_value[$key];
+                 $prebooking_parts->shipped_value =  $shipped_value+$valueinc;
+               $prebooking_parts->save();   
+
+
+              }
+           
+
+
+       
+              }
+
+
+
+      $idinserted = DB::table('shipment')->insertGetId(
+                $data
+        );
+      
+      //edit booking shipment values
+      $booking_id= $data['booking_id'];
+      $gv =$data['goods_value'];
+      $booking = PreBooking::find($booking_id);
+      $shipped_value=$booking->shipped_value;
+      $booking->shipped_value =  $shipped_value+$gv;
+      $booking->save();   
+
+
+
+
+
+
+    if(count($partName)>0){
+        foreach ($partName as $id=>$part) {
+        $data2=[];
+        $data2['part_name']=$part;
+        $data2['shipment_id']=$idinserted;
+        $data2['goods_value']=$goods_value[$id];
+         $data2['other_expense_value']=$other_expense_value[$id];
+          $data2['advance_paid_value']=$advance_paid_value[$id];
+           $data2['part_id']=$partId[$id];
+      
+      $idinsertedshipmentvalues = DB::table('shipment_part')->insertGetId(
+                $data2
+        );
+        
+      }
+    }
+      
+
+        if(!is_null($idinserted))
+            $request->session()->flash('message', 'Successfully added Shipment');
+            return redirect()->route('shipment.index');
+
+
 		/*
-        $data['customerId'] = $request['customer'];
-        $data['created_by'] = Auth::id();
-        $total_amount = 0;
-        for( $i = 1 ; $i <= $total; $i++ ){
-             if( !is_null($request['feetype_'.$i])  AND  !is_null($request['amount_'.$i])){
-               $total_amount +=   bcadd($request['amount_'.$i],'0',2);
-             }
-        }
-        $data['amount'] = $total_amount;
+     
         $shipment =  shipment::create($data);
         $data_details['shipmentId'] =  $shipment->getKey();
         for( $i = 1 ; $i <= $total; $i++ ) {
@@ -119,6 +235,23 @@ class ShipmentController extends Controller
 		return $bookings;
 
 	}	
+
+     public function getBL()
+    {
+    
+  $shipment=Shipment::select('bl_no')->whereNotNull('bl_no')->get(); 
+    return $shipment;
+
+  } 
+
+
+  public function getBooking($id)
+    {
+    
+  $bookings=PreBooking::whereNotNull('po_number')->where('id',$id)->get(); 
+    return $bookings;
+
+  } 
 
 	public function getBookingPart($id)
     {
