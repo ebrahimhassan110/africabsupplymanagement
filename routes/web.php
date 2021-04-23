@@ -83,6 +83,8 @@ Route::group(['middleware' => ['get.menu']], function () {
 		
 		// Route::post('/shipments', 'ShipmentController@store')->name("shipping-store");
        Route::get('/shipment/getPFI/{id}','ShipmentController@getPFI')->name('shipping-getPFI');
+        Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
+         Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
 		Route::get('/shipment/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
 		Route::resource('shipment', ShipmentController::class);
         Route::resource('Recordregister', RecordRegisterController::class);
