@@ -65,19 +65,22 @@ class ShipmentController extends Controller
  
       if($image){
           $imageName = time()."".$image->getClientOriginalName();
-            $image_names[] = $imageName;
+          
+             $temp['attachment'] = $imageName;
+
             if($image->move('attachments\shipments', $imageName)){
-           $temp['attachment'] = implode(",", $image_names);
+          
          
          }
       }else{
 
           $temp['attachment'] = NULL;
       }
-     $request['attachment'] = $temp['attachment'];
-
+  
       $data = $request->all();
-
+         $data['attachment'] = $temp['attachment'];
+       //  print_r($data['attachment']);
+        // die;
         unset($data['delivery_type']);
         unset($data['_token']);
         unset($data['submit']);
@@ -101,8 +104,8 @@ class ShipmentController extends Controller
 	
   if($data["order_type"]=='NORMAL'){
 
-    $partId= $data["partId"]; 
-    $partName= $data["partName"]; 
+  //  $partId= $data["partId"]; 
+    $partName= []; 
 
          }
          else{
