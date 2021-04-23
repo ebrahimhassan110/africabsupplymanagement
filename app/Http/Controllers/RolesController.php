@@ -435,6 +435,42 @@ class RolesController extends Controller
             $role->revokePermissionTo('recordregister-delete');
 
 
+            if($request->has('payment-index')){
+                $permission = Permission::firstOrCreate(['name' => 'payment-index']);
+                if(!$role->hasPermissionTo('payment-index')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('payment-index');
+    
+            if($request->has('payment-add')){
+                $permission = Permission::firstOrCreate(['name' => 'payment-add']);
+                if(!$role->hasPermissionTo('payment-add')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('payment-add');
+    
+            if($request->has('payment-edit')){
+                $permission = Permission::firstOrCreate(['name' => 'payment-edit']);
+                if(!$role->hasPermissionTo('payment-edit')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('payment-edit');
+    
+            if($request->has('payment-delete')){
+                $permission = Permission::firstOrCreate(['name' => 'payment-delete']);
+                if(!$role->hasPermissionTo('payment-delete')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('payment-delete');
+
         $role = Role::where('id', '=', $id)->first();
         $role->name = $request->input('name');
         $role->save();

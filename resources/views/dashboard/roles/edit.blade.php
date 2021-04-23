@@ -839,6 +839,59 @@
 						            </td>
 						        </tr>
 
+								<tr>
+						            <td>{{ 'Payment' }}</td>
+						            <td class="text-center">
+						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+							                <div class="checkbox">
+								                @if(in_array("payment-index", $all_permission))
+								                <input type="checkbox" value="1" id="payment-index" name="payment-index" checked>
+								                @else
+								                <input type="checkbox" value="1" id="payment-index" name="payment-index">
+								                @endif
+								                <label for="payment-index"></label>
+								            </div>
+						            	</div>
+						            </td>
+						            <td class="text-center">
+						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+							                <div class="checkbox">
+								                @if(in_array("payment-add", $all_permission))
+								                <input type="checkbox" value="1" id="payment-add" name="payment-add" checked>
+								                @else
+								                <input type="checkbox" value="1" id="payment-add" name="payment-add">
+								                @endif
+								                <label for="payment-add"></label>
+							                </div>
+							            </div>
+						            </td>
+						            <td class="text-center">
+						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+							                <div class="checkbox">
+								                @if(in_array("payment-edit", $all_permission))
+								                <input type="checkbox" value="1" id="payment-edit" name="payment-edit" checked>
+								                @else
+								                <input type="checkbox" value="1" id="payment-edit" name="payment-edit">
+								                @endif
+								                <label for="payment-edit"></label>
+								            </div>
+						            	</div>
+						            </td>
+						            <td class="text-center">
+						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+							                <div class="checkbox">
+								                @if(in_array("payment-delete", $all_permission))
+								                <input type="checkbox" value="1" id="payment-delete" name="payment-delete" checked>
+								                @else
+								                <input type="checkbox" value="1" id="payment-delete" name="payment-delete">
+								                @endif
+								                <label for="payment-delete"></label>
+								            </div>
+						            	</div>
+						            </td>
+						        </tr>
+
+
 						        <!-- <tr>
 						            <td>{{trans('file.Purchase Return')}}</td>
 						            <td class="text-center">

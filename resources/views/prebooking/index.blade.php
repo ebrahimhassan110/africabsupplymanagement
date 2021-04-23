@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-body p-0">
 
-                        <table class="table table-responsive-sm table-striped">
+                        <table class="table table-responsive-sm table-striped datatable">
                         <thead>
                           <tr>
                             <th>ID</th>

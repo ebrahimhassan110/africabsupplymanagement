@@ -4,9 +4,9 @@
                             @endphp
 
                             <div class="form-group">
-                                <label>
+                                <label class="font-weight-bold">
                                     Attachment</label>
-                                    <a href="{{ url('/public/attachments/customerfees/'.$prebooking->attachment) }}" target="_blank" > {{ $prebooking->attachment }} </a>
+                                    <a href="{{ url('/attachments/prebooking/'.$prebooking->attachment) }}" target="_blank" > {{ $prebooking->attachment }} </a>
                             </div>
 
                               <table cellpadding="0" cellspacing="0" border="0" width="100%">

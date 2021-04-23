@@ -69,8 +69,9 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::resource('Workflow', WorkflowController::class);
 		
 		
-		Route::get('/prebooking/activate/{id}',   'PreBookingController@activate')->name('prebooking-activate');
-		Route::post('/prebooking/activate/{id}',   'PreBookingController@activatepost')->name('prebooking-activate-post');
+		Route::get('/prebooking/activate/{id}', 'PreBookingController@activate')->name('prebooking-activate');
+		Route::post('/prebooking/activate/{id}', 'PreBookingController@activatepost')->name('prebooking-activate-post');
+        Route::delete('/prebooking/removebooking/{id}', 'PreBookingController@removeBooking')->name("prebooking.removebooking");
 		Route::resource('prebooking', PreBookingController::class);
 		Route::resource('booking', BookingController::class);
 		
@@ -96,6 +97,8 @@ Route::group(['middleware' => ['get.menu']], function () {
           Route::get('/timesheetforclient/report', 'ReportTimeSheetClientController@index')->name("timesheetclient-report");
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
         
+        Route::get('/payment/addpayment/{id}', 'PaymentController@addpayment')->name("payment.addpayment");
+        Route::resource('payment', PaymentController::class);
 
         Route::prefix('media')->group(function () {
             Route::get('/',                 'MediaController@index')->name('media.folder.index');

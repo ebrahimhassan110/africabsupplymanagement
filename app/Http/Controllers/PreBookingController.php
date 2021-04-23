@@ -8,6 +8,7 @@ use App\Models\PreBooking;
 use App\Models\Supplier;
 use App\Models\Company;
 use App\Models\Currency;
+use App\Models\Shipment;
 use Spatie\Permission\Models\Role;
 use Auth;
 class PreBookingController extends Controller
@@ -172,6 +173,9 @@ class PreBookingController extends Controller
             return redirect()->route('prebooking.index');
     }
 
+
+   
+
     /**
      * Display the specified resource.
      *
@@ -224,9 +228,36 @@ class PreBookingController extends Controller
      */
     public function destroy($id)
     {
-        $worktypes = Worktype::find($id);
-        $worktypes->delete();
+        $shipment = Shipment::where('booking_id',$id)->count();
+        if($shipment){
+            return redirect()->route('prebooking.index')->with('message', 'can not deleted booking while in use');
+        }else{
+            
+		    $prebooking = PreBooking::find($id);        
+
+            if(!is_null($prebooking))
+            {
+              $prebooking->delete();
+            }
+
+          
+        }
 
         return redirect()->route('prebooking.index')->with('message', 'Successfully deleted');
+    }
+
+    public function removeBooking($id){
+
+        $shipment = Shipment::where('booking_id',$id)->count();
+        if($shipment){
+
+            return redirect()->route('booking.index')->with('message', 'can not deleted booking while in use');
+        }else{
+            $prebooking = PreBooking::find($id);  
+            $prebooking->po_number = NULL;
+            $prebooking->save(); 
+        }
+        return redirect()->route('booking.index')->with('message', 'Successfully deleted');
+
     }
 }
