@@ -29,17 +29,17 @@
 															<tr>
 																<td> {{ ($key + 1 ) }} </td>
 																<td> {{ date('d/m/Y',strtotime($shipment->created_at)) }}</td>
-																<td> {{ $shipment->from_booking_id->id }} </td>
-																<td > {{ $shipment->to_booking_id->id }}</td>
-                                <td > {{ $shipment->to_booking_id->transfer_value }}</td>
+																<td> </td>
+																<td ></td>
+                                <td > {{ $shipment->transfer_value }}</td>
 																<td class="d-flex flex-row">
 
-                                  <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/adjustment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
+                                  <a hidden class="btn btn-success btn-sm mb-1 view" href="{{ url('/adjustment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
                                   @if(in_array("adjustment-edit", $all_permission))
                                   <a hidden href="{{ url('/adjustment/' . $shipment->id. '/edit') }}" class="btn  btn-primary btn-sm mb-1">Edit</a>
                                   @endif
                                   @if(in_array("adjustment-delete", $all_permission))
-                                  <form action="{{ route('adjustment.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
+                                  <form hidden  action="{{ route('adjustment.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
 																	  @method('DELETE')
 																	  @csrf
 																	  <button class="btn btn-danger btn-sm">Delete</button>
