@@ -137,7 +137,11 @@ class PreBookingController extends Controller
          unset($data['submit']);
 		 unset($data['cancel']);
 		 
-     
+        $comapanyname=$data['company_name'];
+        $cmp=Company::where('name',$comapanyname)->get();
+        $cmpid=$cmp[0]->id;
+        $data['company_name']=$cmpid;
+
         $data["created_by"] = Auth::user()->id;
 		
 		$partName= $data["partName"];
