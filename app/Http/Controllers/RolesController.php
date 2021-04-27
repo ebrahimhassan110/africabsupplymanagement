@@ -470,6 +470,44 @@ class RolesController extends Controller
             }
             else
                 $role->revokePermissionTo('payment-delete');
+			
+			
+			
+			 if($request->has('adjustment-index')){
+                $permission = Permission::firstOrCreate(['name' => 'adjustment-index']);
+                if(!$role->hasPermissionTo('adjustment-index')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('adjustment-index');
+    
+            if($request->has('adjustment-add')){
+                $permission = Permission::firstOrCreate(['name' => 'adjustment-add']);
+                if(!$role->hasPermissionTo('adjustment-add')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('adjustment-add');
+    
+            if($request->has('adjustment-edit')){
+                $permission = Permission::firstOrCreate(['name' => 'adjustment-edit']);
+                if(!$role->hasPermissionTo('adjustment-edit')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('adjustment-edit');
+    
+            if($request->has('adjustment-delete')){
+                $permission = Permission::firstOrCreate(['name' => 'adjustment-delete']);
+                if(!$role->hasPermissionTo('adjustment-delete')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('adjustment-delete');
 
         $role = Role::where('id', '=', $id)->first();
         $role->name = $request->input('name');

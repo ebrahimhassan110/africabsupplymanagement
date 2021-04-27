@@ -8,12 +8,13 @@ use App\Models\FeeType;
 use App\Models\PreBooking;
 use App\Models\PreBookingPart;
 use App\Models\Shipment;
+use App\Models\Adjustment;
 use App\Models\Supplier;
 //suse App\Models\ShipmentDetails;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
-class ShipmentController extends Controller
+class AdjustmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,16 +24,16 @@ class ShipmentController extends Controller
     public function index()
     {
       $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
-      if ($role->hasPermissionTo('shipment-index')){
+      if ($role->hasPermissionTo('adjustment-index')){
         $permissions = Role::findByName($role->name)->permissions;
         foreach ($permissions as $permission)
             $all_permission[] = $permission->name;
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
 
-        $shipments = Shipment::get();
+        $adjustments = Adjustment::get();
 
-        return view("shipment.index",compact("shipments","all_permission"));
+        return view("adjustment.index",compact("adjustments","all_permission"));
       }
       else
           return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
@@ -47,8 +48,10 @@ class ShipmentController extends Controller
     {
         $suppliers =  Supplier::all();
        // $feetypes =  FeeType::all();
-        return view("shipment.create",compact('suppliers'));
+        return view("adjustment.create",compact('suppliers'));
     }
+	
+
 
     /**
      * Store a newly created resource in storage.
@@ -68,7 +71,7 @@ class ShipmentController extends Controller
           
              $temp['attachment'] = $imageName;
 
-            if($image->move('attachments\shipments', $imageName)){
+            if($image->move('attachments\adjustment', $imageName)){
           
          
          }
@@ -81,7 +84,8 @@ class ShipmentController extends Controller
          $data['attachment'] = $temp['attachment'];
        //  print_r($data['attachment']);
         // die;
-        unset($data['delivery_type']);
+        unset($data['supplier_id']);
+		unset($data['to_supplier_id']);
         unset($data['_token']);
         unset($data['submit']);
         unset($data['cancel']);
@@ -89,139 +93,18 @@ class ShipmentController extends Controller
 
 
 
-    if(isset($data['bl_no_text'])){
-        $bl_no=$data['bl_no_text'];
-        unset($data['bl_no_text']);
-         unset($data['bl_no_select']);
-   }
-   else{
-     $bl_no=$data['bl_no_select'];
-     unset($data['bl_no_select']);
-       unset($data['bl_no_text']);
 
-   }
-      $data['bl_no'] =$bl_no;
-	
-  if($data["order_type"]=='NORMAL'){
-
-  //  $partId= $data["partId"]; 
-    $partName= []; 
-
-         }
-         else{
-
-        $partId= $data["partId"]; 
-        $partName= $data["partName"]; 
-         $goods_value= $data["goods_value"];
-         $other_expense_value= $data["other_expense_value"];
-         $advance_paid_value= $data["advance_paid_value"];
-          
-
-          //get sum of goods value
-          $gv=0;
-            foreach ($goods_value as $v) {
-        $gv=$gv+$v;
-               }
-               $oe=0;
-           foreach ($other_expense_value as $v) {
-        $oe=$oe+$v;
-               }  
-               $ap=0;
-            foreach ($advance_paid_value as $v) {
-        $ap=$ap+$v;
-               }     
-
-        unset($data['partId']);
-           unset($data['partName']);
-            unset($data['goods_value']);
-             unset($data['other_expense_value']);
-              unset($data['advance_paid_value']);
-
-              //set sum of goods val
-              $data['goods_value']=$gv;
-              $data['other_expense_value']=$oe;
-              $data['advance_paid_value']=$ap;
-
-              //edit booking part values of shpped value
-             $booking_id= $data['booking_id'];  
-            //$prebooking_parts=PreBookingPart::where('prebooking_id',$booking_id)->get();  
-
-            //update part shipped value in prebooking entry
-             foreach ($partId as $key=>$p) {
-               $prebooking_parts = PreBookingPart::find($p);
-               $shipped_value=$prebooking_parts->shipped_value;
-                $valueinc=$goods_value[$key];
-                 $prebooking_parts->shipped_value =  $shipped_value+$valueinc;
-               $prebooking_parts->save();   
-
-
-              }
-           
-
-
-       
-              }
-
-
-
-      $idinserted = DB::table('shipment')->insertGetId(
+      $idinserted = DB::table('adjustments')->insertGetId(
                 $data
         );
-      
-      //edit booking shipment values
-      $booking_id= $data['booking_id'];
-      $gv =$data['goods_value'];
-      $booking = PreBooking::find($booking_id);
-      $shipped_value=$booking->shipped_value;
-      $booking->shipped_value =  $shipped_value+$gv;
-      $booking->save();   
 
-
-
-
-
-
-    if(count($partName)>0){
-        foreach ($partName as $id=>$part) {
-        $data2=[];
-        $data2['part_name']=$part;
-        $data2['shipment_id']=$idinserted;
-        $data2['goods_value']=$goods_value[$id];
-         $data2['other_expense_value']=$other_expense_value[$id];
-          $data2['advance_paid_value']=$advance_paid_value[$id];
-           $data2['part_id']=$partId[$id];
-      
-      $idinsertedshipmentvalues = DB::table('shipment_part')->insertGetId(
-                $data2
-        );
-        
-      }
-    }
-      
 
         if(!is_null($idinserted))
             $request->session()->flash('message', 'Successfully added Shipment');
-            return redirect()->route('shipment.index');
+            return redirect()->route('adjustment.index');
 
 
-		/*
-     
-        $shipment =  shipment::create($data);
-        $data_details['shipmentId'] =  $shipment->getKey();
-        for( $i = 1 ; $i <= $total; $i++ ) {
-             if( !is_null($request['feetype_'.$i])  AND  !is_null($request['amount_'.$i])){
-                $data_details['feetypeId'] = $request['feetype_'.$i];
-                $data_details['amount'] = $request['amount_'.$i];
-                $data_details['comment'] = $request['remark_'.$i];
-                $data_details['created_by'] = Auth::id();
-                shipmentDetails::create($data_details);
-             }
-        }
-
-        if(!is_null($shipment))
-        $request->session()->flash('message', 'Successfully added feetypeName');
-        return redirect()->route('shipment.index');
-		*/
+	
     }
 
     /**

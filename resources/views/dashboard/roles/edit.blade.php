@@ -220,6 +220,49 @@
                             </div>
                           </td>
                       </tr>
+                        <tr>
+                          <td>Adjustment</td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("adjustment-index", $all_permission))
+                                  <input type="checkbox" value="1" id="adjustment-index" name="adjustment-index" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="adjustment-index" name="adjustment-index" />
+                                  @endif
+                                  <label for="adjustment-index"></label>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("adjustment-add", $all_permission))
+                                  <input type="checkbox" value="1" id="adjustment-add" name="adjustment-add" checked>
+                                  @else
+                                  <input type="checkbox" value="1" id="adjustment-add" name="adjustment-add">
+                                  @endif
+                                  <label for="adjustment-add"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                              </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("adjustment-delete", $all_permission))
+                                  <input type="checkbox" value="1" id="adjustment-delete" name="adjustment-delete" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="adjustment-delete" name="adjustment-delete" />
+                                  @endif
+                                  <label for="adjustment-delete"></label>
+                                </div>
+                            </div>
+                          </td>
+                      </tr>
                       <tr>
                           <td>{{ 'Companies'}}</td>
                           <td class="text-center">
@@ -385,7 +428,7 @@
                            <th colspan="4">
                           </th>
                       </tr>
-						        <tr>
+						        <tr hidden >
 						            <td>{{ 'Workplan'}}</td>
 						            <td class="text-center">
 						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
@@ -527,7 +570,7 @@
 						        </tr>  -->
 
 
-						        <tr>
+						        <tr hidden >
 						            <td> {{'Attendance'}} </td>
 						            <td class="text-center">
 						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
@@ -579,7 +622,7 @@
 						            </td>
 						        </tr>
 
-								<tr>
+								<tr hidden >
 						            <td>{{ 'Customer Fee' }}</td>
 						            <td class="text-center">
 						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
@@ -787,7 +830,7 @@
 						            </td>
 						        </tr> -->
 
-						        <tr>
+						        <tr hidden >
 						            <td>{{ 'Record Register' }}</td>
 						            <td class="text-center">
 						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
@@ -1045,7 +1088,7 @@
 						            	</div>
 						            </td>
 						        </tr>
-						        <tr>
+						        <tr hidden >
 						            <td>{{trans('file.customer')}}</td>
 						            <td class="text-center">
 						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
@@ -1096,57 +1139,7 @@
 						            	</div>
 						            </td>
 						        </tr>
-						        <tr>
-						            <td>{{trans('file.Biller')}}</td>
-						            <td class="text-center">
-						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
-							                <div class="checkbox">
-								                @if(in_array("billers-index", $all_permission))
-								                <input type="checkbox" value="1" id="billers-index" name="billers-index" checked>
-								                @else
-								                <input type="checkbox" value="1" id="billers-index" name="billers-index">
-								                @endif
-								                <label for="billers-index"></label>
-								            </div>
-						            	</div>
-						            </td>
-						            <td class="text-center">
-						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
-							                <div class="checkbox">
-								                @if(in_array("billers-add", $all_permission))
-								                <input type="checkbox" value="1" id="billers-add" name="billers-add" checked>
-								                @else
-								                <input type="checkbox" value="1" id="billers-add" name="billers-add">
-								                @endif
-								                <label for="billers-add"></label>
-								            </div>
-						            	</div>
-						            </td>
-						            <td class="text-center">
-						                <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
-							                <div class="checkbox">
-								                @if(in_array("billers-edit", $all_permission))
-								                <input type="checkbox" value="1" id="billers-edit" name="billers-edit" checked>
-								                @else
-								                <input type="checkbox" value="1" id="billers-edit" name="billers-edit">
-								                @endif
-								                <label for="billers-edit"></label>
-								            </div>
-						            	</div>
-						            </td>
-						            <td class="text-center">
-						                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
-							                <div class="checkbox">
-								                @if(in_array("billers-delete", $all_permission))
-								                <input type="checkbox" value="1" id="billers-delete" name="billers-delete" checked>
-								                @else
-								                <input type="checkbox" value="1" id="billers-delete" name="billers-delete">
-								                @endif
-								                <label for="billers-delete"></label>
-								            </div>
-						            	</div>
-						            </td>
-						        </tr>
+						       
 
 						        						        <!-- <tr>
 						            <td>{{trans('file.Accounting')}}</td>
@@ -1254,7 +1247,7 @@
 						                </span>
 						            </td>
 						        </tr> -->
-						        <tr>
+						        <tr hidden >
 						            <td>{{trans('file.Reports')}}</td>
 						            <td class="report-permissions" colspan="5">
 						            	<span>
@@ -1490,7 +1483,7 @@
 						                </span> -->
 						            </td>
 						        </tr>
-						        <tr>
+						        <tr hidden >
 						            <td>{{trans('file.settings')}}</td>
 						            <td class="report-permissions" colspan="5">
 						            	<span>
@@ -1627,7 +1620,7 @@
 						                </span> -->
 						            </td>
 						        </tr>
-						        <tr>
+						        <tr hidden >
 						            <td>{{trans('file.Miscellaneous')}}</td>
 						            <td class="report-permissions" colspan="5">
 						            	<span>

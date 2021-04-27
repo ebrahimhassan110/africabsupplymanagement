@@ -8,12 +8,12 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
-                      <span class="card-title">{{ 'Shipment' }}</span>
-                      @if(in_array("shipment-add", $all_permission))
-                        <a href="{{route('shipment.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
+                      <span class="card-title">{{ 'Adjustment' }}</span>
+                      @if(in_array("adjustment-add", $all_permission))
+                        <a href="{{route('adjustment.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
                       @endif
                     </div>
-                    <div class="card-body">
+                    <div class="" ass="card-body">
 						<div class="table-responsive">
                                 <table width="100%">
                                     <tbody>
@@ -25,20 +25,21 @@
 														<tr class="sorting_asc" align="left" valign="top" style="font-weight:bold;">
 														   <td align="left">SNo.</td><td align="left">Date</td><td align="left">CFI No</td><td align="left">Amount</td><td> Action </td>
 														</tr>
-														@foreach($shipments as $key=>$shipment)
+														@foreach($adjustments as $key=>$shipment)
 															<tr>
 																<td> {{ ($key + 1 ) }} </td>
 																<td> {{ date('d/m/Y',strtotime($shipment->created_at)) }}</td>
-																<td> {{ $shipment->cfi_no }} </td>
-																<td class="text-right"> {{ number_format($shipment->goods_value,2) }} </td>
+																<td> {{ $shipment->from_booking_id->id }} </td>
+																<td > {{ $shipment->to_booking_id->id }}</td>
+                                <td > {{ $shipment->to_booking_id->transfer_value }}</td>
 																<td class="d-flex flex-row">
 
-                                  <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/shipment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
-                                  @if(in_array("shipment-edit", $all_permission))
-                                  <a hidden href="{{ url('/shipment/' . $shipment->id. '/edit') }}" class="btn  btn-primary btn-sm mb-1">Edit</a>
+                                  <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/adjustment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
+                                  @if(in_array("adjustment-edit", $all_permission))
+                                  <a hidden href="{{ url('/adjustment/' . $shipment->id. '/edit') }}" class="btn  btn-primary btn-sm mb-1">Edit</a>
                                   @endif
-                                  @if(in_array("shipment-delete", $all_permission))
-                                  <form action="{{ route('shipment.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
+                                  @if(in_array("adjustment-delete", $all_permission))
+                                  <form action="{{ route('adjustment.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
 																	  @method('DELETE')
 																	  @csrf
 																	  <button class="btn btn-danger btn-sm">Delete</button>

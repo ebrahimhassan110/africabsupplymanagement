@@ -80,16 +80,21 @@ Route::group(['middleware' => ['get.menu']], function () {
 		    Route::resource('institute', InstituteController::class);
         Route::post('/attendance/search', 'AttendanceController@search')->name("attendance-search");
         Route::resource('Attendance', AttendanceController::class);
+
+        Route::resource('adjustment', AdjustmentController::class);
 		
 		// Route::post('/shipments', 'ShipmentController@store')->name("shipping-store");
        Route::get('/shipment/getPFI/{id}','ShipmentController@getPFI')->name('shipping-getPFI');
+         Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
         Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
          Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
 		Route::get('/shipment/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
 		Route::resource('shipment', ShipmentController::class);
         Route::resource('Recordregister', RecordRegisterController::class);
-        Route::get('/attendance/report', 'ReportAttendanceController@index')->name("attendance-report");
-        Route::post('/attendance/report', 'ReportAttendanceController@show')->name("attendance-report");
+
+
+        Route::get('/supplier/individual/report', 'ReportSupplierIndividualController@index')->name("supplier-individual-report");
+        Route::post('/supplier/individual/report', 'ReportSupplierIndividualController@show')->name("supplier-individual-report");
 
 
           Route::get('/workplan/report', 'ReportWorkPlanController@index')->name("workplan-report");

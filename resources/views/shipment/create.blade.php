@@ -182,8 +182,8 @@
                                                      <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator25" style="color:Red;display:none;">Duty Value</span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Due Date</label>
-                                                    <input  name="due_date" type="date" id="advance_terms" tabindex="6" class="form-control" style="width:50%;">
+                                                    <label>Due Date<span class="required">*</span></label>
+                                                    <input required  name="due_date" type="date" id="advance_terms" tabindex="6" class="form-control" style="width:50%;">
                                                 
 													<span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator4" style="color:Red;display:none;">Due Date</span>
                                                 </div>
@@ -200,8 +200,8 @@
 												
 												 <div class="form-group">
                                             <label>
-                                                Attachment</label>
-                                            <input type="file" name="attachment" id="ctl00_ContentPlaceHolder1_fludocument" style="width:50%;">
+                                                Attachment<span class="required">*</span></label>
+                                            <input type="file" required name="attachment" id="ctl00_ContentPlaceHolder1_fludocument" style="width:50%;">
 											</div>
                                                
                                             </td>
