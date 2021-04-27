@@ -20,18 +20,61 @@
                   </div>
               @endif
 
+              @if(session('error'))
+                  <div class="form-group">
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach(session('error') as $err)
+                                  <li>{{$err}}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                  </div>
+              @endif
+
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-body p-4">
-                <form method="POST" action="{{ route('register') }}" id="payment_form">
+                <form method="POST" action="{{ route('payment.store') }}" id="payment_form">
                     @csrf
                      
-                    <p class="text-muted">Add Payment</p>
+                    <p class="text-muted pb-3 mb-1" style="border-bottom: 3px solid #00a65a">Add Payment</p>
+                    <div class="row form-group">
+                      <div class="col-md-12 info-card">
+                        <div class="row-desc">
+                          <label> Booking PFI Value: </label> 
+                          <div class="value">
+                            {{ $prebooking->pfi_value }}
+                          </div>
+                        </div>
+                        <div class="row-desc">
+                          <label> Booking Advanced Value: </label> 
+                          <div class="value">
+                            {{ $prebooking->advance_paid }}
+                          </div>
+                        </div>
+
+                        <div class="row-desc">
+                          <label> Actual paid pfi Value: </label> 
+                          <div class="value">
+                            {{ $prebooking->actual_paid  }}
+                          </div>
+                        </div>
+
+                        <div class="row-desc">
+                          <label> Actual Paid Advance Value: </label> 
+                          <div class="value">
+                            {{ $prebooking->actual_advance_paid }}
+                          </div>
+                        </div>
+                       
+                      </div>
+                    </div>
                     <div class="row form-group">
 
                       <div class="col-md-4">
-                        <lable> Supplier: </label>
+                        <label> Supplier: </label>
                         <div class="pt-2  font-weight-bold">
 
                         {{ $prebooking->supplier->supplier_name }} ( {{ $prebooking->supplier->supplier_code }} ) - 
@@ -41,8 +84,10 @@
                         </div>
                       </div>
 
+                      <input type="hidden" name="booking_no" value="{{ $prebooking->id }}">
+
                       <div class="col-md-4">
-                        <lable> Payment Type: </label>
+                        <label> Payment Type: </label>
                         <div class="pt-2">
                             <select class="form-control select2" name="payment_type" data-placeholder="select payment type">
                               <option></option>
@@ -59,7 +104,7 @@
                       </div>
 
                       <div class="col-md-4">
-                      <lable> Booking Type: </label>
+                      <label> Booking Type: </label>
                         <div class="pt-2">
                             <select class="form-control select2" name="booking_type" data-placeholder="select payment type">
                               <option></option>
@@ -73,17 +118,17 @@
 
                     <div class="row form-group">
                       <div class="col-md-4">
-                        <lable> Amount: </label>
+                        <label> Amount: </label>
                         <input class="form-control" type="text" placeholder="{{ 'Cash Value' }}" id="amount" name="amount" value="{{ old('amount') }}" required>
                       </div>
                       <div class="col-md-4">
-                          <lable> Bank Value: </label>
-                          <input class="form-control" type="text" placeholder="{{  'Bank Value'  }}" id="bk_value" name="bk_value" value="{{ old('bk_value') }}" required>
+                          <label> Bank Value: </label>
+                          <input class="form-control" type="text" placeholder="{{  'Bank Value'  }}" id="bk_value" name="bank_value" value="{{ old('bank_value') }}" required>
                       </div>
 
                       <div class="col-md-4">
-                          <lable> Cash Value: </label>
-                          <input class="form-control" type="text" placeholder="{{ 'Cash Value' }}" id="cs_value" name="cs_value" value="{{ old('cs_value') }}" required>
+                          <label> Cash Value: </label>
+                          <input class="form-control" type="text" placeholder="{{ 'Cash Value' }}" id="cs_value" name="cash_value" value="{{ old('cash_value') }}" required>
                       </div>
 
                     </div>
@@ -91,7 +136,7 @@
                     <div class="row form-group">
                       <div class="col-md-4">
                           <label> {{  'Telegraphic transfer Charges' }} </label>
-                          <span class="d-flex flex-row">
+                          <span class="d-flex flex-row align-middle">
                             <div class="d-flex flex-row mr-1">
                                 <label>Value:</label>
                                 <input type="radio" class="type" value="value" name="type" checked>
@@ -101,7 +146,6 @@
                               <input type="radio"  class="type" value="perc" name="type">
                             </div>
                             <input class="form-control" hidden min="1" max="100" type="text" id="parcent" placeholder="%" name="percent" value="{{ old('tt_charges') }}">
-
                             <input class="form-control" type="text" id="tt_charges"  name="tt_charges" value="{{ old('tt_charges') }}" required>
                           </span>
                       </div>
@@ -142,6 +186,22 @@
 @endsection
 
 @section('javascript')
+    <style>
+
+      .info-card {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .info-card div{
+         padding: 1em;
+      }
+
+      .info-card div label{
+         font-weight: bold;
+      }
+
+    </style>
 
     <script src="{{ asset('js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>

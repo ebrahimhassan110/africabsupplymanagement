@@ -18,7 +18,7 @@
                 <div class="table-responsive">
                 <table cellpadding="0" cellspacing="0" width="100%">
                 <tbody>
-                                            <form method="post" action="{{ route('payment.filterbooking') }}">
+                                            <form method="post" action="{{ route('payment.paymentlistfilter') }}">
                                                   @csrf
                                               <tr style="height: 40px;">
                                               <td style="width: 10%;" valign="top">
@@ -69,50 +69,37 @@
                                     <table class="table table-responsive-sm table-striped datatable mt-4">
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                        
-                                                        <th>Supplier</th>
-                                                        <th>Company</th>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>Supplier</th>
+                                            
                                             <th>PFI Number</th>
                                             <th>PFI Value</th>
+                                            <th>Amount</th>
                                             
-                                                    <th></th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                            @foreach($prebookings as $prebooking)
+                                            @foreach($payments as $key=>$payment)
                                             <tr>
-                                            <td>{{$prebooking->id}}</td>
-                                            <td>@if(isset($prebooking->supplier->supplier_name)) {{ $prebooking->supplier->supplier_code }} {{ $prebooking->supplier->address }} @endif  </td>
-                                            <td>{{$prebooking->company_name}}</td>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ date("d/m/Y",strtotime($payment->created_at))}}</td>
+                                            <td>@if(isset($payment->supplier_name)) {{ $payment->supplier_code }} {{ $payment->address }} @endif  </td>
                                             
-                                            <td> {{$prebooking->pfi_no}} </td>
-                                            <td> {{ number_format( $prebooking->pfi_value,2) }}</td>
-                                            <td>{{ number_format( $prebooking->pfi_value,2) }}</td>
                                             
-                                            <td class="d-flex flex-row">
-                                                <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/prebooking/' . $prebooking->id. '/view') }}" data-prebookingid="{{ $prebooking->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
-                                                 @if(in_array("prebooking-add", $all_permission))
-                                                <a  href="{{ route('payment.addpayment', $prebooking->id) }}" class="btn  btn-primary btn-sm">Add</a>
-                                                @endif
-                                                @if(in_array("prebooking-edit", $all_permission))
-                                                <a hidden href="{{ url('/prebooking/' . $prebooking->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
-                                                @endif
-                                                @if(in_array("prebooking-delete", $all_permission))
-                                                <form action="{{ route('prebooking.destroy', $prebooking->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                                @endif
-                                            </td>
+                                            <td> {{$payment->pfi_no}} </td>
+                                            <td> {{ number_format( $payment->pfi_value,2) }}</td>
+                                            <td>{{ number_format( $payment->amount,2) }}</td>
+                                            
+                                           
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                         <nav>
-                                        {{ $prebookings->links() }}
+                                        {{ $payments->links() }}
                                         </nav>
                                     </td>
                                     </tr>
