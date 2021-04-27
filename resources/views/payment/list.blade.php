@@ -18,7 +18,7 @@
                 <div class="table-responsive">
                 <table cellpadding="0" cellspacing="0" width="100%">
                 <tbody>
-                                            <form method="post" action="{{ route('payment.filterbooking') }}">
+                                            <form method="post" action="{{ route('payment.paymentlistfilter') }}">
                                                   @csrf
                                               <tr style="height: 40px;">
                                               <td style="width: 10%;" valign="top">
@@ -72,7 +72,7 @@
                                             <th>#</th>
                                             <th>Date</th>
                                             <th>Supplier</th>
-                                            <th>Company</th>
+                                            
                                             <th>PFI Number</th>
                                             <th>PFI Value</th>
                                             <th>Amount</th>
@@ -87,7 +87,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ date("d/m/Y",strtotime($payment->created_at))}}</td>
                                             <td>@if(isset($payment->supplier_name)) {{ $payment->supplier_code }} {{ $payment->address }} @endif  </td>
-                                            <td>{{$payment->company_name}}</td>
+                                            
                                             
                                             <td> {{$payment->pfi_no}} </td>
                                             <td> {{ number_format( $payment->pfi_value,2) }}</td>

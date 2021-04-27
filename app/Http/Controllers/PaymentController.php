@@ -73,7 +73,7 @@ class PaymentController extends Controller
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
 
-    public function paymentlistfilter(){
+    public function paymentlistfilter(Request $request){
         
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
@@ -97,15 +97,15 @@ class PaymentController extends Controller
                
                 $payments = Payment::join("prebooking","prebooking.id","payments.booking_no")
                                 ->join("supplier","supplier.id","prebooking.supplier_id")
-                                ->whereDate("created_at",">=",$start_date)
-                                ->whereDate("created_at","<=",$end_date)->paginate(100);
+                                ->whereDate("payments.created_at",">=",$start_date)
+                                ->whereDate("payments.created_at","<=",$end_date)->paginate(100);
                 
             }else{
                 $payments = Payment::join("prebooking","prebooking.id","payments.booking_no")
                 ->join("supplier","supplier.id","prebooking.supplier_id")
                 ->where("prebooking.supplier_id",$request->supplier)
-                ->whereDate("created_at",">=",$start_date)
-                ->whereDate("created_at","<=",$end_date)->paginate(100);
+                ->whereDate("payments.created_at",">=",$start_date)
+                ->whereDate("payments.created_at","<=",$end_date)->paginate(100);
                
             }
             $suppliers = Supplier::get();
