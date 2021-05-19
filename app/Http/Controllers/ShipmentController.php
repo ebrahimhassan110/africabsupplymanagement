@@ -187,14 +187,15 @@ class ShipmentController extends Controller
         $data2['part_name']=$part;
         $data2['shipment_id']=$idinserted;
         $data2['goods_value']=$goods_value[$id];
-         $data2['other_expense_value']=$other_expense_value[$id];
-          $data2['advance_paid_value']=$advance_paid_value[$id];
-           $data2['part_id']=$partId[$id];
-      
+        $data2['other_expense_value']=$other_expense_value[$id];
+        $data2['advance_paid_value']=$advance_paid_value[$id];
+        $data2['part_id']=$partId[$id];
+       if($data2['goods_value']!='0'){
       $idinsertedshipmentvalues = DB::table('shipment_part')->insertGetId(
                 $data2
         );
         
+        }
       }
     }
       
