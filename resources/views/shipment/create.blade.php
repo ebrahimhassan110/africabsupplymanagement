@@ -120,6 +120,8 @@
 											<div  class="form-group fullfield">
                                                     <label>
                                                        CFI Goods Value<span class="required"> *</span></label>
+
+                                                      <h3 style="color:red;" id="maxcfi" > </h3> 
                                                      <input required name="goods_value"  type="number" id="goods_value" tabindex="1" class="form-control inltd" style="width:50%;">
                                                     <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> CFI Goods Value</span>
                                                 </div>	
@@ -446,7 +448,7 @@
                  var data = result;
 				 
 				var x;
-                 for(x=0;x<data.length;x+=1){
+                 for(x=0;x<data.length;x++){
                      var dat = data[x];
 					var partname=dat.name;
 					var partid=dat.id;
@@ -472,9 +474,11 @@
 				 var table = tbody.length ? tbody : $('#part_table');
 				 
 			    var tbl = document.getElementById("part_table"); // Get the table
+                if(x==0){
                tbl.getElementsByTagName("tbody")[0].innerHTML="";
+                }
 				 //Add row
-                  if(max>0){  
+                  if(diff>0){  
 				 tbody.append('<tr>\n\
 				<td><input hidden name="partId[]" value="'+partid+'" /> <input  class="form-control" readonly value="'+partname+'" name="partName[]" type="text"/></td>\n\
 				<td> '+diff+' </td><td><input class="form-control"  required name="goods_value[]" max="'+diff+'" type="number"/></td>\n\
@@ -626,7 +630,7 @@
                  var bdata=data[0];
                  delete bdata.id ;
                  delete bdata.supplier_id ;
-                 delete bdata.supplier_id ;
+                 delete bdata.company_id ;
                  delete bdata.pfi_no  ;
                  delete bdata.status  ;
                  delete bdata.attachment  ;

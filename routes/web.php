@@ -96,6 +96,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('/supplier/individual/report', 'ReportSupplierIndividualController@index')->name("supplier-individual-report");
         Route::post('/supplier/individual/report', 'ReportSupplierIndividualController@show')->name("supplier-individual-report");
 
+        Route::get('/shipment/custom_declaration/report', 'ReportShipmentProcessingController@index')->name("shipment-processing-report");
 
         Route::get('/workplan/report', 'ReportWorkPlanController@index')->name("workplan-report");
         Route::post('/workplan/report', 'ReportWorkPlanController@show')->name("workplan-report");

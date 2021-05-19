@@ -88,8 +88,13 @@
                                             <input name="order_confirmation_date" type="date" id="order_confirmation_date"  class="form-control"  autofocus="" style="width:50%;" required>
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Order Confirmation Date</span>
                                         </div>
-										
-										
+
+                                         <div class="form-group">
+                                            <label>
+                                              Advance Payment Date</label>
+                                            <input name="advance_payment_date"  id="advance_payment_date"  type="date"   class="form-control"  autofocus="" style="width:50%;" >
+                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Advance Payment Date</span>
+                                        </div>
 										
 										
 										 <div class="form-group">
@@ -103,7 +108,7 @@
 										 <div class="form-group">
                                             <label>
                                                Delivery Date Based On</label>
-                                           	<label>	<input type="checkbox" id="checkbox1" class="radio" value="1" name="radio" />Proposal Date</label>
+                                           	<label>	<input type="checkbox" id="checkbox1" class="radio" value="1" name="radio" />Advance Payment Date</label>
 											<label>	<input type="checkbox" id="checkbox2" class="radio" value="2" name="radio" />Confirmation Date</label>
                                             </div>
 										 
@@ -115,12 +120,7 @@
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Delivery Date</span>
                                         </div>
 										
-										 <div class="form-group">
-                                            <label>
-                                              Advance Payment Date</label>
-                                            <input name="advance_payment_date" type="date" id="advance_payment_date"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Advance Payment Date</span>
-                                        </div>
+										
 										
 										
 										
@@ -133,9 +133,9 @@
 										
 										 <div class="form-group">
                                             <label>
-                                               Advance Paid Value<span class="required"> *</span></label>
+                                               Advance Payment Value<span class="required"> *</span></label>
                                             <input name="advance_paid" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Advance Paid Value</span>
+                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Advance Payment Value</span>
                                         </div>
 										
 										
@@ -175,29 +175,29 @@
 										
 										 <div class="form-group">
                                             <label>
-                                               CBM<span class="required"> *</span></label>
-                                            <input name="cbm" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                               CBM</label>
+                                            <input name="cbm" type="text"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> CBM</span>
                                         </div>
 										
 										
 										 <div class="form-group">
                                             <label>
-                                               Net weight<span class="required"> *</span></label>
-                                            <input name="nw" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                               Net weight</label>
+                                            <input name="nw" type="text"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> NW</span>
                                         </div>
 										
 										 <div class="form-group">
                                             <label>
-                                               Gross weight<span class="required"> *</span></label>
-                                            <input name="gw" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                               Gross weight</label>
+                                            <input name="gw" type="text"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Gross weight</span>
                                         </div>
 										<div class="form-group">
                                             <label>
-                                               No of Container<span class="required"> *</span></label>
-                                            <input name="no_of_container" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                               No of Container</label>
+                                            <input name="no_of_container" type="text"  class="form-control"  autofocus="" style="width:50%;" >
                                             <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> No of Container</span>
                                         </div>
 										
@@ -218,7 +218,7 @@
 								<tr>
 								  <th scope="col">Part Name</th>
 								  <th scope="col">Value</th>
-								  <th scope="col">Date</th>
+								  <th scope="col">Delivery Date</th>
 								   <th scope="col"></th>
 								 
 								</tr>
@@ -264,6 +264,7 @@
 										  <select required name="shipment_way" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
 											<option value="SEA" >SEA</option>
 											<option value="AIR" >AIR</option>
+											<option value="AIR-DTD" >AIR</option>
 											<option value="LAND" >LAND</option>
 											<option value="LAND-DTD" >LAND-DTD</option>
 											
@@ -332,7 +333,7 @@
 
 											  <div class="form-group">
                                                     <label>
-                                                      Attachment</label>
+                                                      Attachment <span class="required"> *</span> </label>
                                                     <input required name="attachment" type="file" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
                                                     <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Attachment</span>
                                                 </div>
@@ -543,9 +544,9 @@ var date;
 	  	 if(val==1){
 
 
-			 var rfp_date=$("#rfp_date").val();
+			 var rfp_date=$("#advance_payment_date").val();
 			  if(rfp_date=='' || delivery_period_days==''){
-			  alert("Date Request For Proposal required");
+			  alert("Date for Advance Payment and Delivery days required");
 			  $('#checkbox1').prop("checked", false);
 			    }
 			 else{

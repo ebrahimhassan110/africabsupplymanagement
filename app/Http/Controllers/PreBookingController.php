@@ -5,6 +5,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Models\Worktype;
 use App\Models\PreBooking;
+use App\Models\PreBookingPart;
 use App\Models\Supplier;
 use App\Models\Company;
 use App\Models\Currency;
@@ -138,9 +139,10 @@ class PreBookingController extends Controller
 		 unset($data['cancel']);
 		 
         $comapanyname=$data['company_name'];
-        $cmp=Company::where('name',$comapanyname)->get();
+        $cmp= Company::where('name',$comapanyname)->get();
         $cmpid=$cmp[0]->id;
-        $data['company_name']=$cmpid;
+        $data['company_id']=$cmpid;
+        $data['company_name']=$comapanyname;
 
         $data["created_by"] = Auth::user()->id;
 		
@@ -194,10 +196,15 @@ class PreBookingController extends Controller
     public function edit($id)
     {
       $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
-      if (!is_null($role->hasPermissionTo('worktype-edit')) && $role->hasPermissionTo('worktype-edit')){
-        $worktypes = Worktype::find($id);
+      if (!is_null($role->hasPermissionTo('prebooking-edit')) && $role->hasPermissionTo('prebooking-edit')){
 
-        return view("prebooking.edit",compact('worktypes'));
+        $suppliers = Supplier::get();
+        $companies = Company::get();
+         $currency = Currency::get();
+        $prebooking = PreBooking::find($id);
+        $prebooking_parts = PreBookingPart::where('prebooking_id',$id)->get();
+      
+        return view("prebooking.edit",compact('prebooking','suppliers','companies','currency','prebooking_parts'));
       }
       else
           return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
@@ -212,14 +219,78 @@ class PreBookingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'worktype' => ['required','min:2'],
-        ]);
+      
+        $data = $request->all();
+        unset($data['radio']);
+        unset($data['_token']);
+        unset($data['submit']);
+        unset($data['cancel']);
+        unset($data['_method']);
+        
+        $comapanyname=$data['company_name'];
+        $cmp= Company::where('name',$comapanyname)->get();
+        $cmpid=$cmp[0]->id;
+        $data['company_id']=$cmpid;
+        $data['company_name']=$comapanyname;
+        $data["created_by"] = Auth::user()->id;
 
-        $worktypes = Worktype::find($id);
-        $worktypes->worktypeName =  $request->worktype;
-        $worktypes->save();
-        $request->session()->flash('message', 'Successfully added Worktype');
+
+        $partName= $data["partName"];
+        $partValue= $data["partValue"];
+        $partDate= $data["partDate"];
+        $partId= $data["partId"];
+        
+         unset($data['partName']);
+         unset($data['partValue']);
+         unset($data['partDate']);
+         unset($data['partId']);
+        $prebooking_id=$id;
+
+        $prebooking = PreBooking::find($id);
+
+            foreach ($data as $key=>$val) {
+            $prebooking[$key]=$val;
+            }
+            $prebooking->save();
+
+            if(count($partName)>0){
+
+            foreach ($partName as $id=>$part) {
+
+              if(isset($partId[$id])){
+                  $idpart=$partId[$id];
+              }
+              else{
+                 $idpart='0';
+              }
+                $data2=[];
+                $data2['name']=$part;
+                $data2['value']=$partValue[$id];
+                $data2['date']=$partDate[$id];
+                if($data2['name'] !='' && $data2['value']!=''){
+                  $count = PreBookingPart::where('id', $idpart)->count();
+                  if($count){
+                 $prebooking_part = PreBookingPart::find($idpart);
+                 $prebooking_part->name= $data2['name'];
+                 $prebooking_part->value= $data2['value'];
+                 $prebooking_part->date= $data2['date'];
+                 $prebooking_part->save();
+                }
+                else {
+                $data2['prebooking_id']=$prebooking_id;
+                $idinsertedprebookingvalues = DB::table('prebooking_parts')->insertGetId(
+                $data2);
+                }
+            }
+
+                
+              }
+              }    
+
+
+
+
+        $request->session()->flash('message', 'Successfully updated PreBooking');
         return redirect()->route('prebooking.index');
 
     }

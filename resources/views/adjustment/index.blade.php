@@ -23,17 +23,17 @@
 												<table class="table table-responsive-sm table-striped datatable" id="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgshipmentInfo" style="border-style:None;width:100%;border-collapse:collapse;">
 												  <tbody>
 														<tr class="sorting_asc" align="left" valign="top" style="font-weight:bold;">
-														   <td align="left">SNo.</td><td align="left">Date</td><td align="left">CFI No</td><td align="left">Amount</td><td> Action </td>
+														   <td align="left">SNo.</td><td align="left">Date</td><td align="left">PFI No</td><td align="left">Amount</td>
 														</tr>
 														@foreach($adjustments as $key=>$shipment)
 															<tr>
 																<td> {{ ($key + 1 ) }} </td>
 																<td> {{ date('d/m/Y',strtotime($shipment->created_at)) }}</td>
-																<td> </td>
-																<td ></td>
+																<td> {{ $shipment['from_booking']->pfi_no }}</td>
+																
                                 <td > {{ $shipment->transfer_value }}</td>
 																<td class="d-flex flex-row">
-
+                           
                                   <a hidden class="btn btn-success btn-sm mb-1 view" href="{{ url('/adjustment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
                                   @if(in_array("adjustment-edit", $all_permission))
                                   <a hidden href="{{ url('/adjustment/' . $shipment->id. '/edit') }}" class="btn  btn-primary btn-sm mb-1">Edit</a>
