@@ -10,8 +10,11 @@ use App\Models\PreBooking;
 use App\Models\Supplier;
 use App\Models\Payment;
 use Carbon\Carbon;
+use App\Models\Shipment;
+
 class PaymentController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -44,12 +47,20 @@ class PaymentController extends Controller
     {
         //
     }
-    public function addpayment($id)
+    public function addpayment(Request $request)
     {
+        
+        $id = $request->preebooking;
+        $payment_type = $request->payment_type;
+
+        if(is_null($id)){
+            return redirect()->back();
+        }
+
         $prebooking = PreBooking::with("supplier")->where("id",$id)->first();   
         $payment_types = DB::table("payment_types")->get();
         $bankers = DB::table("tbbanker")->get();
-        return  view("payment.create",compact("prebooking","payment_types","bankers"));
+        return  view("payment.create",compact("prebooking","payment_types","bankers","payment_type"));
     }
 
     public function paymentlist()
@@ -164,6 +175,9 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
+       
+       
+
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
             $permissions = Role::findByName($role->name)->permissions;
@@ -172,48 +186,98 @@ class PaymentController extends Controller
             if(empty($all_permission))
                 $all_permission[] = 'dummy text';
 
-            $booking =  PreBooking::find($request->booking_no);
-            
+            $_payment_type = $request->_payment_type;
             $payment_type  = $request->payment_type;
-            //payment type 1 : advance payment 
-            //payment type 2 : release payment 
-            //payment type 3 : outstanding payment 
-            if( $payment_type == 1 ){
-                $tobepayed = $request->amount + $booking->actual_advance_paid;
-                 
-                if( $tobepayed > $booking->advance_paid ||  $tobepayed > ($booking->actual_advance_paid + $request->amount) ){
-                    $error["payment"] = "Amount exceeds advance payment value";
-                    return redirect()->back()->with("error",$error)->withInput();
-                } 
-                $booking->actual_advance_paid = $tobepayed;
-                $booking->save();
-            }else if( $payment_type == 2 ){
 
-            }else if( $payment_type == 3 ){
-                $tobepayed_book_value =  ($booking->pfi_value - $booking->advance_paid)  - $booking->actual_paid;
-                $error = [];
-                if($tobepayed_book_value < 1){
-                    $error["payment"] = "Payment completed";
-                    return redirect()->back()->with("error",$error)->withInput();
-                } 
+            if($_payment_type == 1 ){
+                $paymentData =  PreBooking::find($request->booking_no);
+                if( $payment_type == 1 ){
+                    $tobepayed = $request->amount + $paymentData->actual_advance_paid;
+                     
+                    if( $tobepayed > $paymentData->advance_paid ||  $tobepayed > ($paymentData->actual_advance_paid + $request->amount) ){
+                        $error["payment"] = "Amount exceeds advance payment value";
+                        return redirect()->back()->with("error",$error)->withInput();
+                    } 
+                    $paymentData->actual_advance_paid = $tobepayed;
+                    $paymentData->save();
+                }else if( $payment_type == 2 ){
+                    
+                }else if( $payment_type == 3 ){
+                    //return "number 3";
+                    //booking amount
+                    
+                    $tobepayed_book_value =  ($paymentData->pfi_value - $paymentData->advance_paid)  - $paymentData->actual_paid;
+                    $error = [];
+                    
+                    if($tobepayed_book_value < 1){
+                        
+                        $error["payment"] = "Payment completed";
+                        
+                        return redirect()->back()->with("error",$error)->withInput();
     
-                $actual_paid = $booking->actual_paid + $request->amount;
-                if($tobepayed_book_value > $actual_paid){
-                    $error["payment"] = "Payment exceed proforma invoice value";
-                    return redirect()->back()->with("error",$error)->withInput();
-                } 
+                    } 
+                    
+                    
+                    $actual_paid = $paymentData->actual_paid + $request->amount;
+                    if($tobepayed_book_value > $actual_paid){
+                        $error["payment"] = "Payment exceed proforma invoice value";
+                        return redirect()->back()->with("error",$error)->withInput();
+                    } 
+        
+                    $paymentData->actual_paid = $actual_paid;
+                    $paymentData->bank_value = $request->bank_value;
+                    $paymentData->cash_value = $request->cash_value;
+                    $paymentData->save();
+                    
+                    
+                }
+            }              
+            else{
+                $paymentData =  Shipment::find($request->booking_no);
+                if( $payment_type == 1 ){
+                    $tobepayed = $request->amount + $paymentData->actual_advance_paid;
+                     
+                    if( $tobepayed > $paymentData->advance_paid_value ||  $tobepayed > ($paymentData->actual_advance_paid + $request->amount) ){
+                        $error["payment"] = "Amount exceeds advance payment value";
+                        return redirect()->back()->with("error",$error)->withInput();
+                    } 
+                    $paymentData->actual_advance_paid = $tobepayed;
+                    $paymentData->save();
+                }else if( $payment_type == 2 ){
+                    
+                }else if( $payment_type == 3 ){
+                    //return "number 3";
+                    //booking amount
+                    
+                    $tobepayed_book_value =  ($paymentData->goods_value - $paymentData->advance_paid_value)  - $paymentData->actual_paid;
+                    $error = [];
+                    
+                    if($tobepayed_book_value < 1){
+                        
+                        $error["payment"] = "Payment completed";
+                        
+                        return redirect()->back()->with("error",$error)->withInput();
     
-                $booking->actual_paid = $actual_paid;
-                $booking->bank_value = $request->bank_value;
-                $booking->cash_value = $request->cash_value;
-                $booking->save();
-                
-                
+                    } 
+                    
+                    
+                    $actual_paid = $paymentData->actual_paid + $request->amount;
+                    if($tobepayed_book_value > $actual_paid){
+                        $error["payment"] = "Payment exceed proforma invoice value";
+                        return redirect()->back()->with("error",$error)->withInput();
+                    } 
+        
+                    $paymentData->actual_paid = $actual_paid;
+                    $paymentData->bank_value = $request->bank_value;
+                    $paymentData->cash_value = $request->cash_value;
+                    $paymentData->save();
+                    
+                    
+                }
             }
-
             $data = $request->all();
             $data["user_id"] =  Auth::id();
-            $booking =  Payment::create($data);
+            $paymentData =  Payment::create($data);
             return redirect()->route("payment.index")->with("message","Payment added successfully");
             
         }
@@ -230,6 +294,33 @@ class PaymentController extends Controller
     public function show($id)
     {
         //
+    }
+
+
+    public function getData(Request $request)
+    {
+         $payment_type = $request->payment_type;
+         $supplier_id = $request->supplier_id;
+         if($payment_type == 1){
+
+            $preebookings =  PreBooking::where("supplier_id",$supplier_id)->get();
+            $select = "<select data-placeholder = 'select booking pfi no ' name = 'preebooking' class='select2 form-control' data-payment_type = '1' required>";
+            $select .= "<option></option>";
+            foreach($preebookings as $preebooking){
+                $select .= "<option value='".$preebooking->id."'>".$preebooking->pfi_no."</option>";
+            }
+            $select .= "</select>";
+            return $select;
+         }else{
+            $shipments =  Shipment::where("supplier_id",$supplier_id)->get();
+            $select = "<select data-placeholder = 'select booking cfi no' name = 'preebooking' class='select2 form-control' data-payment_type = '2' required>";
+            $select .= "<option></option>";
+            foreach($shipments as $shipment){
+                $select .= "<option value='".$shipment->id."'>".$shipment->cfi_no."</option>";
+            }
+            $select .= "</select>";
+            return $select;
+         }
     }
 
     /**
