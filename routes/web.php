@@ -104,12 +104,11 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('/timesheetforclient/report', 'ReportTimeSheetClientController@index')->name("timesheetclient-report");
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
         
+        Route::get('/payment/getdata', 'PaymentController@getData')->name("payment.getdata");
         Route::get('/payment/list', 'PaymentController@paymentlist')->name("payment.list");
         Route::post('/payment/list', 'PaymentController@paymentlistfilter')->name("payment.paymentlistfilter");
-        
-        Route::get('/payment/addpayment/{id}', 'PaymentController@addpayment')->name("payment.addpayment");
+        Route::get('/payment/addpayment', 'PaymentController@addpayment')->name("payment.addpayment");
         Route::post('/payment/filterbooking', 'PaymentController@filterBooking')->name("payment.filterbooking");
-        
         Route::resource('payment', PaymentController::class);
 
         Route::prefix('media')->group(function () {

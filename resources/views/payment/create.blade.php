@@ -38,6 +38,7 @@
             <div class="card-body p-4">
                 <form method="POST" action="{{ route('payment.store') }}" id="payment_form">
                     @csrf
+                    <input type="hidden" name="_payment_type" value="{{ $payment_type }}">
                      
                     <p class="text-muted pb-3 mb-1" style="border-bottom: 3px solid #00a65a">Add Payment</p>
                     <div class="row form-group">
@@ -104,14 +105,7 @@
                       </div>
 
                       <div class="col-md-4">
-                      <label> Booking Type: </label>
-                        <div class="pt-2">
-                            <select class="form-control select2" name="booking_type" data-placeholder="select payment type">
-                              <option></option>
-                              <option value="1">BOOKING</option>
-                              <option value="1">COMMECIAL INV</option>
-                            </select>
-                        </div> 
+                      
                       </div>
 
                     </div>
