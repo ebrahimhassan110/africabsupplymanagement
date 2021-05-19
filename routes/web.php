@@ -90,6 +90,10 @@ Route::group(['middleware' => ['get.menu']], function () {
          Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
 		Route::get('/shipment/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
 		Route::resource('shipment', ShipmentController::class);
+
+        Route::resource('shipment_local', ShipmentLocalController::class);
+
+
         Route::resource('Recordregister', RecordRegisterController::class);
 
 

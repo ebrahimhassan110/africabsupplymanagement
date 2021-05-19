@@ -165,13 +165,13 @@
                                                 
                                             </td>
             <td style="width: 50%;" valign="top">
-                                                <div class="form-group">
+                                                <div hidden class="form-group">
                                                     <label>
                                                         ETD <span class="required"> *</span></label>
-                                                    <input  required name="etd" type="date" id="etd" tabindex="2" class="form-control" style="width:50%;">
+                                                    <input   name="etd" type="date" id="etd" tabindex="2" class="form-control" style="width:50%;">
                                                     <span id="ctl00_ContentPlaceHolder1_rfvusername" style="color:Red;display:none;">ETD</span>
                                                 </div>
-                                                <div id="eta" class="form-group">
+                                                <div hidden id="eta" class="form-group">
                                                     <label>
                                                         ETA<span class="required">*</span></label>
                                                     <input required name="eta" type="date"  id="eta" tabindex="4" class="form-control" style="width:50%;">
@@ -501,8 +501,6 @@
                       var bal=pfi_value-shipped_value;
                       if(bal){
                          $("#goods_value").prop('max',bal);
-                         document.getElementById('maxcfi').innerHTML=bal;
-
                       }
                       console.log('BALANCE'+bal);
                   
