@@ -14,7 +14,7 @@ use App\Models\Shipment;
 
 class PaymentController extends Controller
 {
-   
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +31,7 @@ class PaymentController extends Controller
               $all_permission[] = 'dummy text';
           $prebookings = PreBooking::with("supplier")->paginate(100);
           $suppliers = Supplier::get();
-     
+
           return view("payment.index",compact('prebookings','suppliers','all_permission'));
         }
         else
@@ -49,15 +49,15 @@ class PaymentController extends Controller
     }
     public function addpayment(Request $request)
     {
-        
-        $id = $request->preebooking;
+       
+        $id = $request->prebooking;
         $payment_type = $request->payment_type;
 
         if(is_null($id)){
             return redirect()->back();
         }
 
-        $prebooking = PreBooking::with("supplier")->where("id",$id)->first();   
+        $prebooking = PreBooking::with("supplier")->where("id",$id)->first();
         $payment_types = DB::table("payment_types")->get();
         $bankers = DB::table("tbbanker")->get();
         return  view("payment.create",compact("prebooking","payment_types","bankers","payment_type"));
@@ -76,7 +76,7 @@ class PaymentController extends Controller
             $payments = Payment::join("prebooking","prebooking.id","payments.booking_no")
                             ->join("supplier","supplier.id","prebooking.supplier_id")
                             ->paginate(100);
-            
+
             $suppliers = Supplier::get();
             return view("payment.list",compact('payments','suppliers','all_permission'));
         }
@@ -85,7 +85,7 @@ class PaymentController extends Controller
     }
 
     public function paymentlistfilter(Request $request){
-        
+
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
           $permissions = Role::findByName($role->name)->permissions;
@@ -103,21 +103,21 @@ class PaymentController extends Controller
             $start_date = $date->format("Y-m-d");
             $date = Carbon::createFromFormat('d/m/Y',$request->end_date);
             $end_date = $date->format("Y-m-d");
-            
+
             if( $request->supplier == "0" ){
-               
+
                 $payments = Payment::join("prebooking","prebooking.id","payments.booking_no")
                                 ->join("supplier","supplier.id","prebooking.supplier_id")
                                 ->whereDate("payments.created_at",">=",$start_date)
                                 ->whereDate("payments.created_at","<=",$end_date)->paginate(100);
-                
+
             }else{
                 $payments = Payment::join("prebooking","prebooking.id","payments.booking_no")
                 ->join("supplier","supplier.id","prebooking.supplier_id")
                 ->where("prebooking.supplier_id",$request->supplier)
                 ->whereDate("payments.created_at",">=",$start_date)
                 ->whereDate("payments.created_at","<=",$end_date)->paginate(100);
-               
+
             }
             $suppliers = Supplier::get();
             return view("payment.list",compact('payments','suppliers','all_permission'));
@@ -127,7 +127,7 @@ class PaymentController extends Controller
     }
 
     public function filterBooking(Request $request){
-         
+
 
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
@@ -146,18 +146,18 @@ class PaymentController extends Controller
             $start_date = $date->format("Y-m-d");
             $date = Carbon::createFromFormat('d/m/Y',$request->end_date);
             $end_date = $date->format("Y-m-d");
-            
+
             if( $request->supplier == "0" ){
-               
+
                 $prebookings = PreBooking::with("supplier")
                 ->whereDate("created_at",">=",$start_date)
                 ->whereDate("created_at","<=",$end_date)->paginate(100);
-                
+
             }else{
                 $prebookings = PreBooking::with("supplier")->where("supplier_id",$request->supplier)
                 ->whereDate("created_at",">=",$start_date)
                 ->whereDate("created_at","<=",$end_date)->paginate(100);
-               
+
             }
             $suppliers = Supplier::get();
             return view("payment.index",compact('prebookings','suppliers','all_permission'));
@@ -165,7 +165,7 @@ class PaymentController extends Controller
         else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
- 
+
 
     /**
      * Store a newly created resource in storage.
@@ -175,8 +175,8 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-       
-       
+
+
 
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
@@ -193,93 +193,93 @@ class PaymentController extends Controller
                 $paymentData =  PreBooking::find($request->booking_no);
                 if( $payment_type == 1 ){
                     $tobepayed = $request->amount + $paymentData->actual_advance_paid;
-                     
+
                     if( $tobepayed > $paymentData->advance_paid ||  $tobepayed > ($paymentData->actual_advance_paid + $request->amount) ){
                         $error["payment"] = "Amount exceeds advance payment value";
                         return redirect()->back()->with("error",$error)->withInput();
-                    } 
+                    }
                     $paymentData->actual_advance_paid = $tobepayed;
                     $paymentData->save();
                 }else if( $payment_type == 2 ){
-                    
+
                 }else if( $payment_type == 3 ){
                     //return "number 3";
                     //booking amount
-                    
+
                     $tobepayed_book_value =  ($paymentData->pfi_value - $paymentData->advance_paid)  - $paymentData->actual_paid;
                     $error = [];
-                    
+
                     if($tobepayed_book_value < 1){
-                        
+
                         $error["payment"] = "Payment completed";
-                        
+
                         return redirect()->back()->with("error",$error)->withInput();
-    
-                    } 
-                    
-                    
+
+                    }
+
+
                     $actual_paid = $paymentData->actual_paid + $request->amount;
                     if($tobepayed_book_value > $actual_paid){
                         $error["payment"] = "Payment exceed proforma invoice value";
                         return redirect()->back()->with("error",$error)->withInput();
-                    } 
-        
+                    }
+
                     $paymentData->actual_paid = $actual_paid;
                     $paymentData->bank_value = $request->bank_value;
                     $paymentData->cash_value = $request->cash_value;
                     $paymentData->save();
-                    
-                    
+
+
                 }
-            }              
+            }
             else{
                 $paymentData =  Shipment::find($request->booking_no);
                 if( $payment_type == 1 ){
                     $tobepayed = $request->amount + $paymentData->actual_advance_paid;
-                     
+
                     if( $tobepayed > $paymentData->advance_paid_value ||  $tobepayed > ($paymentData->actual_advance_paid + $request->amount) ){
                         $error["payment"] = "Amount exceeds advance payment value";
                         return redirect()->back()->with("error",$error)->withInput();
-                    } 
+                    }
                     $paymentData->actual_advance_paid = $tobepayed;
                     $paymentData->save();
                 }else if( $payment_type == 2 ){
-                    
+
                 }else if( $payment_type == 3 ){
                     //return "number 3";
                     //booking amount
-                    
+
                     $tobepayed_book_value =  ($paymentData->goods_value - $paymentData->advance_paid_value)  - $paymentData->actual_paid;
                     $error = [];
-                    
+
                     if($tobepayed_book_value < 1){
-                        
+
                         $error["payment"] = "Payment completed";
-                        
+
                         return redirect()->back()->with("error",$error)->withInput();
-    
-                    } 
-                    
-                    
+
+                    }
+
+
                     $actual_paid = $paymentData->actual_paid + $request->amount;
                     if($tobepayed_book_value > $actual_paid){
                         $error["payment"] = "Payment exceed proforma invoice value";
                         return redirect()->back()->with("error",$error)->withInput();
-                    } 
-        
+                    }
+
                     $paymentData->actual_paid = $actual_paid;
                     $paymentData->bank_value = $request->bank_value;
                     $paymentData->cash_value = $request->cash_value;
                     $paymentData->save();
-                    
-                    
+
+
                 }
             }
             $data = $request->all();
             $data["user_id"] =  Auth::id();
             $paymentData =  Payment::create($data);
             return redirect()->route("payment.index")->with("message","Payment added successfully");
-            
+
         }
         else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
