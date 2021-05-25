@@ -37,9 +37,7 @@
                               <td>{{ $prebooking->po_number }}</td>
                               <td class="d-flex flex-row">
                                   <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/prebooking/' . $prebooking->id. '/view') }}" data-prebookingid="{{ $prebooking->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
-                                    @if(in_array("prebooking-edit", $all_permission))
-                                    <a  href="{{ url('/prebooking/activate/' . $prebooking->id ) }}" class="btn  btn-primary btn-sm">Activate</a>
-                                    @endif
+                                  
                                     @if(in_array("prebooking-edit", $all_permission))
                                       <a hidden href="{{ url('/prebooking/' . $prebooking->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
                                     @endif

@@ -23,195 +23,266 @@
                   
                     </div>
                     <div class="card-body">
-                   
-                              <form id="form" enctype="multipart/form-data"  action="{{ route('prebooking.store')}}" method="post">
-							    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                          
-                                @csrf
-                                <tbody><tr>
-                                    <td style="width: 50%;" valign="top">
-                                        <div class="form-group">
-                                            <label>
-                                               Supplier<span class="required"> *</span></label>
-                                              <select required name="supplier_id" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
-											<option value="0">- Select -</option>
-											@foreach($suppliers as $spl)    
-											<option value="{{$spl->id}}">{{ $spl->supplier_code }} </option>
-												@endforeach
+                  <form id="form" enctype="multipart/form-data"  action="{{ route('prebooking.store')}}" method="post">
 
-												</select>    </div>
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                              Company<span class="required"> *</span></label>
-                                          <select required name="company_name" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
+
+                  	  @csrf
+
+
+                  <div class="row">
+				    <div class="col">
+				      <label><b> 
+                       Company<span class="required"> *</span></b></label>
+				    </div>
+				    <div class="col">
+				      <select required name="company_name"  tabindex="1" class="select2 form-control" style="width:100%;">
 								<option value="0">- Select -</option>
 								@foreach($companies as $cmp)    
                                 <option value="{{$cmp->name}}">{{ $cmp->name }} </option>
 									@endforeach
 
 									</select>  
-									</div>
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                               PFI No<span class="required"> *</span></label>
-                                            <input name="pfi_no" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Number</span>
-                                        </div>
+				    </div>
 
-                                         <div class="form-group">
-                                            <label>
-                                              Currency<span class="required"> *</span></label>
-                                          <select required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
-								<option value="0">- Select -</option>
+				     <div class="col ml-2">
+				     </div>
+				  </div>	  
+
+
+
+				</br>
+
+				   <div class="row">
+				    <div class="col">
+				      <label><b> 
+                       Supplier<span class="required"> *</span></b></label>
+				    </div>
+				    <div class="col">
+				     <select required name="supplier_id" class="select2" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;" >
+									 <option value="0">- Select -</option>
+											@foreach($suppliers as $spl)    
+									 <option value="{{$spl->id}}">{{$spl->supplier_name}}-{{ $spl->supplier_code }}  </option>
+												@endforeach
+										</select>    
+				    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+                            
+                              
+					</br>
+
+				   <div class="row">
+				    <div class="col">
+				      <label><b> 
+                        PFI No<span class="required"> *</span></b></label>
+				    </div>
+				    <div class="col">
+				   <input name="pfi_no" type="text"  class="form-control"  placeholder="PFI No" autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>						
+						</br>	
+
+
+					 <div class="row">
+				    <div class="col-4">
+				      <label><b> 
+                        PFI Value<span class="required"> *</span></b></label>
+				    </div>
+				    <div class="col-2">
+				   <select required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
+								<option value="0">- Select Currency-</option>
 								@foreach($currency as $cmp)    
                                 <option value="{{$cmp->name}}">{{ $cmp->name }} </option>
 									@endforeach
+						</select>  
+                    </div>
 
-									</select>  
-                                        </div>
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                                Request For Proposal Date<span class="required"> *</span></label>
-                                            <input name="rfp_date" id="rfp_date" type="date"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Request For Proposal Date</span>
-                                        </div>
-										
-										 <div class="form-group">
-                                            <label>
-                                                Order Confirmation Date<span class="required"> *</span></label>
-                                            <input name="order_confirmation_date" type="date" id="order_confirmation_date"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Order Confirmation Date</span>
-                                        </div>
+                     <div class="col-2">
+						 <input name="pfi_value" id="pfi_value" placeholder="Amount" type="number"  class="form-control"  autofocus="" style="width:100%;" required>
+                     </div>	
 
-                                         <div class="form-group">
-                                            <label>
-                                              Advance Payment Date</label>
-                                            <input name="advance_payment_date"  id="advance_payment_date"  type="date"   class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Advance Payment Date</span>
-                                        </div>
+				     <div class="col-3">
+				     	
+				     </div>
+				      <div class="col-1">
+				      </div>
+				  </div>			
+
+				</br>
+
+				 <div class="row">
+				    <div class="col">
+				      <label><b> 
+                        PFI Date<span class="required"> *</span> </b></label> 
+				    </div>
+				    <div class="col">
+				   <input name="pfi_date" type="date"  class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>						
+						</br>	  	
+
+
+						 <div class="row">
+				    <div class="col">
+				      <label><b> 
+                        Request For Proposal Date<span class="required"> *</span></b></label> 
+				    </div>
+				    <div class="col">
+				    <input name="rfp_date" id="rfp_date" type="date"  class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+
+
+						</br>	
+
+                                       
 										
-										
-										 <div class="form-group">
-                                            <label>
-                                               Delivery Period/Days<span class="required"> *</span></label>
-                                            <input name="delivery_period_days" id="delivery_period_days" type="number"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Delivery Period/Days</span>
-                                        </div>
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                               Delivery Date Based On</label>
-                                           	<label>	<input type="checkbox" id="checkbox1" class="radio" value="1" name="radio" />Advance Payment Date</label>
-											<label>	<input type="checkbox" id="checkbox2" class="radio" value="2" name="radio" />Confirmation Date</label>
-                                            </div>
-										 
-								
-										 <div class="form-group">
-                                            <label>
-                                               Delivery Date<span class="required"> *</span></label>
-                                            <input name="delivery_date" type="date" id="delivery_date" class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Delivery Date</span>
-                                        </div>
-										
-										
-										
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                               PFI Value<span class="required"> *</span></label>
-                                            <input name="pfi_value" id="pfi_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Value</span>
-                                        </div>
-										
-										 <div class="form-group">
-                                            <label>
-                                               Advance Payment Value<span class="required"> *</span></label>
-                                            <input name="advance_paid" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Advance Payment Value</span>
-                                        </div>
-										
-										
-										
-										 <div hidden  class="form-group">
-                                            <label>
-                                               Expected Delivery Date<span class="required"> *</span></label>
-                                            <input name="expected_delivery_date" type="date"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Expected Delivery Date</span>
-                                        </div>
-										
-										
-										
-										
-										
-										
-										
-                                        <input type="submit" name="submit" value="Save"  class="btn btn-primary">
-                                        <input type="submit" name="cancel" value="Cancel" id="ctl00_ContentPlaceHolder1_btncancel" class="btn btn-primary">
-                                        
-                                    </td>
+						 <div class="row">
+				    <div class="col-4">
+				      <label> <b> 
+                       Advance Required/Date<span class="required"> *</span></b></label> 
+				    </div>
+				    <div class="col-2">
+				  <input name="advance_paid"  id="advance_paid"  type="number" placeholder="Advance"  class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+                     <div class="col-2">
+                     	 <input name="advance_payment_date"  placeholder="Advance Payment Date" id="advance_payment_date"  type="date"   class="form-control"  autofocus="" style="width:100%;" >
+                     </div>
+
+				     <div class="col-3">
+				     	
+				     	
+				     </div>
+				      <div class="col-1">
+
+				      </div>
+				  </div>	
+
+
+				</br>
+				</br>
+
+					 <div class="row">
+				    <div class="col">
+				      <label><b> 
+                        Order Confirmation Date<span class="required"> *</span></b></label> 
+				    </div>
+				    <div class="col">
+				    <input name="order_confirmation_date" id="order_confirmation_date" type="date"  class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+				</br>
+
+
+
+
+				  	<div class="row">
+				    <div class="col-4">
+				      <label> <b> 
+                        Delivery Days<span class="required"> *</span></b></label> 
+				    </div>
+				    <div class="col-2">
+				  <input name="delivery_period_days" id="delivery_period_days" type="number" placeholder="Days" class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col-2">
+				      <label> <b>
+                        Delivery Date Based On </b></label>
+                         	<label>	<input type="checkbox" id="checkbox1" class="radio" value="1" name="radio" />Advance Payment Date</label>
+							<label>	<input type="checkbox" id="checkbox2" class="radio" value="2" name="radio" />Confirmation Date</label>
+				     </div>
+				      <div class="col-4">
+
+				      </div>
+				  </div>	
+
 									
-									
-									   <td style="width: 50%;" valign="top" >
-									   
-									    <div class="form-group">
-                                            <label>
-                                               Shipment Type<span class="required"> *</span></label>
-                                          
-										  <select required name="shipment_type" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
-											<option value="FCL" >FCL</option>
-											<option value="LCL" >LCL</option>
-											<option value="Local" >Local</option>
+				  </br>
+
+					 <div class="row">
+				    <div class="col">
+				      <label><b> 
+                         Delivery Date<span class="required"> *</span></b></label> 
+				    </div>
+				    <div class="col">
+				    <input name="delivery_date" readonly="true" type="date" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" required>
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+
+				</br>
+
+
+
+
+						<div class="row">
+					    <div class="col-4">
+					      <label><b> 
+	                           Payment Mode<span class="required"> *</span></b></label> 
+					    </div>
+					    <div class="col-2">
+					       			 <select required name="payment_mode" id="payment_mode" tabindex="1" class="form-control" style="width:100%;">
+											<option value="OA" >OA</option>
+											<option value="LC" >LC</option>
+											<option value="AVZ" >AVZ</option>
+											<option value="CAD" >CAD</option>
+											<option value="Before-DLVRT" >Before-DLVRT</option>
+											<option value="AG/BL" >AG/BL</option>
 											
-												</select>   
-										 </div>
-										
-										 <div class="form-group">
-                                            <label>
-                                               CBM</label>
-                                            <input name="cbm" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> CBM</span>
-                                        </div>
-										
-										
-										 <div class="form-group">
-                                            <label>
-                                               Net weight</label>
-                                            <input name="nw" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> NW</span>
-                                        </div>
-										
-										 <div class="form-group">
-                                            <label>
-                                               Gross weight</label>
-                                            <input name="gw" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Gross weight</span>
-                                        </div>
-										<div class="form-group">
-                                            <label>
-                                               No of Container</label>
-                                            <input name="no_of_container" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> No of Container</span>
-                                        </div>
-										
-										 <div class="form-group">
-                                            <label>
-                                               Order Type<span class="required"> *</span></label>
-                                          
-										  <select required name="order_type" id="order_type" tabindex="1" class="form-control" style="width:50%;">
+											</select>   
+	                    </div>
+
+					     <div class="col-2" id="payment_days">
+					     	  <input  name="payment_days" required id="payment_days" type="number" placeholder="Payment Days" class="form-control"  autofocus="" style="width:100%;" >
+					     </div>
+					      <div class="col-4">
+					      </div>
+					  </div>
+						</br>
+						</br>
+					   <div class="row">
+				    <div class="col">
+				      <label><b> 
+                           Order Type</b></label> 
+				    </div>
+				    <div class="col">
+				         <select required name="order_type" id="order_type" tabindex="1" class="form-control" style="width:100%;">
 											<option value="NORMAL" >Normal</option>
 											<option value="BLANKET" >Blanket</option>
-											</select>   
-										 </div>
-										 
-										 <div hidden id="parttable" >
+											</select>  
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+
+				</br>	
+				</br>			
+
+				 <div class="row" hidden id="parttable" >
+				 	 <div class="col-4">
+				 	 	 <label><b> 
+                          Part Details</b></label> 
+				 	 </div>
+				    <div class="col-8">
+					 <div  >
 									<h3 style="color:red" id="alert" ></h3>	 	
 									<table id="tablepart">
 								<thead>
@@ -227,121 +298,258 @@
 							  <tbody>
 								<tr>
 								  <th scope="row"><input class="form-control"  type="text" name="partName[]" /></th>
-								  <td><input class="form-control"  type="text" oninput="validatesum()" name="partValue[]" /></td>
+								  <td><input class="form-control"  type="number" oninput="validatesum()" name="partValue[]" /></td>
 								  <td><input class="form-control"  type="date" name="partDate[]" /></td>
 								  <td><button type="button" id="addpart">Add  </button></td>
 								  
 								</tr>
 								<tr>
 								  <th scope="row"><input class="form-control"  type="text" name="partName[]" /></th>
-								  <td><input class="form-control"  type="text" oninput="validatesum()" name="partValue[]" /></td>
+								  <td><input class="form-control"  type="number" oninput="validatesum()" name="partValue[]" /></td>
 								  <td><input class="form-control"  type="date" name="partDate[]" /></td>
 								  <td></td>
 								  
 								</tr>
 								</tbody>
 									</table>		
-									</div>
-										
-										  <div class="form-group">
-                                            <label>
-                                               INCOTERMS<span class="required"> *</span></label>
-                                          
-										  <select required name="incoterms" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
-											<option value="EXW" >EXW</option>
-											<option value="FOB" >FOB</option>
-											<option value="CIF" >CIF</option>
-											<option value="CFR" >CFR</option>
-											<option value="DDP" >DDP</option>
-											</select>   
-										 </div>
-									   
-									   <div class="form-group">
-                                            <label>
+									</div>						
+								</div>
 
-                                               SHIPMENT WAY<span class="required"> *</span></label>
-                                          
-										  <select required name="shipment_way" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
+								 <div class="col-2">
+								 </div>
+							</div>
+
+
+								</br>
+
+
+								  <div class="row">
+				    <div class="col">
+				      <label><b> 
+                          Declaration Type</b></label> 
+				    </div>
+				    <div class="col">
+				       <select required name="declaration_type" id="declaration_type" placeholder="Declaration Type" tabindex="1" class="form-control" style="width:100%;">
+							<option value="FULL" >FULL</option>
+							<option value="PARTIAL" >PARTIAL</option>
+											
+							</select> 
+                    </div>
+
+				     <div class="col ml-2">
+				     </div>
+				  </div>
+
+
+				  <div class="row bank_value">
+					 			<p style="color:red" id="alert2" ></p>		
+					 	</div>	
+					 <div class="row bank_value" hidden>
+
+				    <div class="col-1">
+				      <label><b> 
+                       Bank Value</b></label> 
+				    </div>
+				    <div class="col-2">
+				     <input  name="bank_value" id="bank_value" type="text" placeholder="Bank Value" oninput="validatesumpartial()"  class="form-control partialvalues"  autofocus="" style="width:100%;" >  
+                    </div>
+
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		 <label><b> 
+                         Cash Value</b></label> 
+                      </div>
+
+
+
+				     <div class="col-2">
+				        <input   name="cash_value" id="cash_value" type="text" placeholder="Cash Value"  oninput="validatesumpartial()" class="form-control partialvalues"  autofocus="" style="width:100%;" >
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+				</br>
+<h4> Additional Fields  </h4>
+			<hr/>
+			
+		</br>
+			
+		</br>
+										
+				 <div class="row">
+				    <div class="col-1">
+				      <label><b> 
+                          Shipment Type</b></label> 
+				    </div>
+				    <div class="col-2">
+				     <select required name="shipment_type" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
+											<option value="FCL" >FCL</option>
+											<option value="LCL" >LCL</option>
+											<option value="Local" >Local</option>
+					</select>  
+                    </div>
+
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		 <label><b> 
+                         CBM</b></label> 
+                      </div>
+
+
+
+				     <div class="col-2">
+				     	 <input name="cbm" type="number"  placeholder="CBM" class="form-control"  autofocus="" style="width:100%;" >
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+
+				</br>	
+
+				 <div class="row">
+				    <div class="col-1">
+				      <label><b> 
+                         Net weight</b></label> 
+				    </div>
+				    <div class="col-2">
+				     <input name="nw" type="number"  class="form-control"  placeholder="Net Weight" style="width:100%;" >
+                    </div>
+
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		 <label><b> 
+                         Gross weight</b></label> 
+                      </div>
+
+
+
+				     <div class="col-2">
+				     	 <input name="gw" type="number"  class="form-control" placeholder="Gross Weight"  autofocus="" style="width:100%;" >
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+				
+				</br>
+
+
+				 <div class="row">
+				    <div class="col-1">
+				      <label><b> 
+                        No of Container</b></label> 
+				    </div>
+				    <div class="col-2">
+				     <input name="no_of_container" type="number"  class="form-control" placeholder="No of Container"  autofocus="" style="width:100%;" >
+                    </div>
+
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		 <label><b> 
+                        Incoterms</b></label> 
+                      </div>
+
+
+
+				     <div class="col-2">
+				     	  <select required name="incoterms" placeholder="Incoterms" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
+												<option value="EXW" >EXW</option>
+												<option value="FOB" >FOB</option>
+												<option value="CIF" >CIF</option>
+												<option value="CFR" >CFR</option>
+												<option value="DDP" >DDP</option>
+												</select>   
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+				
+				</br>	
+
+				 <div class="row">
+				    <div class="col-1">
+				      <label><b> 
+                        Shipment Way</b></label> 
+				    </div>
+				    <div class="col-2">
+				    <select required name="shipment_way" placeholder="Shipment Way"  id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
 											<option value="SEA" >SEA</option>
 											<option value="AIR" >AIR</option>
-											<option value="AIR-DTD" >AIR</option>
+											<option value="AIR-DTD" >AIR-DTD</option>
 											<option value="LAND" >LAND</option>
 											<option value="LAND-DTD" >LAND-DTD</option>
 											
 											</select>   
-										 </div>
-										 
-										 <div class="form-group">
-                                            <label>
+                    </div>
 
-                                              PAYMENT MODE<span class="required"> *</span></label>
-                                          
-										  <select required name="payment_mode" id="payment_mode" tabindex="1" class="form-control" style="width:50%;">
-											<option value="OA" >OA</option>
-											<option value="LC" >LC</option>
-											<option value="AVZ" >AVZ</option>
-											<option value="CAD" >CAD</option>
-											<option value="Before-DLVRT" >Before-DLVRT</option>
-											<option value="AG/BL" >AG/BL</option>
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		
+                      </div>
+
+
+
+				     <div class="col-2">
+				     
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+				
+						
+				
+						</br>	
+
+
+						<div class="row">
+					 	<h3 style="color:red" id="alert2" ></h3>	
+				    <div class="col-1">
+				      <label><b> 
+                       Narration</b></label> 
+				    </div>
+				    <div class="col-2">
+				     <input name="narration" type="text"  class="form-control" placeholder="Narration"  autofocus="" style="width:100%;" >
+                    </div>
+
+                     <div class="col-2">
+                     </div>	
+                      <div class="col-1">
+                      		 <label><b> 
+                         Attachment</b></label> 
+                      </div>
+
+
+
+				     <div class="col-2">
+				        <input required name="attachment" type="file" placeholder="Attachment" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:100%;">
+				     </div>
+				      <div class="col-4">
+                     </div>	
+				  </div>
+				
+						</br>	
+
 											
-											</select>   
-										 </div>
-										 
-										  <div id="payment_days" class="form-group">
+					
+										
+										 <div hidden  class="form-group">
                                             <label>
-                                              Payment Days</label>
-                                            <input  name="payment_days" id="payment_days" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Payment Days</span>
+                                               Expected Delivery Date<span class="required"> *</span></label>
+                                            <input name="expected_delivery_date" type="date"  class="form-control"  autofocus="" style="width:100%;" >
+                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Expected Delivery Date</span>
                                         </div>
 										
-										<div  class="form-group">
-                                            <label>
-                                              Declaration Type</label>
-											  
-											   <select required name="declaration_type" id="declaration_type" tabindex="1" class="form-control" style="width:50%;">
-											<option value="FULL" >FULL</option>
-											<option value="PARTIAL" >PARTIAL</option>
-											
-											</select>   
-                                              </div>
-										
-									
-											  
-											  
-											    <div   hidden class="form-group bank_value">
-											    	<h3 style="color:red" id="alert2" ></h3>	
-                                            <label>
-                                              Bank Value</label>
-                                            <input  name="bank_value" id="bank_value" type="text" oninput="validatesumpartial()"  class="form-control partialvalues"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Bank Value</span>
-											</div>
+                                        <input type="submit" name="submit" value="Save"  class="btn btn-primary" />
+                                        <input type="submit" name="cancel" value="Cancel" id="ctl00_ContentPlaceHolder1_btncancel" class="btn btn-primary"/>
+                                  
 									   
-											   <div   hidden class="form-group cash_value">
-                                            <label  >
-                                              Cash Value</label>
-                                            <input   name="cash_value" id="cash_value" type="text"  oninput="validatesumpartial()" class="form-control partialvalues"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Cash Value</span>
-											</div>
-											
-											<div class="form-group">
-                                            <label>
-                                             Narration</label>
-                                            <input name="narration" type="text"  class="form-control"  autofocus="" style="width:50%;" >
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;"> Narration</span>
-											</div>
-
-
-											  <div class="form-group">
-                                                    <label>
-                                                      Attachment <span class="required"> *</span> </label>
-                                                    <input required name="attachment" type="file" id="ctl00_ContentPlaceHolder1_txttaxfilename" tabindex="3" class="form-control" style="width:50%;">
-                                                    <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator26" style="color:Red;display:none;">Attachment</span>
-                                                </div>
-											
-											</td>
-										</tr>
-									</tbody>
-								</table>
+									   
+										 
+									
 							</form>
 						</div>
 					</div>
@@ -395,7 +603,17 @@ var sumpart=0;
 
 	
 	
-		
+	$("#advance_paid").change(function () {
+ var val = parseFloat($(this).val()); //get the Value
+var pfi_value= parseFloat($("#pfi_value").val());
+if(val>pfi_value){
+	alert("Advance Value cannot be greater than PFI Value");
+	$("#advance_paid").val("");
+}
+
+	});	
+
+
     $("#declaration_type").change(function () {
         var val = $(this).val(); //get the value
         if(val=='PARTIAL'){

@@ -10,8 +10,8 @@
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
                       <span class="card-title">{{ 'Add Payment' }}</span>
-                      @if(in_array("workplan-add", $all_permission))
-                        <a href="{{route('Workflow.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
+                      @if(in_array("payment-add", $all_permission))
+                        <a href="{{route('payment.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
                       @endif
                     </div>
                     <div class="card-body p-2">

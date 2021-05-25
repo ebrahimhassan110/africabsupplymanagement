@@ -84,6 +84,33 @@ class PaymentController extends Controller
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
 
+
+    public function paymentDue()
+    {
+        $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
+        if (!is_null($role->hasPermissionTo('payment-index')) && $role->hasPermissionTo('payment-index')){
+          $permissions = Role::findByName($role->name)->permissions;
+          foreach ($permissions as $permission)
+              $all_permission[] = $permission->name;
+          if(empty($all_permission))
+              $all_permission[] = 'dummy text';
+   
+
+          $d=time();
+        $date=date("Y-m-d", $d);
+            $payments = PreBooking::join("supplier","supplier.id","prebooking.supplier_id")
+                            ->where('advance_payment_date','LIKE','%'.$date.'%')
+                            ->paginate(100);
+            
+            $suppliers = Supplier::get();
+            return view("payment.payment_advance_due",compact('payments','suppliers','all_permission'));
+        }
+        else
+            return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
+    }
+
+
+
     public function paymentlistfilter(Request $request){
         
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);

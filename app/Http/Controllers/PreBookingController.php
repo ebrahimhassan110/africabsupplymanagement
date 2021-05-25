@@ -54,6 +54,12 @@ class PreBookingController extends Controller
       else
           return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
+
+
+
+
+
+
 	
 	 public function activatepost(Request $request, $id)
     {
@@ -63,6 +69,15 @@ class PreBookingController extends Controller
 
         $worktypes = PreBooking::find($id);
         $worktypes->po_number =  $request->po_number;
+         $worktypes->radio =  $request->radio;
+        $worktypes->activated_at =  date('Y-m-d H:i:s');
+        $worktypes->activated_by =   Auth::user()->id;
+         $worktypes->order_confirmation_date =   $request->order_confirmation_date;
+          $worktypes->advance_payment_date =   $request->advance_payment_date;
+           $worktypes->delivery_period_days =   $request->delivery_period_days;
+            $worktypes->delivery_date =   $request->delivery_date;
+
+
         $worktypes->save();
         $request->session()->flash('message', 'Successfully Activated PreBooking');
         return redirect()->route('prebooking.index');
@@ -128,15 +143,19 @@ class PreBookingController extends Controller
 
           $temp['attachment'] = NULL;
       }
-     $request['attachment'] = $temp['attachment'];
+     $request['attachment'] = $imageName;
 
 
         $data = $request->all();
-
-        unset($data['radio']);
+        //radio value 1,or 2
+      //  unset($data['radio']);
         unset($data['_token']);
          unset($data['submit']);
 		 unset($data['cancel']);
+          unset($data['attachment']);
+
+           $data['attachment'] = $imageName;
+
 		 
         $comapanyname=$data['company_name'];
         $cmp= Company::where('name',$comapanyname)->get();

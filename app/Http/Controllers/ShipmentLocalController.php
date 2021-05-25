@@ -30,7 +30,7 @@ class ShipmentLocalController extends Controller
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
 
-        $shipments = Shipment::get();
+        $shipments = Shipment::where('shipment_type','<>','full')->get();
 
         return view("shipmentlocal.index",compact("shipments","all_permission"));
       }
@@ -162,7 +162,9 @@ class ShipmentLocalController extends Controller
        
               }
 
+        //shipment type
 
+             $data['shipment_type']="partial";  
 
       $idinserted = DB::table('shipment')->insertGetId(
                 $data

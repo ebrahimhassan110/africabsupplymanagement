@@ -111,6 +111,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         
         Route::get('/payment/getdata', 'PaymentController@getData')->name("payment.getdata");
         Route::get('/payment/list', 'PaymentController@paymentlist')->name("payment.list");
+        Route::get('/payment/payment_due', 'PaymentController@paymentDue')->name("payment.due");
         Route::post('/payment/list', 'PaymentController@paymentlistfilter')->name("payment.paymentlistfilter");
         Route::get('/payment/addpayment', 'PaymentController@addpayment')->name("payment.addpayment");
         Route::post('/payment/filterbooking', 'PaymentController@filterBooking')->name("payment.filterbooking");
