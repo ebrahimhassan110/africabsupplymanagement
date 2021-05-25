@@ -18,6 +18,23 @@
                     @csrf
 
 
+
+                      <div class="row">
+                    <div class="col">
+                      <label><b> 
+                       Shipment Date<span class="required"> *</span></b></label>
+                    </div>
+                    <div class="col">
+                     <input placeholder="Shipment Date" required name="shipment_date"  type="date" id="shipment_date" tabindex="1" class="form-control inltd" style="width:100%;">
+                    </div>
+
+                     <div class="col ml-2">
+                     </div>
+                  </div>      
+                 </br>   
+
+
+
                   <div class="row">
                     <div class="col">
                       <label><b> 
@@ -205,6 +222,7 @@
                     </div>
                     <div class="col-8">
                              <table hidden id="part_table">
+                              <h3 style="color:red;" id="alert">  </h3>
                                             <thead>
                                             <th> Part Name  </th>
                                             <th> Max Value  </th>
@@ -356,6 +374,7 @@
      var shipped_value;
      var pfi_value;
      var shipment_type;
+     var advance_shipped_value;
 //	$("#mySelect").append('<option value=1>My option</option>');
 	
      var select=$("#supplier_id");
@@ -526,11 +545,22 @@
                      //   console.log('BOOKINGS ID'+booking_id);
                       //    console.log('BOOKINGS VALUE'+val+declaration_type);
 						  //save no_of days_for payment_days
-						payment_days=dat.payment_days; 
+						            payment_days=dat.payment_days; 
                         incoterms=dat.incoterms; 
                         shipped_value=dat.shipped_value;
                         pfi_value=dat.pfi_value;
                         shipment_type=dat.shipment_type;
+                        advance_shipped_value=dat.advance_shipped_value;
+                        if(advance_shipped_value==null){
+                          advance_shipped_value=0;
+                        }
+                       
+                        var temp_advance_Shipped=parseFloat(advance_shipped_value);
+                        var temp_advance_paid=parseFloat(dat.advance_paid);
+                        var rem_shipped=temp_advance_paid-temp_advance_Shipped;
+                        advance_shipped_value=rem_shipped;
+                     //    alert(advance_shipped_value);
+
 
 					 if(order_type=='BLANKET'){
                                 
@@ -585,7 +615,7 @@
 				<td><input hidden name="partId[]" value="'+partid+'" /> <input  class="form-control" readonly value="'+partname+'" name="partName[]" type="text"/></td>\n\
 				<td> '+diff+' </td><td><input class="form-control"  required name="goods_value[]" max="'+diff+'" type="number"/></td>\n\
 				<td><input class="form-control"   name="other_expense_value[]"  type="number"/></td>\n\
-				<td><input class="form-control" name="advance_paid_value[]" type="number"/></td> <td></td>\n\
+				<td><input class="form-control"  oninput="validatesum()"  name="advance_paid_value[]" type="number"/></td> <td></td>\n\
 				</tr>');
 				 }
   	
@@ -625,7 +655,7 @@
 
 
 
-
+                //if incoterms is those than its must to fill
                 if( (incoterms=='CIF') || (incoterms=='EXB') || (incoterms=='FOB'))
                 {
 
@@ -830,14 +860,13 @@ $('#etd').change(function() {
 
 
 
-
-  
+//validate sum for validating advance paid values 
 function validatesum() {
 //  var x = document.getElementById("myInput").value;
 
-var sum=$("#pfi_value").val();
+var sum=advance_shipped_value;
 var sumpart=0;
-    $("input[name='partValue[]']").each(function() {
+    $("input[name='advance_paid_value[]']").each(function() {
      //   alert(this.value);
      var a= this.value;
 
@@ -853,9 +882,9 @@ var sumpart=0;
         document.getElementById("alert").innerHTML = "";
 
      }
-     else{
+     else if(sumpart>sum){
      // alert("The sum do not match");
-     document.getElementById("alert").innerHTML = "The sum of Parts and PFI Value do not match";
+     document.getElementById("alert").innerHTML = "The sum of Advance does not match to remaining advance of : "+sum;
      }
          
 

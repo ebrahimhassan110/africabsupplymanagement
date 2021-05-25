@@ -171,9 +171,15 @@ class ShipmentController extends Controller
       //edit booking shipment values
       $booking_id= $data['booking_id'];
       $gv =$data['goods_value'];
+      //asv advanced shipped value
+      $asv =$data['advance_paid_value'];
       $booking = PreBooking::find($booking_id);
       $shipped_value=$booking->shipped_value;
       $booking->shipped_value =  $shipped_value+$gv;
+
+       $advance_shp_value=$booking->advance_shipped_value;
+      $booking->advance_shipped_value =  $advance_shp_value+$asv;
+
       $booking->save();   
 
 
