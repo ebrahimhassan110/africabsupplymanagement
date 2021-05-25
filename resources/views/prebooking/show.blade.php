@@ -523,3 +523,29 @@
                      
                   
  
+                                                               <tr>          
+                                                                    <td colspan="3">
+                                                                        <h3>  PreBooking Parts </h3>
+                                                                        <table class="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgsupplierfeesInfo" style="border-style:None;width:99%;border-collapse:collapse;">
+                                                                            <thead>
+                                                                        
+                                                                                <th>  Name </th>
+                                                                                <th>  Value </th>
+                                                                                
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach($prebooking_parts as $pre_booking)
+                                                                                    <tr class="sorting_asc" align="left" valign="top">
+                                                                                        <td>{{ $pre_booking->name }}</td><td>{{ $pre_booking->value}}</td>
+                                                                                    </tr>
+                        
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                                    
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            
+                                                                </table>
+                                                          
+        
