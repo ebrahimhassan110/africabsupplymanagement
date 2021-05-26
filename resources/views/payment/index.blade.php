@@ -13,9 +13,13 @@
                       <span class="card-title">{{ 'Add Payment' }}</span>
                     </div>
                     <div class="card-body p-2">
+<<<<<<< HEAD
 
 
                           @csrf
+=======
+                         @csrf
+>>>>>>> a742dd70b06afd602272fc51596cdddbde9cb14a
                           <div class="row form-group">
                             <div class="col-12">
                             <label>
@@ -156,6 +160,7 @@
             $("#loader").show();
           },
           success: function(data){
+<<<<<<< HEAD
               var html = "<div class='card  nav-tabs-boxed'>";
               html  += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
               html  += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History </a></li>';
@@ -163,6 +168,29 @@
               html  += '</ul>';
               html  += "<div class='card-body p-0'>";
               html  += "<div class='tab-content'>";
+=======
+           
+              /*var html = "<div class='card animate-bottom'>";
+              html += "<div class='card-header'>";
+              html += '<a class="btn btn-primary pull-right add-payment" href="#">  Add Payment </a>';
+              html += "</div>";
+              html += "<div class='card-body'>";
+              html += data;
+              html += "<div/>";
+              html += "</div>";
+              $(".prebooking-details").html(html);*/
+              
+              var html = "<div class='card animate-bottom nav-tabs-boxed'>";
+              //html += "<div class='card-header '>";
+              html += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
+              html += '<li class="nav-item "><a class="nav-link profile-1" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile" aria-selected="false">Add Payment</a></li>';
+html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History</a></li>';
+              html += '</ul>';
+ 
+              //html += "</div>";
+              html += "<div class='card-body'>";
+              html += "<div class='tab-content'>";
+>>>>>>> a742dd70b06afd602272fc51596cdddbde9cb14a
               html  += '<div class="tab-pane active" id="booking_details_tab" role="tabpanel">';
               html  += data;
               html  += '</div>';
@@ -170,7 +198,13 @@
               html  += '</div>';
               html  += '<div class="tab-pane  add_payment" id="profile-1" role="tabpane2">';
               html  += '</div>';
+<<<<<<< HEAD
 
+=======
+              html  += '<div class="tab-pane  payment_history " id="profile-3" role="tabpane3">';
+              html  += '</div>';
+               html  += '<div>';
+>>>>>>> a742dd70b06afd602272fc51596cdddbde9cb14a
               html  += '</div>';
               html  += "</div>";
 

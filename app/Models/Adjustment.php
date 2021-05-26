@@ -15,11 +15,11 @@ class Adjustment extends Model
 
 
  
-    public function from_booking_id(){
+    public function from_booking(){
         return $this->belongsTo(PreBooking::class,"from_booking_id","id");
     }
 	
-	public function to_booking_id(){
+	public function to_booking(){
         return $this->belongsTo(PreBooking::class,"to_booking_id","id");
     }
 // 

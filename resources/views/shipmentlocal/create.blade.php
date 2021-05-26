@@ -14,12 +14,11 @@
                   
                     </div>
                     <div class="card-body">
-                    <form enctype="multipart/form-data" action="{{ route('shipment.store') }}" method="post">
+                    <form enctype="multipart/form-data" action="{{ route('shipment_local.store') }}" method="post">
                     @csrf
 
 
-
-                      <div class="row">
+                     <div class="row">
                     <div class="col">
                       <label><b> 
                        Shipment Date<span class="required"> *</span></b></label>
@@ -81,10 +80,10 @@
                    <div class="row">
                     <div class="col">
                       <label><b> 
-                       BL No<span class="required"> *</span></b></label>
+                      Local Delivery Date<span class="required"> *</span></b></label>
                     </div>
                     <div class="col">
-                     <input placeholder="BL No" required name="bl_no_text"  type="text" id="bl_no_text" tabindex="1" class="form-control inltd" style="width:100%;">
+                     <input placeholder="Local Delivery Date" required name="local_delivery_date"  type="date" id="local_delivery_date" tabindex="1" class="form-control" style="width:100%;">
                     </div>
 
                      <div class="col ml-2">
@@ -94,38 +93,10 @@
                   
                    
 
-                    <div hidden id="blnoselect" class="row">
-                    <div class="col">
-                      <label><b> 
-                       BL No Select<span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                        <select required name="bl_no_select" id="bl_no_select" tabindex="1" class="form-control select2" style="width:100%;">
-                                     <option value="">- Select -</option>
-                                         </select>
-                    </div>
-
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>         
+                          
 
 
-                    <!--not in use -->
-                      <div hidden class="form-group">
-                                                    <label>
-                                                        Delivery Type<span class="required"> *</span></label>
-                                                    <select  name="delivery_type" id="delivery_type" tabindex="1" class="form-control select2" style="width:100%;">
-                                                 <option value="">- Select -</option>
-                                        
-                                                        <option value="local">Local</option>
-                                                        <option value="other">Other</option>
-                                            
-                                                  </select>
-                                                       <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator24" style="color:Red;display:none;">Delivery type</span>
-                                                </div>  
-                     </br>                           
-
+                  
 
                     <div  class="row ltd">
                     <div class="col">
@@ -140,16 +111,15 @@
                      </div>
                   </div>  
                   </br>                      
-												
-					
+                                                
+                    
                     <div  class="row fullfield" >
-                     
+                         
                     <div class="col">
                       <label><b> 
-                        CFI Value <span class="required"> *</span></b>
-                    <p id="maxcfi" style="color:red;">  </p>
-                      </label>
-                           
+                        CFI Value <span class="required"> *</span></b></label>
+                        <p id="maxcfi" style="color:red;">  </p>
+                            
                     </div>
                     <div class="col">
                         <input placeholder="CFI Value" required name="goods_value"  type="number" id="goods_value" tabindex="1" class="form-control inltd" style="width:100%;">
@@ -164,11 +134,12 @@
 
 
                    <div  class="row fullfield" >
+                    
                     <div class="col">
                       <label><b> 
                         Bank Value <span class="required"> *</span></b>
-                         <p id="alert2" style="color:red;">  </p>
-                      </label>
+                          <p id="alert2" style="color:red;">  </p>
+                    </label>
                              
                     </div>
                     <div class="col">
@@ -183,7 +154,7 @@
                   </br>  
 
                    <div  class="row fullfield" >
-                    
+                   
                     <div class="col">
                       <label><b> 
                         Cash Value <span class="required"> *</span></b></label>
@@ -199,8 +170,6 @@
                      </div>
                   </div>  
                   </br>  
-
-
 
                     
 
@@ -222,12 +191,13 @@
                   </br>    
 
                                            
-					  <div  class="row fullfield">
-              
+                      <div  class="row fullfield">
+                         
                     <div class="col">
                       <label ><b> 
-                       Advance Paid Value <span class="required"> *</span></b></label>
-                         <p id="maxadvance" style="color:red;">  </p>
+                       Advance Paid Value <span class="required"> *</span></b>
+                       <p id="maxadvance" style="color:red;">  </p>
+                   </label>
                     </div>
                     <div class="col">
                                <input  oninput="validatesum2()" placeholder="Advance Paid Value " name="advance_paid_value"  type="number" id="advance_paid_value" tabindex="1" class="form-control inltd" style="width:100%;">
@@ -238,7 +208,7 @@
                      <div class="col ml-2">
                      </div>
                   </div>  
-                  </br>    		
+                  </br>         
 
 
                    <div  class="row">
@@ -280,56 +250,14 @@
                                             </table>
                     </div>
                      </div>  
-                  </br>         		
+                  </br>                 
 
 
-                    <div hidden class="row">
-                    <div class="col">
-                      <label ><b> 
-                       Local Delivery Date <span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                                <input   name="local_delivery_date"  type="date" id="" tabindex="1" class="form-control inltd" style="width:100%;">
-                    </div>
+                         
 
-                    
+                   
 
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>       
-
-                   <div  id="etd" class="row">
-                    <div class="col">
-                      <label ><b> 
-                       ETD <span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                              <input  required name="etd" type="date" id="etd" tabindex="2" class="form-control" style="width:100%;">
-                    </div>
-
-                    
-
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>       
-
-                   <div  id="eta" class="row">
-                    <div class="col">
-                      <label ><b> 
-                       ETA <span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                                   <input required name="eta" type="date"  id="eta" tabindex="4" class="form-control" style="width:100%;">
-                    </div>
-
-                    
-
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>       
+                        
 
 
                     <div   class="row">
@@ -384,8 +312,8 @@
 
   
 
-									
-											
+                                    
+                                            
 
 
 
@@ -410,21 +338,21 @@
 @section('javascript')
 <script type="text/javascript">
 
-					
-	var bookings=[];
-	var payment_days;
+                    
+    var bookings=[];
+    var payment_days;
     var incoterms;
      var shipped_value;
      var pfi_value;
      var shipment_type;
      var advance_shipped_value;
-//	$("#mySelect").append('<option value=1>My option</option>');
-	
+//  $("#mySelect").append('<option value=1>My option</option>');
+    
      var select=$("#supplier_id");
     $("#supplier_id").change(function () {
         var val = $(this).val(); //get the value
-	document.getElementById("booking_id").options.length = 0;	
-		 $.ajax({
+    document.getElementById("booking_id").options.length = 0;   
+         $.ajax({
             url         :'getPFI/'+val,
              type       :'GET',
              dataType   :'JSON',
@@ -432,9 +360,9 @@
              data       :{},
              success    :function(result){
                  var data = result;
-				 bookings=data
-				 console.log(data);
-				 
+                 bookings=data
+                 console.log(data);
+                 
                  var x;
 
                  $('#booking_id').append($('<option>', {
@@ -446,19 +374,19 @@
 
                  for(x=0;x<data.length;x+=1){
                      var dat = data[x];
-					 console.log(dat.pfi_no);
-					 
+                     console.log(dat.pfi_no);
+                     
                     // select.append('<option value="'+dat.id+'">'+dat.pfi_no+'</option>');
-					
-					$('#booking_id').append($('<option>', {
-						value: dat.id,
-						text: dat.pfi_no
-					}));
+                    
+                    $('#booking_id').append($('<option>', {
+                        value: dat.id,
+                        text: dat.pfi_no
+                    }));
                  }
-				 
+                 
              }
          });
-		
+        
 
 //alert(val);
     });
@@ -570,25 +498,25 @@
     //pfi changes o display all pfi infos
 
 
-	
-	
-	    $("#booking_id").change(function () {
+    
+    
+        $("#booking_id").change(function () {
         var val = $(this).val(); //get the value
        var x=0;     
      // alert(bookings.length);
-		for(x=0;x<bookings.length;x+=1){
+        for(x=0;x<bookings.length;x+=1){
                      var dat = bookings[x];
 
-					 var declaration_type=dat.declaration_type;
+                     var declaration_type=dat.declaration_type;
                       var order_type=dat.order_type;
-					  var booking_id=dat.id;
-					  //if same booking id as selected
+                      var booking_id=dat.id;
+                      //if same booking id as selected
                       // alert('yes');   
-					  if(booking_id==val){
+                      if(booking_id==val){
                      //   console.log('BOOKINGS ID'+booking_id);
                       //    console.log('BOOKINGS VALUE'+val+declaration_type);
-						  //save no_of days_for payment_days
-						            payment_days=dat.payment_days; 
+                          //save no_of days_for payment_days
+                                    payment_days=dat.payment_days; 
                         incoterms=dat.incoterms; 
                         shipped_value=dat.shipped_value;
                         pfi_value=dat.pfi_value;
@@ -605,15 +533,15 @@
                      //    alert(advance_shipped_value);
 
 
-					 if(order_type=='BLANKET'){
+                     if(order_type=='BLANKET'){
                                 
-							$(".fullfield").attr("hidden",true);
-						  	$('#goods_value').removeAttr('required');
-							$('#other_expense_value').removeAttr('required');
-							$('#advance_paid_value').removeAttr('required');
-							//set order type
-                             $("#order_type").val("BLANKET");	
-							 $.ajax({
+                            $(".fullfield").attr("hidden",true);
+                            $('#goods_value').removeAttr('required');
+                            $('#other_expense_value').removeAttr('required');
+                            $('#advance_paid_value').removeAttr('required');
+                            //set order type
+                             $("#order_type").val("BLANKET");   
+                             $.ajax({
             url         :'getBookingPart/'+booking_id,
              type       :'GET',
              dataType   :'JSON',
@@ -621,53 +549,53 @@
              data       :{},
              success    : function(result){
                  var data = result;
-				 
-				var x;
+                 
+                var x;
                  for(x=0;x<data.length;x++){
                      var dat = data[x];
-					var partname=dat.name;
-					var partid=dat.id;
-					var partvalue=dat.value;
-					
-					var shippedvalue=dat.shipped_value;
-					
-					
-					if(shippedvalue==null){
-						shippedvalue=0;
-					}
-					
+                    var partname=dat.name;
+                    var partid=dat.id;
+                    var partvalue=dat.value;
+                    
+                    var shippedvalue=dat.shipped_value;
+                    
+                    
+                    if(shippedvalue==null){
+                        shippedvalue=0;
+                    }
+                    
                     var diff= parseFloat(partvalue) -parseFloat(shippedvalue);
-					//diff=diff.toString();
-					console.log("hello"+shippedvalue);
-					$('#part_table').removeAttr('hidden');
+                    //diff=diff.toString();
+                    console.log("hello"+shippedvalue);
+                    $('#part_table').removeAttr('hidden');
 
                     //remove all content of table
                   
-				var tbody = $('#part_table').children('tbody');
+                var tbody = $('#part_table').children('tbody');
      
      //Then if no tbody just select your table 
-				 var table = tbody.length ? tbody : $('#part_table');
-				 
-			    var tbl = document.getElementById("part_table"); // Get the table
+                 var table = tbody.length ? tbody : $('#part_table');
+                 
+                var tbl = document.getElementById("part_table"); // Get the table
                 if(x==0){
                tbl.getElementsByTagName("tbody")[0].innerHTML="";
                 }
-				 //Add row
+                 //Add row
                   if(diff>0){  
-				 tbody.append('<tr>\n\
-				<td><input hidden name="partId[]" value="'+partid+'" /> <input  class="form-control" readonly value="'+partname+'" name="partName[]" type="text"/></td>\n\
-				<td> '+diff+' </td><td><input class="form-control"  required name="goods_value[]" max="'+diff+'" type="number"/></td>\n\
-				<td><input class="form-control"   name="other_expense_value[]"  type="number"/></td>\n\
-				<td><input class="form-control"  oninput="validatesum()"  name="advance_paid_value[]" type="number"/></td> <td></td>\n\
-				</tr>');
-				 }
-  	
+                 tbody.append('<tr>\n\
+                <td><input hidden name="partId[]" value="'+partid+'" /> <input  class="form-control" readonly value="'+partname+'" name="partName[]" type="text"/></td>\n\
+                <td> '+diff+' </td><td><input class="form-control"  required name="goods_value[]" max="'+diff+'" type="number"/></td>\n\
+                <td><input class="form-control"   name="other_expense_value[]"  type="number"/></td>\n\
+                <td><input class="form-control"  oninput="validatesum()"  name="advance_paid_value[]" type="number"/></td> <td></td>\n\
+                </tr>');
                  }
-				 
+    
+                 }
+                 
              }
-				});
-						
-				}
+                });
+                        
+                }
                 else {
                       //for backend ref  
                       $("#order_type").val("NORMAL");  
@@ -679,6 +607,7 @@
                          bal=parseFloat(bal).toFixed(2);
                          document.getElementById('maxcfi').innerHTML='Max CFI : '+bal;
                           document.getElementById('maxadvance').innerHTML='Max Advance : '+advance_shipped_value;
+
 
                       }
                       console.log('BALANCE'+bal);
@@ -787,8 +716,8 @@
 
 
 
-				}
-					 console.log(dat.pfi_no);
+                }
+                     console.log(dat.pfi_no);
                   
                  }
 
@@ -889,7 +818,7 @@ nHTML +=`<ul class="list-group">
 
 $('#etd').change(function() {
     var date = $(this).val();
-//	var result = new Date(date);
+//  var result = new Date(date);
   //  result.setDate(date.getDate() + payment_days);
   //ebra
   /*
@@ -935,7 +864,7 @@ var sumpart=0;
      }
 
 
-function validatesum2() {
+     function validatesum2() {
 //  var x = document.getElementById("myInput").value;
 
 var sum=advance_shipped_value;
@@ -957,7 +886,7 @@ sumpart=$("#advance_paid_value").val();
      }
 
 
-     function validatesum3() {
+          function validatesum3() {
 //  var x = document.getElementById("myInput").value;
 
   var bank_value=parseFloat($("#bank_value").val());
@@ -974,8 +903,6 @@ sumpart=$("#advance_paid_value").val();
     }
 
       }
-    
-
 
 
 

@@ -13,7 +13,7 @@ use App\Models\Supplier;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
-class ShipmentController extends Controller
+class ShipmentLocalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +30,10 @@ class ShipmentController extends Controller
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
 
-        $shipments = Shipment::get();
+        $shipments = Shipment::where('shipment_type','<>','full')->get();
+        //return number_format($shipments['0']->goods_value,2);
 
-        return view("shipment.index",compact("shipments","all_permission"));
+        return view("shipmentlocal.index",compact("shipments","all_permission"));
       }
       else
           return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
@@ -47,7 +48,7 @@ class ShipmentController extends Controller
     {
         $suppliers =  Supplier::all();
        // $feetypes =  FeeType::all();
-        return view("shipment.create",compact('suppliers'));
+        return view("shipmentlocal.create",compact('suppliers'));
     }
 
     /**
@@ -88,13 +89,13 @@ class ShipmentController extends Controller
        $data["created_by"] = Auth::user()->id;
 
 
-
+    $bl_no="";
     if(isset($data['bl_no_text'])){
         $bl_no=$data['bl_no_text'];
         unset($data['bl_no_text']);
          unset($data['bl_no_select']);
    }
-   else{
+   else if(isset($data['bl_no_select'])){
      $bl_no=$data['bl_no_select'];
      unset($data['bl_no_select']);
        unset($data['bl_no_text']);
@@ -162,7 +163,9 @@ class ShipmentController extends Controller
        
               }
 
+        //shipment type
 
+             $data['shipment_type']="partial";  
 
       $idinserted = DB::table('shipment')->insertGetId(
                 $data
@@ -181,6 +184,7 @@ class ShipmentController extends Controller
       $booking->advance_shipped_value =  $advance_shp_value+$asv;
 
       $booking->save();   
+
 
 
 
@@ -207,8 +211,8 @@ class ShipmentController extends Controller
       
 
         if(!is_null($idinserted))
-            $request->session()->flash('message', 'Successfully added Shipment');
-            return redirect()->route('shipment.index');
+            $request->session()->flash('message', 'Successfully added Local Shipment');
+            return redirect()->route('shipment_local.index');
 
 
 		/*
@@ -281,6 +285,45 @@ class ShipmentController extends Controller
     $shipment = Shipment::with("supplier")->where("id",$id)->first();                          
     return view("shipment.show",compact('shipment'));
     }
+
+
+
+
+    public function complete($id)
+    {
+      $shipment_id=$id;
+    $shipment = Shipment::with("supplier")->where("id",$id)->first();      
+     $shipments = Shipment::where("shipment_type","full")->get();       
+                        
+
+    return view("shipmentlocal.complete",compact('shipments','shipment','shipment_id'));
+    }
+
+
+     public function completepost(Request $request,$id)
+    {
+      $request->validate([
+            'bl_no' => ['required'],
+        ]);
+
+         $shipid=  $request->bl_no;
+         $shipmentinfo = Shipment::find($shipid);
+         $bl_no=$shipmentinfo->bl_no;
+          $etd=$shipmentinfo->etd;
+           $eta=$shipmentinfo->eta;
+
+
+        $worktypes = Shipment::find($id);
+        $worktypes->bl_no =  $bl_no;
+         $worktypes->etd =  $etd;
+        $worktypes->eta =  $eta;
+      
+
+        $worktypes->save();
+        $request->session()->flash('message', 'Successfully Completed Local Shipment');
+        return redirect()->route('prebooking.index');
+    }
+    
 
     /**
      * Show the form for editing the specified resource.

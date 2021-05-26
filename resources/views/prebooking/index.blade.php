@@ -41,7 +41,7 @@
                                 <a  href="{{ url('/prebooking/activate/' . $prebooking->id ) }}" class="btn  btn-primary btn-sm">Activate</a>
                                 @endif
                                 @if(in_array("prebooking-edit", $all_permission))
-                                <a hidden href="{{ url('/prebooking/' . $prebooking->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
+                                <a  href="{{ url('/prebooking/' . $prebooking->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
                                 @endif
                                 @if(in_array("prebooking-delete", $all_permission))
                                   <form action="{{ route('prebooking.destroy', $prebooking->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">

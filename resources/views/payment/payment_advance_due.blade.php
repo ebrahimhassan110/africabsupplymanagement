@@ -18,53 +18,7 @@
                 <div class="table-responsive">
                 <table cellpadding="0" cellspacing="0" width="100%">
                 <tbody>
-                                            <form method="post" action="{{ route('payment.paymentlistfilter') }}">
-                                                  @csrf
-                                              <tr style="height: 40px;">
-                                              <td style="width: 10%;" valign="top">
-                                                  Supplier
-                                              </td>
-                                  						<td style="width: 23%;" valign="top">
-                                  									<select  name="supplier" class="form-control select2" data-placeholder="choose supplier" style="width:90%;">
-                                  										<option></option>
-                                  										<option value="0">All</option>
-                                  										@foreach($suppliers as $supplier)
-
-                                  											@php
-                                  												$selected = 0;
-                                  												if(   old('supplier') == $supplier->id )
-                                  													$selected = "selected";
-                                  											@endphp
-                                  											<option {{$selected}} value="{{$supplier->id}}">{{ $supplier->supplier_name }} {{ '('.$supplier->address.')' }}</option>
-                                  										@endforeach
-                                  									</select>
-                                  						</td>
-                                              <td valign="top">
-                                                    From Date
-                                                </td>
-                                                <td valign="top">
-                                                    <input name="start_date" type="text" value="{{old('start_date')}}" class="form-control date" style="width:90%;" required >
-
-                                                </td>
-                                                <td valign="top">
-                                                    To Date
-                                                </td>
-                                                <td valign="top">
-                                                    <input name="end_date" type="text"  value="{{old('end_date')}}" class="form-control date" style="width:90%;" required>
-
-                                                </td>
-                                            </tr>
-                                            <tr style="height: 40px;">
-                                            <td>
-                                                <input class="btn btn-primary" type="submit" value="Search Booking">
-
-                                            </td>
-                                                
-                                                
-                                            </tr>
-                                            
-                                            <tr>
-                                    </form>
+                                        
                                     <td colspan="6">
                                     <table class="table table-responsive-sm table-striped datatable mt-4">
                                         <thead>
@@ -75,8 +29,10 @@
                                             
                                             <th>PFI Number</th>
                                             <th>PFI Value</th>
-                                            <th>Amount</th>
-                                            
+                                            <th>Advance Amount to Pay</th>
+                                             <th>Actual Paid</th>
+                                             <th>Remaining Amount</th>
+
 
                                         </tr>
                                         </thead>
@@ -91,7 +47,14 @@
                                             
                                             <td> {{$payment->pfi_no}} </td>
                                             <td> {{ number_format( $payment->pfi_value,2) }}</td>
-                                            <td>{{ number_format( $payment->amount,2) }}</td>
+                                            <td>{{ number_format( $payment->advance_paid,2) }}</td>
+                                            <td>{{ number_format( $payment->actual_advance_paid,2) }}</td>
+                                            <td>
+                                            <?php
+
+                                            $balance=$payment->advance_paid-$payment->actual_advance_paid;
+                                            ?>
+                                                {{  number_format($balance)  }}</td>
                                             
                                            
                                             </tr>
