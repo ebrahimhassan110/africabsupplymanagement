@@ -14,7 +14,7 @@
                   
                     </div>
                     <div class="card-body">
-                    <form enctype="multipart/form-data" action="{{ route('shipment.store') }}" method="post">
+                    <form enctype="multipart/form-data" action="{{ route('shipment_local.store') }}" method="post">
                     @csrf
 
 
@@ -32,7 +32,7 @@
                   </div>      
                  </br>   
 
-                 
+
 
                   <div class="row">
                     <div class="col">
@@ -93,38 +93,10 @@
                   
                    
 
-                    <div hidden id="blnoselect" class="row">
-                    <div class="col">
-                      <label><b> 
-                       BL No Select<span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                        <select required name="bl_no_select" id="bl_no_select" tabindex="1" class="form-control select2" style="width:100%;">
-                                     <option value="">- Select -</option>
-                                         </select>
-                    </div>
-
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>         
+                          
 
 
-                    <!--not in use -->
-                      <div hidden class="form-group">
-                                                    <label>
-                                                        Delivery Type<span class="required"> *</span></label>
-                                                    <select  name="delivery_type" id="delivery_type" tabindex="1" class="form-control select2" style="width:100%;">
-                                                 <option value="">- Select -</option>
-                                        
-                                                        <option value="local">Local</option>
-                                                        <option value="other">Other</option>
-                                            
-                                                  </select>
-                                                       <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator24" style="color:Red;display:none;">Delivery type</span>
-                                                </div>  
-                     </br>                           
-
+                  
 
                     <div  class="row ltd">
                     <div class="col">
@@ -142,10 +114,12 @@
                                                 
                     
                     <div  class="row fullfield" >
+                         
                     <div class="col">
                       <label><b> 
                         CFI Value <span class="required"> *</span></b></label>
-                              <h3 style="color:red;" id="maxcfi" > </h3> 
+                        <p id="maxcfi" style="color:red;">  </p>
+                            
                     </div>
                     <div class="col">
                         <input placeholder="CFI Value" required name="goods_value"  type="number" id="goods_value" tabindex="1" class="form-control inltd" style="width:100%;">
@@ -159,6 +133,43 @@
                   </br>    
 
 
+                   <div  class="row fullfield" >
+                    
+                    <div class="col">
+                      <label><b> 
+                        Bank Value <span class="required"> *</span></b>
+                          <p id="alert2" style="color:red;">  </p>
+                    </label>
+                             
+                    </div>
+                    <div class="col">
+                        <input oninput="validatesum3()" placeholder="Bank Value" required name="bank_value"  type="number" id="bank_value" tabindex="1" class="form-control inltd" style="width:100%;">
+                    </div>
+
+
+
+                     <div class="col ml-2">
+                     </div>
+                  </div>  
+                  </br>  
+
+                   <div  class="row fullfield" >
+                   
+                    <div class="col">
+                      <label><b> 
+                        Cash Value <span class="required"> *</span></b></label>
+                            
+                    </div>
+                    <div class="col">
+                        <input oninput="validatesum3()" placeholder="Cash Value" required name="cash_value"  type="number" id="cash_value" tabindex="1" class="form-control inltd" style="width:100%;">
+                    </div>
+
+
+
+                     <div class="col ml-2">
+                     </div>
+                  </div>  
+                  </br>  
 
                     
 
@@ -181,12 +192,15 @@
 
                                            
                       <div  class="row fullfield">
+                         
                     <div class="col">
                       <label ><b> 
-                       Advance Paid Value <span class="required"> *</span></b></label>
+                       Advance Paid Value <span class="required"> *</span></b>
+                       <p id="maxadvance" style="color:red;">  </p>
+                   </label>
                     </div>
                     <div class="col">
-                               <input  placeholder="Advance Paid Value " name="advance_paid_value"  type="number" id="advance_paid_value" tabindex="1" class="form-control inltd" style="width:100%;">
+                               <input  oninput="validatesum2()" placeholder="Advance Paid Value " name="advance_paid_value"  type="number" id="advance_paid_value" tabindex="1" class="form-control inltd" style="width:100%;">
                     </div>
 
                     
@@ -239,21 +253,7 @@
                   </br>                 
 
 
-                    <div hidden class="row">
-                    <div class="col">
-                      <label ><b> 
-                       Local Delivery Date <span class="required"> *</span></b></label>
-                    </div>
-                    <div class="col">
-                                <input   name="local_delivery_date"  type="date" id="" tabindex="1" class="form-control inltd" style="width:100%;">
-                    </div>
-
-                    
-
-                     <div class="col ml-2">
-                     </div>
-                  </div>  
-                  </br>       
+                         
 
                    
 
@@ -606,6 +606,8 @@
                          $("#goods_value").prop('max',bal);
                          bal=parseFloat(bal).toFixed(2);
                          document.getElementById('maxcfi').innerHTML='Max CFI : '+bal;
+                          document.getElementById('maxadvance').innerHTML='Max Advance : '+advance_shipped_value;
+
 
                       }
                       console.log('BALANCE'+bal);
@@ -862,7 +864,45 @@ var sumpart=0;
      }
 
 
+     function validatesum2() {
+//  var x = document.getElementById("myInput").value;
 
+var sum=advance_shipped_value;
+var sumpart=0;
+
+sumpart=$("#advance_paid_value").val();
+
+   
+     if(sumpart==sum){
+        document.getElementById("alert").innerHTML = "";
+
+     }
+     else if(sumpart>sum){
+     // alert("The sum do not match");
+     document.getElementById("alert").innerHTML = "The sum of Advance does not match to remaining advance of : "+sum;
+     }
+         
+
+     }
+
+
+          function validatesum3() {
+//  var x = document.getElementById("myInput").value;
+
+  var bank_value=parseFloat($("#bank_value").val());
+    var cash_value=parseFloat($("#cash_value").val());
+    var pfi_value=parseFloat($("#goods_value").val());
+    var sum=bank_value+cash_value;
+    if(pfi_value!=sum){
+       document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with CFI Value do not match";
+    
+    }
+    else{
+         document.getElementById("alert2").innerHTML = "";
+    
+    }
+
+      }
 
 
 

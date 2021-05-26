@@ -519,7 +519,7 @@
                      </div>	
                       <div class="col-1">
                       		 <label><b> 
-                         Attachment</b></label> 
+                         Attachment *</b></label> 
                       </div>
 
 

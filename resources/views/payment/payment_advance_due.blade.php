@@ -11,7 +11,7 @@
                     <div class="card-header d-flex flex-row justify-content-between">
                       <span class="card-title">{{ 'Add Payment' }}</span>
                       @if(in_array("payment-add", $all_permission))
-                        <a href="{{route('Workflow.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
+                        <a href="{{route('payment.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
                       @endif
                     </div>
                     <div class="card-body p-2">
@@ -29,8 +29,10 @@
                                             
                                             <th>PFI Number</th>
                                             <th>PFI Value</th>
-                                            <th>Amount</th>
-                                            
+                                            <th>Advance Amount to Pay</th>
+                                             <th>Actual Paid</th>
+                                             <th>Remaining Amount</th>
+
 
                                         </tr>
                                         </thead>
@@ -46,6 +48,13 @@
                                             <td> {{$payment->pfi_no}} </td>
                                             <td> {{ number_format( $payment->pfi_value,2) }}</td>
                                             <td>{{ number_format( $payment->advance_paid,2) }}</td>
+                                            <td>{{ number_format( $payment->actual_advance_paid,2) }}</td>
+                                            <td>
+                                            <?php
+
+                                            $balance=$payment->advance_paid-$payment->actual_advance_paid;
+                                            ?>
+                                                {{  number_format($balance)  }}</td>
                                             
                                            
                                             </tr>

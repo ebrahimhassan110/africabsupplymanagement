@@ -31,6 +31,7 @@ class ShipmentLocalController extends Controller
             $all_permission[] = 'dummy text';
 
         $shipments = Shipment::where('shipment_type','<>','full')->get();
+        //return number_format($shipments['0']->goods_value,2);
 
         return view("shipmentlocal.index",compact("shipments","all_permission"));
       }
@@ -47,7 +48,7 @@ class ShipmentLocalController extends Controller
     {
         $suppliers =  Supplier::all();
        // $feetypes =  FeeType::all();
-        return view("shipment.create",compact('suppliers'));
+        return view("shipmentlocal.create",compact('suppliers'));
     }
 
     /**
@@ -88,13 +89,13 @@ class ShipmentLocalController extends Controller
        $data["created_by"] = Auth::user()->id;
 
 
-
+    $bl_no="";
     if(isset($data['bl_no_text'])){
         $bl_no=$data['bl_no_text'];
         unset($data['bl_no_text']);
          unset($data['bl_no_select']);
    }
-   else{
+   else if(isset($data['bl_no_select'])){
      $bl_no=$data['bl_no_select'];
      unset($data['bl_no_select']);
        unset($data['bl_no_text']);
@@ -173,10 +174,17 @@ class ShipmentLocalController extends Controller
       //edit booking shipment values
       $booking_id= $data['booking_id'];
       $gv =$data['goods_value'];
+      //asv advanced shipped value
+      $asv =$data['advance_paid_value'];
       $booking = PreBooking::find($booking_id);
       $shipped_value=$booking->shipped_value;
       $booking->shipped_value =  $shipped_value+$gv;
+
+       $advance_shp_value=$booking->advance_shipped_value;
+      $booking->advance_shipped_value =  $advance_shp_value+$asv;
+
       $booking->save();   
+
 
 
 
@@ -203,8 +211,8 @@ class ShipmentLocalController extends Controller
       
 
         if(!is_null($idinserted))
-            $request->session()->flash('message', 'Successfully added Shipment');
-            return redirect()->route('shipment.index');
+            $request->session()->flash('message', 'Successfully added Local Shipment');
+            return redirect()->route('shipment_local.index');
 
 
 		/*
@@ -277,6 +285,45 @@ class ShipmentLocalController extends Controller
     $shipment = Shipment::with("supplier")->where("id",$id)->first();                          
     return view("shipment.show",compact('shipment'));
     }
+
+
+
+
+    public function complete($id)
+    {
+      $shipment_id=$id;
+    $shipment = Shipment::with("supplier")->where("id",$id)->first();      
+     $shipments = Shipment::where("shipment_type","full")->get();       
+                        
+
+    return view("shipmentlocal.complete",compact('shipments','shipment','shipment_id'));
+    }
+
+
+     public function completepost(Request $request,$id)
+    {
+      $request->validate([
+            'bl_no' => ['required'],
+        ]);
+
+         $shipid=  $request->bl_no;
+         $shipmentinfo = Shipment::find($shipid);
+         $bl_no=$shipmentinfo->bl_no;
+          $etd=$shipmentinfo->etd;
+           $eta=$shipmentinfo->eta;
+
+
+        $worktypes = Shipment::find($id);
+        $worktypes->bl_no =  $bl_no;
+         $worktypes->etd =  $etd;
+        $worktypes->eta =  $eta;
+      
+
+        $worktypes->save();
+        $request->session()->flash('message', 'Successfully Completed Local Shipment');
+        return redirect()->route('prebooking.index');
+    }
+    
 
     /**
      * Show the form for editing the specified resource.

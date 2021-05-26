@@ -13,9 +13,7 @@
                       <span class="card-title">{{ 'Add Payment' }}</span>
                     </div>
                     <div class="card-body p-2">
-             
-                        
-                          @csrf
+                         @csrf
                           <div class="row form-group">
                             <div class="col-12">
                             <label>
@@ -169,7 +167,7 @@
               //html += "<div class='card-header '>";
               html += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
               html += '<li class="nav-item "><a class="nav-link profile-1" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile" aria-selected="false">Add Payment</a></li>';
-
+html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History</a></li>';
               html += '</ul>';
  
               //html += "</div>";
@@ -179,6 +177,8 @@
               html += data;
               html  += '</div>';
               html  += '<div class="tab-pane  add_payment" id="profile-1" role="tabpane2">';
+              html  += '</div>';
+              html  += '<div class="tab-pane  payment_history " id="profile-3" role="tabpane3">';
               html  += '</div>';
                html  += '<div>';
               html  += '</div>';

@@ -85,6 +85,16 @@ Route::group(['middleware' => ['get.menu']], function () {
 		
 		// Route::post('/shipments', 'ShipmentController@store')->name("shipping-store");
        Route::get('/shipment/getPFI/{id}','ShipmentController@getPFI')->name('shipping-getPFI');
+         Route::get('/shipment_local/getPFI/{id}','ShipmentController@getPFI')->name('shipping-getPFI');
+            Route::get('/shipment_local/getBl/','ShipmentController@getBl')->name('shipping-getBl');
+         Route::get('/shipment_local/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
+        Route::get('/shipment_local/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
+
+  Route::get('/shipment_local/complete/{id}','ShipmentLocalController@complete')->name('shippinglocal-complete');
+
+
+        Route::post('/shipmentlocal/complete/{id}', 'ShipmentLocalController@completepost')->name('shipmentlocal-complete-post');
+
          Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
         Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
          Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
@@ -109,6 +119,12 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('/timesheetforclient/report', 'ReportTimeSheetClientController@index')->name("timesheetclient-report");
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
         
+
+
+
+        Route::get('/payment/history/{id}/{type}','PaymentController@paymentHistory')->name('payment-history');
+
+
         Route::get('/payment/getdata', 'PaymentController@getData')->name("payment.getdata");
         Route::get('/payment/list', 'PaymentController@paymentlist')->name("payment.list");
         Route::get('/payment/payment_due', 'PaymentController@paymentDue')->name("payment.due");

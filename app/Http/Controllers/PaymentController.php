@@ -47,6 +47,7 @@ class PaymentController extends Controller
     {
         //
     }
+
     public function addpayment(Request $request)
     {
        
@@ -324,6 +325,20 @@ class PaymentController extends Controller
     }
 
 
+    public function paymentHistory($id,$type)
+    {
+
+        $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
+        if (!is_null($role->hasPermissionTo('payment-add')) && $role->hasPermissionTo('payment-add')){
+  return view("payment.payment_history",compact("id","type"));
+}
+else{
+  return "Not Allowed";
+}
+    }
+    
+
+
     public function getData(Request $request)
     {
          $payment_type = $request->payment_type;
@@ -331,7 +346,7 @@ class PaymentController extends Controller
          if($payment_type == 1){
 
             $preebookings =  PreBooking::where("supplier_id",$supplier_id)->get();
-            $select = "<select data-placeholder = 'select booking pfi no ' name = 'preebooking' class='select2 form-control' data-payment_type = '1' required>";
+            $select = "<select data-placeholder = 'Select Booking PFI no ' name = 'preebooking' class='select2 form-control' data-payment_type = '1' required>";
             $select .= "<option></option>";
             foreach($preebookings as $preebooking){
                 $select .= "<option value='".$preebooking->id."'>".$preebooking->pfi_no."</option>";
@@ -340,7 +355,7 @@ class PaymentController extends Controller
             return $select;
          }else{
             $shipments =  Shipment::where("supplier_id",$supplier_id)->get();
-            $select = "<select data-placeholder = 'select booking cfi no' name = 'preebooking' class='select2 form-control' data-payment_type = '2' required>";
+            $select = "<select data-placeholder = 'Select Shipment cfi no' name = 'preebooking' class='select2 form-control' data-payment_type = '2' required>";
             $select .= "<option></option>";
             foreach($shipments as $shipment){
                 $select .= "<option value='".$shipment->id."'>".$shipment->cfi_no."</option>";
@@ -349,6 +364,8 @@ class PaymentController extends Controller
             return $select;
          }
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
