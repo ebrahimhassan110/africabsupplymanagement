@@ -10,7 +10,7 @@
                             </div>
 
                               <table cellpadding="0" cellspacing="0" border="0" width="100%">
-          						
+
                                   <tbody>
                                                       <tr>
                                                           <td style="width: 33%;" valign="top">
@@ -22,7 +22,7 @@
                                                                   <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                               </div>
                                                           </td>
-                                                      
+
                                                           <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
@@ -32,8 +32,8 @@
                                                                     </td>
                                                       </tr>
                                                       <tr>
-        
-        
+
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -51,9 +51,9 @@
                                                                                <b> {{ $prebooking->supplier->address }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
-                                                                    
+
                                                                </tr>
-        
+
                                                                 <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -61,7 +61,7 @@
                                                                                    PFI No
                                                                                </label>
                                                                                     <b> {{ $prebooking->pfi_no  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -81,15 +81,15 @@
                                                                     </td>
                                                                </tr>
 
-                                                               
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
-                                                                                   Delivery Period Days 
+                                                                                   Delivery Period Days
                                                                                </label>
                                                                                     <b> {{ $prebooking->delivery_period_days  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -116,7 +116,7 @@
                                                                                    CBM
                                                                                </label>
                                                                                     <b> {{ $prebooking->cbm  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -135,7 +135,7 @@
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
                                                                </tr>
-        
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -143,7 +143,7 @@
                                                                                    Order Type
                                                                                </label>
                                                                                     <b> {{ $prebooking->order_type  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -170,7 +170,7 @@
                                                                                    Payment Mode
                                                                                </label>
                                                                                     <b> {{ $prebooking->payment_mode  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -189,8 +189,8 @@
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
                                                                </tr>
-        
-        
+
+
                                                                 <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -198,7 +198,7 @@
                                                                                 Advance Payment Date
                                                                                </label>
                                                                                     <b> {{ $prebooking->advance_payment_date }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -225,7 +225,7 @@
                                                                                 Bank Value
                                                                                </label>
                                                                                     <b> {{ $prebooking->bank_value }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -242,34 +242,35 @@
                                                                                    Naration </label>
                                                                                <b> {{ $prebooking->naration }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
+                                                                              </div>
                                                                     </td>
                                                                </tr>
 
-                                                           
-        
-                                                               <tr>          
+
+
+                                                               <tr>
                                                                     <td colspan="3">
                                                                         <h3>  PreBooking Parts </h3>
                                                                         <table class="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgsupplierfeesInfo" style="border-style:None;width:99%;border-collapse:collapse;">
                                                                             <thead>
-                                                                        
+
                                                                                 <th>  Name </th>
                                                                                 <th>  Value </th>
-                                                                                
+
                                                                             </thead>
                                                                             <tbody>
                                                                                 @foreach($prebooking_parts as $pre_booking)
                                                                                     <tr class="sorting_asc" align="left" valign="top">
                                                                                         <td>{{ $pre_booking->name }}</td><td>{{ $pre_booking->value}}</td>
                                                                                     </tr>
-                        
+
                                                                                 @endforeach
                                                                             </tbody>
-                                                                                    
+
                                                                         </table>
                                                                     </td>
                                                                 </tr>
-                                                            
-                                                                </table>
-                                                          
-        
+
+
+                                                              </tbody>
+                                                            </table>

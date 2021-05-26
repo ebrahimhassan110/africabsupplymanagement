@@ -10,7 +10,7 @@
                             </div>
 
                               <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                        
+
                                   <tbody>
                                                       <tr>
                                                           <td style="width: 33%;" valign="top">
@@ -22,7 +22,7 @@
                                                                   <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                               </div>
                                                           </td>
-                                                      
+
                                                           <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
@@ -32,8 +32,8 @@
                                                                     </td>
                                                       </tr>
                                                       <tr>
-        
-        
+
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -51,9 +51,9 @@
                                                                                <b> {{ $shipment->supplier->address }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
-                                                                    
+
                                                                </tr>
-        
+
                                                                 <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -61,7 +61,7 @@
                                                                                    PFI No
                                                                                </label>
                                                                                     <b> {{ $shipment->booking->pfi_no  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -81,15 +81,15 @@
                                                                     </td>
                                                                </tr>
 
-                                                               
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
-                                                                                   CFI No 
+                                                                                   CFI No
                                                                                </label>
                                                                                     <b> {{ $shipment->cfi_no  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -116,7 +116,7 @@
                                                                                    Advance Paid Value
                                                                                </label>
                                                                                     <b> {{ $shipment->advance_paid_value  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -135,7 +135,7 @@
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
                                                                </tr>
-        
+
                                                                <tr>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
@@ -143,7 +143,7 @@
                                                                                   ETD
                                                                                </label>
                                                                                     <b> {{ $shipment->etd  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
@@ -167,42 +167,43 @@
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
-                                                                                  Narration
+                                                                                  Narrtion
                                                                                </label>
                                                                                     <b> {{ $shipment->narration  }} </b>
-        
+
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
                                                                     </td>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
-                                                                             Date Created <label>
-                                                                              <?php 
+                                                                             Date Created </label>
+                                                                              <?php
                                                                               $d=$shipment->created_at;
                                                                                $d= date_format($d,'d/m/Y');
 
                                                                               ?>
                                                                                <b> {{   $d  }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
+                                                                          </div>
                                                                     </td>
-                                                                   
+
                                                                </tr>
-        
-        
-                                                              
-        
-                                                               <tr>          
+
+
+
+
+                                                               <tr>
                                                                     <td colspan="3">
                                                                         <h3>  Shipment Parts </h3>
                                                                         <table class="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgsupplierfeesInfo" style="border-style:None;width:99%;border-collapse:collapse;">
                                                                             <thead>
-                                                                        
+
                                                                                 <th>  Name </th>
                                                                                 <th>  Value </th>
                                                                                  <th>  Other Expense Value </th>
                                                                                  <th>  Advance Paid Value </th>
-                                                                                
+
                                                                             </thead>
                                                                             <tbody>
                                                                                 @foreach($shipment_parts as $pre_booking)
@@ -212,14 +213,12 @@
                                                                                          <td>{{ $pre_booking->other_expense_value}}</td>
                                                                                           <td>{{ $pre_booking->advance_paid_value}}</td>
                                                                                     </tr>
-                        
+
                                                                                 @endforeach
                                                                             </tbody>
-                                                                                    
+
                                                                         </table>
                                                                     </td>
                                                                 </tr>
-                                                            
+                                                              </tbody>
                                                                 </table>
-                                                            </div>
-        
