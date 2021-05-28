@@ -17,7 +17,7 @@
 
                           @csrf
                           <div class="row form-group">
-                            <div class="col-12">
+                            <div class="col-sm-12">
                             <label>
                             Supplier
                             </label>
@@ -38,7 +38,7 @@
                           </div>
 
                           <div class="row form-group">
-                          <div class="col-12">
+                          <div class="col-sm-12">
                           <label>
                           Payment For:
                           </label>
@@ -50,7 +50,7 @@
                           </div>
                           </div>
                           <div class="row form-group">
-                          <div class="col-12 ajax-data">
+                          <div class="col-sm-12 ajax-data">
                           </div>
                           </div>
 
@@ -76,15 +76,7 @@
 
 @endsection
 <style>
-.nav-tabs-boxed .tab-content{
-   padding: none !important;
-   border: none !important;
-   border-radius: none  !important;
 
-   background-color: none !important;
-   border-color: none !important;
-
-}
 .nav-tabs-boxed .nav-tabs{
   border-bottom: 1px solid !important;
    border-color: #c4c9d0!important;
@@ -105,7 +97,6 @@
 @endif
 
 <script>
-
       var getData = function(payment_type,supplier_id){
            $.ajax({
              data: { supplier_id : supplier_id, payment_type: payment_type },
@@ -114,7 +105,6 @@
                 $('.ajax-data').html(data);
                 $('.select2').select2({
                     theme: 'bootstrap4',
-
                 });
              }
            });
@@ -191,16 +181,14 @@
       $(document).on("change","select[name='preebooking']",function(){
         var payment_type = $(this).data("payment_type");
         var preebooking_id = $(this).val();
-
         getBookingData(payment_type,preebooking_id);
       });
 
       $(document).on("click",".booking_details_tab",function(){
-         var that = $("select[name='preebooking']");
-        var payment_type = that.data("payment_type");
-        var preebooking_id = that.val();
-
-        getBookingData(payment_type,preebooking_id);
+          var that = $("select[name='preebooking']");
+          var payment_type = that.data("payment_type");
+          var preebooking_id = that.val();
+          getBookingData(payment_type,preebooking_id);
       });
 
       $(document).on("click",".profile-1",function(e){
@@ -212,6 +200,24 @@
               data: { prebooking: prebooking ,payment_type: payment_type },
               success: function(data){
               $(".add_payment").html(data);
+              }
+          });
+      });
+
+      $(document).on("click",".profile-3",function(e){
+          e.preventDefault();
+          var prebooking = $("select[name='preebooking']").val();
+          var payment_type = $("select[name='payment_type'] option:selected").val();
+          if(payment_type == 1 ){
+             payment_type ="Booking";
+          }else{
+            payment_type ="Shipping";
+          }
+
+          $.ajax({
+              url: "./payment/history/"+prebooking+"/"+payment_type,
+              success: function(data){
+                $(".payment_history").html(data);
               }
           });
       });
@@ -247,20 +253,15 @@
           var amount = $("#amount").val();
           var type = $("[name='type']:checked").val();
           if(type == "perc"){
-
             $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
           }
       });
 
       $("#amount").on("input",function(e){
-
           var amount = $(this).val();
           var type = $("[name='type']:checked").val();
           if(type == "perc"){
-
             $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
           }
       });
 
@@ -283,7 +284,7 @@
 
       function checksum(amount,bank_value,cash_value){
           var total = parseFloat(bank_value) + parseFloat(cash_value);
-          console.log(total);
+
           if( amount != total ){
             alert("Bank value and cash value does not match Amount");
             return false;
@@ -395,7 +396,7 @@
 
       function checksum(amount,bank_value,cash_value){
           var total = parseFloat(bank_value) + parseFloat(cash_value);
-          console.log(total);
+
           if( amount != total ){
             alert("Bank value and cash value does not match Amount");
             return false;
@@ -415,8 +416,6 @@
         if(checksum(amount,bank_value,cash_value) == false ){
           return false;
         }
-
-
 
       });
 

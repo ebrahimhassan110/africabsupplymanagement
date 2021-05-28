@@ -170,7 +170,14 @@
 
 
 
-
+<style>
+  .tab-content .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 82px;
+    padding: 1.25rem;
+  }
+</style>
 
 @section('javascript')
 

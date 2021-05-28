@@ -100,14 +100,14 @@ class PaymentController extends Controller
               $all_permission[] = $permission->name;
           if(empty($all_permission))
               $all_permission[] = 'dummy text';
-   
+
 
           $d=time();
         $date=date("Y-m-d", $d);
             $payments = PreBooking::join("supplier","supplier.id","prebooking.supplier_id")
                             ->where('advance_payment_date','LIKE','%'.$date.'%')
                             ->paginate(100);
-            
+
             $suppliers = Supplier::get();
             return view("payment.payment_advance_due",compact('payments','suppliers','all_permission'));
         }
@@ -231,38 +231,9 @@ class PaymentController extends Controller
                         $error["payment"] = "Amount exceeds advance payment value";
                         return redirect()->back()->with("error",$error)->withInput();
                     }
+                    $prebookingData->advance_payment_date = $request->payment_date;
                     $prebookingData->actual_advance_paid = $tobepayed;
                     $prebookingData->save();
-                }else if( $payment_type == 2 ){
-
-                }else if( $payment_type == 3 ){
-                    //return "number 3";
-                    //booking amount
-
-                    $tobepayed_book_value =  ($prebookingData->pfi_value - $prebookingData->advance_paid)  - $prebookingData->actual_paid;
-                    $error = [];
-
-                    if($tobepayed_book_value < 1){
-
-                        $error["payment"] = "Payment completed";
-
-                        return redirect()->back()->with("error",$error)->withInput();
-
-                    }
-
-
-                    $actual_paid = $prebookingData->actual_paid + $request->amount;
-                    if($tobepayed_book_value > $actual_paid){
-                        $error["payment"] = "Payment exceed proforma invoice value";
-                        return redirect()->back()->with("error",$error)->withInput();
-                    }
-
-                    $prebookingData->actual_paid = $actual_paid;
-                    $prebookingData->bank_value = $request->bank_value;
-                    $prebookingData->cash_value = $request->cash_value;
-                    $prebookingData->save();
-
-
                 }
             }
             else{
@@ -341,7 +312,7 @@ else{
   return "Not Allowed";
 }
     }
-    
+
 
 
     public function getData(Request $request)

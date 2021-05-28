@@ -319,11 +319,11 @@
               </div>
               <div class="col-2">
                <?php
-             $created_by = \DB::table("users")->where("id",$prebooking->created_by)->get();
+             $created_by = \DB::table("users")->where("id",$prebooking->created_by)->first();
              $created_at=$prebooking->created_at;
 
                ?>
-                       <input readonly name="payment_mode" value="{{ $created_by[0]->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
+                       <input readonly name="payment_mode" value="{{ $created_by->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
                       </div>
 
                <div class="col-3" id="payment_days">
@@ -342,10 +342,10 @@
               </div>
               <div class="col-2">
                <?php
-             $created_by = \DB::table("users")->where("id",$prebooking->activated_by)->get();
+             $created_by = \DB::table("users")->where("id",$prebooking->activated_by)->first();
                 $activated_at=$prebooking->activated_at;
                ?>
-                       <input readonly name="payment_mode" value="{{ $created_by[0]->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
+                       <input readonly name="payment_mode" value="{{ $created_by->name ?? '' }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
                       </div>
 
                <div class="col-2" id="payment_days">
