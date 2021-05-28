@@ -76,6 +76,8 @@ Route::group(['middleware' => ['get.menu']], function () {
 		Route::resource('booking', BookingController::class);
 		
         Route::resource('currency', CurrencyController::class);
+        Route::resource('clearingagent', ClearingAgentController::class);
+        
         Route::resource('Feetype', FeeTypeController::class);
 		    Route::resource('institute', InstituteController::class);
         Route::post('/attendance/search', 'AttendanceController@search')->name("attendance-search");

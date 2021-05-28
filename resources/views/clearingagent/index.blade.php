@@ -8,9 +8,9 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
-                      <span class="card-title">{{ 'Currency' }}</span>
-                      @if(in_array("currency-add", $all_permission))
-                      <a href="{{route('currency.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
+                      <span class="card-title">{{ 'Clearing Agent' }}</span>
+                      @if(in_array("clearingagent-add", $all_permission))
+                      <a href="{{route('clearingagent.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add </a>
                       @endif
                     </div>
                     <div class="card-body p-0">
@@ -26,16 +26,16 @@
                         </thead>
                         <tbody>
 
-                            @foreach($currencys as $documenttype)
+                            @foreach($clearingagents as $clearingagent)
                             <tr>
-                              <td>{{$documenttype->id }}</td>
-                              <td>{{$documenttype->name }}</td>
+                              <td>{{$clearingagent->id }}</td>
+                              <td>{{$clearingagent->name }}</td>
                               <td class="d-flex flex-row">
-                                @if(in_array("currency-edit", $all_permission))
-                                <a href="{{ url('/currency/' . $documenttype->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
+                                @if(in_array("clearingagent-edit", $all_permission))
+                                <a href="{{ url('/currency/' . $clearingagent->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>
                                 @endif
-                                @if(in_array("currency-delete", $all_permission))
-                                  <form action="{{ route('currency.destroy', $documenttype->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
+                                @if(in_array("clearingagent-delete", $all_permission))
+                                  <form action="{{ route('clearingagent.destroy', $clearingagent->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
                                       @method('DELETE')
                                       @csrf
                                       <button class="btn btn-danger btn-sm">Delete</button>

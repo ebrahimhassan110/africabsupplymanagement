@@ -133,7 +133,7 @@
                   </br>    
 
 
-                   <div  class="row fullfield" >
+                   <div  class="row declarationfield" >
                     
                     <div class="col">
                       <label><b> 
@@ -153,7 +153,7 @@
                   </div>  
                   </br>  
 
-                   <div  class="row fullfield" >
+                   <div  class="row declarationfield" >
                    
                     <div class="col">
                       <label><b> 
@@ -507,16 +507,17 @@
         for(x=0;x<bookings.length;x+=1){
                      var dat = bookings[x];
 
-                     var declaration_type=dat.declaration_type;
-                      var order_type=dat.order_type;
+                 
                       var booking_id=dat.id;
                       //if same booking id as selected
                       // alert('yes');   
                       if(booking_id==val){
                      //   console.log('BOOKINGS ID'+booking_id);
                       //    console.log('BOOKINGS VALUE'+val+declaration_type);
-                          //save no_of days_for payment_days
-                                    payment_days=dat.payment_days; 
+                             //save no_of days_for payment_days
+                       var declaration_type=dat.declaration_type;
+                          var order_type=dat.order_type;
+                        payment_days=dat.payment_days; 
                         incoterms=dat.incoterms; 
                         shipped_value=dat.shipped_value;
                         pfi_value=dat.pfi_value;
@@ -639,79 +640,21 @@
                     document.getElementById('cfi_other_expense2').style.color = "black";
                 }
 
+                //declaration type check
 
-
-                 if(shipment_type=='Local'){
+                 if(declaration_type=='PARTIAL') {
                   
-             $('#bl_no_text').removeAttr('required');
-             $("#bl_no_text").prop('disabled',true);
-           
-                $("#blnotext").attr("hidden",true);
-                 $("#blnoselect").attr("hidden",false);
-                  $("#bl_no_select").attr("required",true);
-                 
+                       $(".declarationfield").attr("hidden",false);
+                              $("#bank_value").attr("required",true);
+                               $("#cash_value").attr("required",true);
+                              
+                      } 
+                      else{
+                          $(".declarationfield").attr("hidden",true);
+                              $("#bank_value").attr("required",false);
+                               $("#cash_value").attr("required",false);
 
-                   $('input[name="local_delivery_date"]').attr("hidden",false); 
-                   $("#local_delivery_date").attr("hidden",false);  
-                   $("#local_delivery_date").attr("required",true); 
-
-                    $('input[name="eta"]').attr("hidden",true); 
-                   $("#eta").attr("hidden",true);  
-                   $("#eta").attr("required",false);  
-
-
-                 document.getElementById("bl_no_select").options.length = 0;  
-                 // get BL No
-                 $.ajax({
-            url         :'getBl/',
-             type       :'GET',
-             dataType   :'JSON',
-             success    :'success',
-             data       :{},
-             success    :function(result){
-                 var data = result;
-                
-                
-                 var x;
-
-                 $('#bl_no_select').append($('<option>', {
-                        value: '',
-                        text: "- Select -"
-                    }));
-
-
-
-                 for(x=0;x<data.length;x+=1){
-                     var dat = data[x];
-                     
-                    $('#bl_no_select').append($('<option>', {
-                        value: dat.bl_no,
-                        text: dat.bl_no
-                    }));
-                 }
-                 
-                    }
-                }); 
-             }
-                else{
-                   $('#bl_no_text').attr("required",true);
-               $("#bl_no_text").prop('disabled',false);
-                 $("#blnotext").attr("hidden",false);
-                 $("#bl_no_select").attr("hidden",true);      
-                  $("#bl_no_select").attr("required",false);      
-
-
-                    $('input[name="local_delivery_date"]').attr("hidden",true); 
-                   $("#local_delivery_date").attr("hidden",true); 
-                    $("#local_delivery_date").attr("required",false);  
-
-
-                    $('input[name="eta"]').attr("hidden",false); 
-                   $("#eta").attr("hidden",false);  
-                   $("#eta").attr("required",true); 
-                
-
-                }
+                      }
 
 
 
@@ -888,19 +831,47 @@ sumpart=$("#advance_paid_value").val();
 
           function validatesum3() {
 //  var x = document.getElementById("myInput").value;
-
-  var bank_value=parseFloat($("#bank_value").val());
-    var cash_value=parseFloat($("#cash_value").val());
-    var pfi_value=parseFloat($("#goods_value").val());
+  var cash_value=parseFloat($("#cash_value").val());
+     var bank_value=parseFloat($("#bank_value").val());
     var sum=bank_value+cash_value;
+
+    if(order_type=='NORMAL'){
+ alert("hello");
+   var pfi_value=parseFloat($("#goods_value").val());
+    if(pfi_value!=sum){
+       document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with CFI Value do not match";
+    }
+    else{
+         document.getElementById("alert2").innerHTML = "";
+     }
+
+      }
+      
+    else {
+    var sumpart=0;
+    $("input[name='goods_value[]']").each(function() {
+     //   alert(this.value);
+     var a= this.value;
+
+     if (a.length) {
+      a=parseFloat(a);
+      sumpart=sumpart+a;
+     }
+      });
+
+
+    var pfi_value=parseFloat(sumpart);
+    alert(pfi_value);
     if(pfi_value!=sum){
        document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with CFI Value do not match";
     
     }
     else{
          document.getElementById("alert2").innerHTML = "";
-    
-    }
+      }
+
+
+     }
 
       }
 

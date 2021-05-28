@@ -102,10 +102,21 @@
 
 
                                
+                                                <div  class="form-group ltd">
+                                                    <label>
+                                                     Currency<span class="required"> *</span></label>
+
+                                                       
+                                                     <input  readonly name="currency"  type="text" id="currency" tabindex="1" class="form-control inltd" style="width:50%;">
+                                                    <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Currency</span>
+                                                </div>
+
 
 											<div  class="form-group ltd">
                                                     <label>
                                                        Transfer Value<span class="required"> *</span></label>
+
+
                                                      <input required name="transfer_value"  type="number" id="transfer_value" tabindex="1" class="form-control inltd" style="width:50%;">
                                                     <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Transfer Value</span>
                                                 </div>
@@ -296,15 +307,26 @@
                      var dat = bookings[x];
 
 					var pfi_value=dat.pfi_value;
-
-					  //if same booking id as selected
-                      // alert('yes');   
-					  if(pfi_value!='0' || pfi_value!=''){
+                    
+                    if(dat.id==val){
+                        if(pfi_value!='0' || pfi_value!=''){
                            $("#transfer_value").attr({
                                "max" : pfi_value
                                  });
+                                }
 
-			             	}
+                      $("#currency").val(dat.currency);        
+
+                       
+                      
+                    }
+					  //if same booking id as selected
+                      // alert('yes');   
+
+
+					  
+
+
 					 console.log(dat.pfi_value);
                   
                  }

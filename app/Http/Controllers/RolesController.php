@@ -508,6 +508,83 @@ class RolesController extends Controller
             }
             else
                 $role->revokePermissionTo('adjustment-delete');
+			
+			
+			 if($request->has('banker-index')){
+                $permission = Permission::firstOrCreate(['name' => 'banker-index']);
+                if(!$role->hasPermissionTo('banker-index')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('banker-index');
+    
+            if($request->has('banker-add')){
+                $permission = Permission::firstOrCreate(['name' => 'banker-add']);
+                if(!$role->hasPermissionTo('banker-add')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('banker-add');
+    
+            if($request->has('banker-edit')){
+                $permission = Permission::firstOrCreate(['name' => 'banker-edit']);
+                if(!$role->hasPermissionTo('banker-edit')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('banker-edit');
+    
+            if($request->has('banker-delete')){
+                $permission = Permission::firstOrCreate(['name' => 'banker-delete']);
+                if(!$role->hasPermissionTo('banker-delete')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('banker-delete');
+			
+			
+			 if($request->has('clearingagent-index')){
+                $permission = Permission::firstOrCreate(['name' => 'clearingagent-index']);
+                if(!$role->hasPermissionTo('clearingagent-index')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('clearingagent-index');
+    
+	
+	
+            if($request->has('clearingagent-add')){
+                $permission = Permission::firstOrCreate(['name' => 'clearingagent-add']);
+                if(!$role->hasPermissionTo('clearingagent-add')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('clearingagent-add');
+    
+            if($request->has('clearingagent-edit')){
+                $permission = Permission::firstOrCreate(['name' => 'clearingagent-edit']);
+                if(!$role->hasPermissionTo('clearingagent-edit')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('clearingagent-edit');
+    
+            if($request->has('clearingagent-delete')){
+                $permission = Permission::firstOrCreate(['name' => 'clearingagent-delete']);
+                if(!$role->hasPermissionTo('clearingagent-delete')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('clearingagent-delete');
+			
 
         $role = Role::where('id', '=', $id)->first();
         $role->name = $request->input('name');

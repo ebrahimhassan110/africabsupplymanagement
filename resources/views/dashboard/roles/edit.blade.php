@@ -367,6 +367,111 @@
                           </td>
                       </tr>
 					  
+					   <tr>
+                          <td>{{ 'Clearing Agent'}}</td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("clearingagent-index", $all_permission))
+                                  <input type="checkbox" value="1" id="clearingagent-index" name="clearingagent-index" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="clearingagent-index" name="clearingagent-index" />
+                                  @endif
+                                  <label for="clearingagent-index"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("clearingagent-add", $all_permission))
+                                  <input type="checkbox" value="1" id="clearingagent-add" name="clearingagent-add" checked>
+                                  @else
+                                  <input type="checkbox" value="1" id="clearingagent-add" name="clearingagent-add">
+                                  @endif
+                                  <label for="clearingagent-add"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("clearingagent-edit", $all_permission))
+                                  <input type="checkbox" value="1" id="clearingagent-edit" name="clearingagent-edit" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="clearingagent-edit" name="clearingagent-edit" />
+                                  @endif
+                                  <label for="clearingagent-edit"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("clearingagent-delete", $all_permission))
+                                  <input type="checkbox" value="1" id="clearingagent-delete" name="clearingagent-delete" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="clearingagent-delete" name="clearingagent-delete" />
+                                  @endif
+                                  <label for="clearingagent-delete"></label>
+                                </div>
+                            </div>
+                          </td>
+                      </tr>
+					  
+					 <tr>
+                          <td>{{ 'Banker'}}</td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("banker-index", $all_permission))
+                                  <input type="checkbox" value="1" id="banker-index" name="banker-index" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="banker-index" name="banker-index" />
+                                  @endif
+                                  <label for="banker-index"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("banker-add", $all_permission))
+                                  <input type="checkbox" value="1" id="banker-add" name="banker-add" checked>
+                                  @else
+                                  <input type="checkbox" value="1" id="banker-add" name="banker-add">
+                                  @endif
+                                  <label for="banker-add"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("banker-edit", $all_permission))
+                                  <input type="checkbox" value="1" id="banker-edit" name="banker-edit" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="banker-edit" name="banker-edit" />
+                                  @endif
+                                  <label for="banker-edit"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("banker-delete", $all_permission))
+                                  <input type="checkbox" value="1" id="banker-delete" name="banker-delete" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="banker-delete" name="banker-delete" />
+                                  @endif
+                                  <label for="banker-delete"></label>
+                                </div>
+                            </div>
+                          </td>
+                      </tr>
+					
+					  
 					  
                       <tr>
                           <td>{{ 'Institute'}}</td>

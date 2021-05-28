@@ -78,7 +78,7 @@
                   </br>
 
 
-                   <div class="row">
+                   <div id="blnotext" class="row">
                     <div class="col">
                       <label><b> 
                        BL No<span class="required"> *</span></b></label>
@@ -163,7 +163,7 @@
                   </br>    
 
 
-                   <div  class="row fullfield" >
+                   <div  class="row declarationfield" >
                     <div class="col">
                       <label><b> 
                         Bank Value <span class="required"> *</span></b>
@@ -182,7 +182,7 @@
                   </div>  
                   </br>  
 
-                   <div  class="row fullfield" >
+                   <div  class="row declarationfield" >
                     
                     <div class="col">
                       <label><b> 
@@ -264,6 +264,7 @@
                        Part Details <span class="required"> *</span></b></label>
                     </div>
                     <div class="col-8">
+                    
                              <table hidden id="part_table">
                               <h3 style="color:red;" id="alert">  </h3>
                                             <thead>
@@ -305,7 +306,7 @@
                        ETD <span class="required"> *</span></b></label>
                     </div>
                     <div class="col">
-                              <input  required name="etd" type="date" id="etd" tabindex="2" class="form-control" style="width:100%;">
+                              <input  required name="etd" type="date" id="etdinput" tabindex="2" class="form-control" style="width:100%;">
                     </div>
 
                     
@@ -418,12 +419,13 @@
      var pfi_value;
      var shipment_type;
      var advance_shipped_value;
+      var order_type;
 //	$("#mySelect").append('<option value=1>My option</option>');
 	
      var select=$("#supplier_id");
     $("#supplier_id").change(function () {
-        var val = $(this).val(); //get the value
-	document.getElementById("booking_id").options.length = 0;	
+     var val = $(this).val(); //get the value
+  	document.getElementById("booking_id").options.length = 0;	
 		 $.ajax({
             url         :'getPFI/'+val,
              type       :'GET',
@@ -579,8 +581,7 @@
 		for(x=0;x<bookings.length;x+=1){
                      var dat = bookings[x];
 
-					 var declaration_type=dat.declaration_type;
-                      var order_type=dat.order_type;
+				
 					  var booking_id=dat.id;
 					  //if same booking id as selected
                       // alert('yes');   
@@ -588,6 +589,8 @@
                      //   console.log('BOOKINGS ID'+booking_id);
                       //    console.log('BOOKINGS VALUE'+val+declaration_type);
 						  //save no_of days_for payment_days
+                       var declaration_type=dat.declaration_type;
+                        order_type=dat.order_type;
 						            payment_days=dat.payment_days; 
                         incoterms=dat.incoterms; 
                         shipped_value=dat.shipped_value;
@@ -612,7 +615,7 @@
 							$('#other_expense_value').removeAttr('required');
 							$('#advance_paid_value').removeAttr('required');
 							//set order type
-                             $("#order_type").val("BLANKET");	
+               $("#order_type").val("BLANKET");	
 							 $.ajax({
             url         :'getBookingPart/'+booking_id,
              type       :'GET',
@@ -669,6 +672,7 @@
 						
 				}
                 else {
+                  //else partial
                       //for backend ref  
                       $("#order_type").val("NORMAL");  
 
@@ -711,7 +715,23 @@
                 }
 
 
+                  if(declaration_type=='PARTIAL') {
+                  
+                       $(".declarationfield").attr("hidden",false);
+                              $("#bank_value").attr("required",true);
+                               $("#cash_value").attr("required",true);
+                              
+                      } 
+                      else{
+                          $(".declarationfield").attr("hidden",true);
+                              $("#bank_value").attr("required",false);
+                               $("#cash_value").attr("required",false);
 
+                      }
+
+
+
+                  // Shipment type Local
                  if(shipment_type=='Local'){
                   
              $('#bl_no_text').removeAttr('required');
@@ -864,10 +884,6 @@ nHTML +=`<ul class="list-group">
   //  nHTML += '<li class="list-group-item" >' + k + ' : - '+value+'</li>';
             }
 
-
-
-               
-            
                     console.log(nHTML);
                 document.getElementById("booking_info").innerHTML = '<div class="row" ><div class="col-8"><ul class="list-group">' + nHTML + '</ul> </div> </div>';
         
@@ -887,21 +903,26 @@ nHTML +=`<ul class="list-group">
 
 
 
-$('#etd').change(function() {
-    var date = $(this).val();
-//	var result = new Date(date);
-  //  result.setDate(date.getDate() + payment_days);
+$('#etdinput').change(function() {
+   var date = document.getElementById("etdinput").value;
+    var result = new Date(date);
+   result.setDate(result.getDate() + payment_days);
   //ebra
-  /*
-   var result = new Date(date);
-  result.setDate(result.getDate() + payment_days);  
-  alert(result);
-  */
-
+  
+ //var result = new Date(date);
+ // result.setDate(result.getDate() + payment_days);  
+// alert(convertdate(result));
+  
+document.getElementById("due_date").value=convertdate(result);
 });
 
 
-
+function convertdate(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
 
 
 //validate sum for validating advance paid values 
@@ -957,23 +978,51 @@ sumpart=$("#advance_paid_value").val();
      }
 
 
+//for bank and cash value sum
      function validatesum3() {
 //  var x = document.getElementById("myInput").value;
-
-  var bank_value=parseFloat($("#bank_value").val());
     var cash_value=parseFloat($("#cash_value").val());
-    var pfi_value=parseFloat($("#goods_value").val());
+     var bank_value=parseFloat($("#bank_value").val());
     var sum=bank_value+cash_value;
+
+    if(order_type=='NORMAL'){
+ alert("hello");
+   var pfi_value=parseFloat($("#goods_value").val());
+    if(pfi_value!=sum){
+       document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with CFI Value do not match";
+    }
+    else{
+         document.getElementById("alert2").innerHTML = "";
+     }
+
+      }
+      
+    else {
+    var sumpart=0;
+    $("input[name='goods_value[]']").each(function() {
+     //   alert(this.value);
+     var a= this.value;
+
+     if (a.length) {
+      a=parseFloat(a);
+      sumpart=sumpart+a;
+     }
+      });
+
+
+    var pfi_value=parseFloat(sumpart);
+    alert(pfi_value);
     if(pfi_value!=sum){
        document.getElementById("alert2").innerHTML = "The sum of Bank and Cash Value with CFI Value do not match";
     
     }
     else{
          document.getElementById("alert2").innerHTML = "";
-    
-    }
-
       }
+
+
+     }
+}
     
 
 
