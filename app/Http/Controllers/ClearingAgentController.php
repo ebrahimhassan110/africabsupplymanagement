@@ -55,11 +55,11 @@ class ClearingAgentController extends Controller
     {
         //
         $request->validate([
-            'documentype' => ['required','min:2'],
+            'name' => ['required','min:2'],
         ]);
 
         $data = $request->all();
-        $data['name'] = $data['documentype'];
+        $data['name'] = $data['name'];
 
         $clearingagent = ClearingAgent::create($data);
 
@@ -106,13 +106,13 @@ class ClearingAgentController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'clearingagent' => ['required','min:2'],
+            'currency' => ['required','min:2'],
         ]);
 
         $documentype = ClearingAgent::find($id);
-        $documentype->name =  $request->clearingagent;
+        $documentype->name =  $request->currency;
         $documentype->save();
-        $request->session()->flash('message', 'Successfully edited clearingagent');
+        $request->session()->flash('message', 'Successfully Edited clearingagent');
         return redirect()->route('clearingagent.index');
     }
 

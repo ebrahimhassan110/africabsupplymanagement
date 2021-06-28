@@ -585,6 +585,45 @@ class RolesController extends Controller
             else
                 $role->revokePermissionTo('clearingagent-delete');
 			
+			
+			
+			
+				 if($request->has('credit_note-index')){
+                $permission = Permission::firstOrCreate(['name' => 'credit_note-index']);
+                if(!$role->hasPermissionTo('credit_note-index')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('credit_note-index');
+    
+				if($request->has('credit_note-add')){
+                $permission = Permission::firstOrCreate(['name' => 'credit_note-add']);
+                if(!$role->hasPermissionTo('credit_note-add')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('credit_note-add');
+    
+            if($request->has('credit_note-edit')){
+                $permission = Permission::firstOrCreate(['name' => 'credit_note-edit']);
+                if(!$role->hasPermissionTo('credit_note-edit')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('credit_note-edit');
+    
+            if($request->has('credit_note-delete')){
+                $permission = Permission::firstOrCreate(['name' => 'credit_note-delete']);
+                if(!$role->hasPermissionTo('credit_note-delete')){
+                    $role->givePermissionTo($permission);
+                }
+            }
+            else
+                $role->revokePermissionTo('credit_note-delete');
+			
 
         $role = Role::where('id', '=', $id)->first();
         $role->name = $request->input('name');

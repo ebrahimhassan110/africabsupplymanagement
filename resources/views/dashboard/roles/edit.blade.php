@@ -471,7 +471,57 @@
                           </td>
                       </tr>
 					
-					  
+					   <tr>
+                          <td>{{ 'Credit Note'}}</td>
+						<td class="text-center">
+                              <div class="icheckbox_square-blue checked" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("credit_note-index", $all_permission))
+                                  <input type="checkbox" value="1" id="credit_note-index" name="credit_note-index" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="credit_note-index" name="credit_note-index" />
+                                  @endif
+                                  <label for="credit_note-index"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("credit_note-add", $all_permission))
+                                  <input type="checkbox" value="1" id="credit_note-add" name="credit_note-add" checked>
+                                  @else
+                                  <input type="checkbox" value="1" id="credit_note-add" name="credit_note-add">
+                                  @endif
+                                  <label for="credit_note-add"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("credit_note-edit", $all_permission))
+                                  <input type="checkbox" value="1" id="credit_note-edit" name="credit_note-edit" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="credit_note-edit" name="credit_note-edit" />
+                                  @endif
+                                  <label for="credit_note-edit"></label>
+                                </div>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                              <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false">
+                                <div class="checkbox">
+                                  @if(in_array("credit_note-delete", $all_permission))
+                                  <input type="checkbox" value="1" id="credit_note-delete" name="credit_note-delete" checked />
+                                  @else
+                                  <input type="checkbox" value="1" id="credit_note-delete" name="credit_note-delete" />
+                                  @endif
+                                  <label for="credit_note-delete"></label>
+                                </div>
+                            </div>
+                          </td>
+                      </tr>
 					  
                       <tr>
                           <td>{{ 'Institute'}}</td>

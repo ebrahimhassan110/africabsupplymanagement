@@ -77,7 +77,13 @@ Route::group(['middleware' => ['get.menu']], function () {
 		
         Route::resource('currency', CurrencyController::class);
         Route::resource('clearingagent', ClearingAgentController::class);
-        
+		
+		Route::resource('banker', BankerController::class);
+		
+		Route::get('/credit_note/getPFI/{id}','BankerController@getPFI')->name('banker-getPFI');
+		
+		Route::resource('credit_note', CreditNoteController::class);
+           
         Route::resource('Feetype', FeeTypeController::class);
 		    Route::resource('institute', InstituteController::class);
         Route::post('/attendance/search', 'AttendanceController@search')->name("attendance-search");
