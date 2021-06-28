@@ -4,7 +4,7 @@
                $prebooking_parts = \DB::table("prebooking_parts")->where("prebooking_id",$prebooking->id)->get();
            @endphp
       
-                  <div class="row">
+          <div class="row">
             <div class="col">
               <label><b> 
                        Company<span class="required"> *</span></b></label>
@@ -319,11 +319,11 @@
               </div>
               <div class="col-2">
                <?php
-             $created_by = \DB::table("users")->where("id",$prebooking->created_by)->get();
+             $created_by = \DB::table("users")->where("id",$prebooking->created_by)->first();
              $created_at=$prebooking->created_at;
 
                ?>
-                       <input readonly name="payment_mode" value="{{ $created_by[0]->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
+                       <input readonly name="payment_mode" value="{{ $created_by->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
                       </div>
 
                <div class="col-3" id="payment_days">
@@ -342,10 +342,10 @@
               </div>
               <div class="col-2">
                <?php
-             $created_by = \DB::table("users")->where("id",$prebooking->activated_by)->get();
+             $created_by = \DB::table("users")->where("id",$prebooking->activated_by)->first();
                 $activated_at=$prebooking->activated_at;
                ?>
-                       <input readonly name="payment_mode" value="{{ $created_by[0]->name }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
+                       <input readonly name="payment_mode" value="{{ $created_by->name ?? '' }}" readonly="true" type="text" id="delivery_date" class="form-control"  autofocus="" style="width:100%;" > 
                       </div>
 
                <div class="col-2" id="payment_days">
@@ -510,42 +510,30 @@
         
             </br> 
 
-                      
-          
-                    
-                                 
-                    
-                                    
-                     
-                     
-                   
-     
-                     
-                  
  
                                                                <tr>          
                                                                     <td colspan="3">
                                                                         <h3>  PreBooking Parts </h3>
                                                                         <table class="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgsupplierfeesInfo" style="border-style:None;width:99%;border-collapse:collapse;">
                                                                             <thead>
-                                                                        
+
                                                                                 <th>  Name </th>
                                                                                 <th>  Value </th>
-                                                                                
+
                                                                             </thead>
                                                                             <tbody>
                                                                                 @foreach($prebooking_parts as $pre_booking)
                                                                                     <tr class="sorting_asc" align="left" valign="top">
                                                                                         <td>{{ $pre_booking->name }}</td><td>{{ $pre_booking->value}}</td>
                                                                                     </tr>
-                        
+
                                                                                 @endforeach
                                                                             </tbody>
-                                                                                    
+
                                                                         </table>
                                                                     </td>
                                                                 </tr>
-                                                            
-                                                                </table>
+                                                            </body>
+                                                       </table>
                                                           
         

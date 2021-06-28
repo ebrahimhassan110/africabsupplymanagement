@@ -3,17 +3,7 @@
               <div class="row">
 
               <div class="container">
-              @if(count($errors))
-                  <div class="form-group">
-                      <div class="alert alert-danger">
-                          <ul>
-                              @foreach($errors->all() as $error)
-                                  <li>{{$error}}</li>
-                              @endforeach
-                          </ul>
-                      </div>
-                  </div>
-              @endif
+
 
               @if(session('error'))
                   <div class="form-group">
@@ -34,25 +24,64 @@
                     @csrf
                     <input type="hidden" name="_payment_type" value="{{ $payment_type }}">
 
+                <div class="row">
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div class="card-body">
+                      @if( $payment_type == 1)
+                         <span class="font-weight-bold"> PFI Value</span>
+                      @else
+                          <span class="font-weight-bold"> CFI Value</span>
+                      @endif
 
-                     
+                      <div class="text-value-lg">
+                          @if( $payment_type == 1)
+                            {{ $prebooking->pfi_value  }}
+                          @else
+                            {{ $prebooking->good_value  }}
+                          @endif
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- /.col-->
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <span class="font-weight-bold"> Advance Payment</span>
+                      <div class="text-value-lg"> {{ $prebooking->advance_paid }}</div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <span class="font-weight-bold"> Advance Paid</span>
+                      <div class="text-value-lg">{{ $prebooking->actual_advance_paid }}</div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- /.col-->
+
+
+
+              </div>
+
                     <div class="row form-group">
 
-                      <div class="col-md-4">
-                        <label> Supplier: </label>
-                        <div class="pt-2  font-weight-bold">
-
-                        {{ $prebooking->supplier->supplier_name }} ( {{ $prebooking->supplier->supplier_code }} ) -
-                        {{ $prebooking->supplier->address }} -
-                        {{ $prebooking->supplier->city }}
-
-                        </div>
-                      </div>
 
                       <input type="hidden" name="booking_no" value="{{ $prebooking->id }}">
 
                       <div class="col-md-4">
-                        <label> Payment Type: </label>
+  <label> Payment Type: </label>
+                        @if( $payment_type == 1)
+                          <input type="hidden" value="1" >
+                          <input type="text" class="form-control " value=" Advance Payment " readonly/>
+                        @elseif( $payment_type == 2 )
+
                         <div class="pt-2">
                             <select class="form-control select2" name="payment_type" data-placeholder="select payment type">
                               <option></option>
@@ -66,10 +95,13 @@
                               @endforeach
                             </select>
                         </div>
+                        @endif
+
                       </div>
 
                       <div class="col-md-4">
-
+                        <label> Payment Date: </label>
+                        <input type="text" name="payment_date" class="form-control date"/>
                       </div>
 
                     </div>
@@ -109,7 +141,6 @@
                       </div>
                       <div class="col-md-4">
                           <label>Banker:</label>
-
                             <select class="form-control select2" name="banker" data-placeholder="select payment type">
                               <option></option>
                               @foreach($bankers as $banker)
@@ -139,118 +170,15 @@
 
 
 
-
+<style>
+  .tab-content .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 82px;
+    padding: 1.25rem;
+  }
+</style>
 
 @section('javascript')
-    <style>
 
-      .info-card {
-        display: flex;
-        flex-wrap: nowrap;
-      }
-
-      .info-card div{
-         padding: 1em;
-      }
-
-      .info-card div label{
-         font-weight: bold;
-      }
-
-    </style>
-
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}" defer></script>
-    <script>
-
-      function calculatePercentage(amount,tt_charges){
-          var perc = (tt_charges / 100  ) * amount;
-          return perc;
-      }
-
-      $(".type").change(function(){
-
-          if( $(this).val() == "perc"){
-            $("#parcent").prop("hidden",false);
-            $("#parcent").prop("required",true);
-            var amount = $("#amount").val();
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-          }else{
-            $("#parcent").prop("hidden",true);
-            $("#parcent").prop("required",false);
-            $("#tt_charges").val("");
-          }
-
-      });
-
-
-
-      $("#parcent").on("input",function(e){
-
-          var amount = $("#amount").val();
-          var type = $("[name='type']:checked").val();
-          if(type == "perc"){
-
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
-          }
-      });
-
-      $("#amount").on("input",function(e){
-
-          var amount = $(this).val();
-          var type = $("[name='type']:checked").val();
-          if(type == "perc"){
-
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
-          }
-      });
-
-      function validateNumber(amount,bank_value,cash_value){
-
-        if(isNaN(amount)){
-          alert("Amount is not a number ");
-          return false;
-        }
-
-        if(isNaN(bank_value)){
-          alert("Bank Value is not a number ");
-          return false;
-        }
-        if(isNaN(cash_value)){
-          alert("Cash Value is not a number ");
-          return false;
-        }
-      }
-
-      function checksum(amount,bank_value,cash_value){
-          var total = parseFloat(bank_value) + parseFloat(cash_value);
-          console.log(total);
-          if( amount != total ){
-            alert("Bank value and cash value does not match Amount");
-            return false;
-          }
-      }
-
-      $("#payment_form").submit(function(e){
-
-        var amount = $("#amount").val();
-        var bank_value = $("#bk_value").val();
-        var cash_value = $("#cs_value").val();
-
-        if(validateNumber(amount,bank_value,cash_value) == false){
-          return false;
-        }
-
-        if(checksum(amount,bank_value,cash_value) == false ){
-          return false;
-        }
-
-
-
-      });
-
-    </script>
 @endsection

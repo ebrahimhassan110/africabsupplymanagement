@@ -13,9 +13,11 @@
                       <span class="card-title">{{ 'Add Payment' }}</span>
                     </div>
                     <div class="card-body p-2">
-                         @csrf
+
+
+                          @csrf
                           <div class="row form-group">
-                            <div class="col-12">
+                            <div class="col-sm-12">
                             <label>
                             Supplier
                             </label>
@@ -36,7 +38,7 @@
                           </div>
 
                           <div class="row form-group">
-                          <div class="col-12">
+                          <div class="col-sm-12">
                           <label>
                           Payment For:
                           </label>
@@ -44,64 +46,57 @@
                             <option></option>
                             <option value="1">BOOKING</option>
                             <option value="2">SHIPPING</option>
-                          </select>  
-                          </div> 
-                          </div> 
+                          </select>
+                          </div>
+                          </div>
                           <div class="row form-group">
-                          <div class="col-12 ajax-data">
-                          </div> 
-                          </div>						  
-                            
-                                    
-                      
-                     
-                  
+                          <div class="col-sm-12 ajax-data">
+                          </div>
+                          </div>
+
+
+
+
+
                 </div>
               </div>
             </div>
             <div class="col-lg-8">
                           <div class="row form-group">
-                            
+
                             <div class="col-12 prebooking-details">
-                             
+
                             </div>
-                          </div> 
+                          </div>
             </div>
           </div>
         </div>
           </form>
         </div>
-      
-@endsection
 
+@endsection
+<style>
+
+.nav-tabs-boxed .nav-tabs{
+  border-bottom: 1px solid !important;
+   border-color: #c4c9d0!important;
+   padding: 0.75rem 1.25rem !important;
+ }
+</style>
 
 @section('javascript')
- <style>
- .nav-tabs-boxed .tab-content{
-    padding: none !important;
-    border: none !important;
-    border-radius: none  !important;
-    
-    background-color: none !important;
-    border-color: none !important;
-    
- }
- .nav-tabs-boxed .nav-tabs{
-     border-bottom: 1px solid !important;
-    border-color: #c4c9d0!important;
-    padding: 0.75rem 1.25rem !important;
- </style>
+
 @if(Session::get('message'))
 
       <script>
         $(document).ready(function(){
           showToastr('success',"{{ session('message') }}");
         });
+
       </script>
 @endif
 
 <script>
-
       var getData = function(payment_type,supplier_id){
            $.ajax({
              data: { supplier_id : supplier_id, payment_type: payment_type },
@@ -110,7 +105,6 @@
                 $('.ajax-data').html(data);
                 $('.select2').select2({
                     theme: 'bootstrap4',
-
                 });
              }
            });
@@ -122,8 +116,8 @@
          if(supplier_id == "") {
           alert("Please Select supplier");
           return false;
-         }  
-         getData(payment_type,supplier_id);  
+         }
+         getData(payment_type,supplier_id);
       });
 
       $("select[name='supplier']").change(function(){
@@ -132,18 +126,18 @@
         if(payment_type == "") {
           return false;
         }
-        getData(payment_type,supplier_id); 
+        getData(payment_type,supplier_id);
       });
 
       var getBookingData = function(payment_type,preebooking_id){
         var url = "";
         if(payment_type == 1 ){
           url = "prebooking/"+preebooking_id;
-          
+
         }else{
           url = "shipment/"+preebooking_id;
         }
-       
+
 
         $.ajax({
           type: "GET",
@@ -152,90 +146,78 @@
             $("#loader").show();
           },
           success: function(data){
-           
-              /*var html = "<div class='card animate-bottom'>";
-              html += "<div class='card-header'>";
-              html += '<a class="btn btn-primary pull-right add-payment" href="#">  Add Payment </a>';
-              html += "</div>";
-              html += "<div class='card-body'>";
-              html += data;
-              html += "<div/>";
-              html += "</div>";
-              $(".prebooking-details").html(html);*/
-              
-              var html = "<div class='card animate-bottom nav-tabs-boxed'>";
-              //html += "<div class='card-header '>";
-              html += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
-              html += '<li class="nav-item "><a class="nav-link profile-1" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile" aria-selected="false">Add Payment</a></li>';
-html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History</a></li>';
-              html += '</ul>';
- 
-              //html += "</div>";
-              html += "<div class='card-body'>";
-              html += "<div class='tab-content'>";
+              var html = "<div class='card  nav-tabs-boxed'>";
+              html  += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
+              html  += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History </a></li>';
+              html  += '<li class="nav-item "><a class="nav-link profile-1" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile" aria-selected="false">Add Payment</a></li>';
+              html  += '</ul>';
+              html  += "<div class='card-body p-0'>";
+              html  += "<div class='tab-content'>";
               html  += '<div class="tab-pane active" id="booking_details_tab" role="tabpanel">';
-              html += data;
+              html  += data;
+              html  += '</div>';
+              html  += '<div class="tab-pane  payment_history" id="profile-3" role="tabpane3">';
               html  += '</div>';
               html  += '<div class="tab-pane  add_payment" id="profile-1" role="tabpane2">';
               html  += '</div>';
-              html  += '<div class="tab-pane  payment_history " id="profile-3" role="tabpane3">';
               html  += '</div>';
-               html  += '<div>';
-              html  += '</div>';
-              html += "</div>";
-              
-              html += "</div>";
-              html += "</div>";
+              html  += "</div>";
+
+              html  += "</div>";
               $(".prebooking-details").html(html);
-              
               $("#loader").hide();
           },
           error: function(data){
             $("#myModal .modal-body").html(data);
+          },complete:function(){
+
           }
         });
 
       }
 
+      // function renderDataCard()
+
       $(document).on("change","select[name='preebooking']",function(){
         var payment_type = $(this).data("payment_type");
         var preebooking_id = $(this).val();
-        
-        getBookingData(payment_type,preebooking_id);        
+        getBookingData(payment_type,preebooking_id);
       });
-      
+
       $(document).on("click",".booking_details_tab",function(){
-         var that = $("select[name='preebooking']");
-        var payment_type = that.data("payment_type");
-        var preebooking_id = that.val();
-        console.log(payment_type);
-        getBookingData(payment_type,preebooking_id);        
+          var that = $("select[name='preebooking']");
+          var payment_type = that.data("payment_type");
+          var preebooking_id = that.val();
+          getBookingData(payment_type,preebooking_id);
       });
-      
+
       $(document).on("click",".profile-1",function(e){
           e.preventDefault();
           var prebooking = $("select[name='preebooking']").val();
+          var payment_type = $("select[name='payment_type'] option:selected").val();
           $.ajax({
               url: "{{ route('payment.addpayment') }}",
-              data: { prebooking: prebooking },
+              data: { prebooking: prebooking ,payment_type: payment_type },
               success: function(data){
-              /*var html = "<div class='card animate-bottom nav-tabs-boxed'>";
-              html += "<div class='card-header '>";
-              html += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
-              html += '<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-controls="profile" aria-selected="false">Profile</a></li>';
-
-              html += '</ul>';
- 
-              html += "</div>";
-              html += "<div class='card-body'>";
-              html += "<div class='tab-content'>";
-              html  += '<div class="tab-pane active" id="booking_details_tab" role="tabpanel">';
-              html += data;
-              html  += '</div>';
-              html += "</div>";
-              html += "<div/>";
-              html += "</div>";*/
               $(".add_payment").html(data);
+              }
+          });
+      });
+
+      $(document).on("click",".profile-3",function(e){
+          e.preventDefault();
+          var prebooking = $("select[name='preebooking']").val();
+          var payment_type = $("select[name='payment_type'] option:selected").val();
+          if(payment_type == 1 ){
+             payment_type ="Booking";
+          }else{
+            payment_type ="Shipping";
+          }
+
+          $.ajax({
+              url: "./payment/history/"+prebooking+"/"+payment_type,
+              success: function(data){
+                $(".payment_history").html(data);
               }
           });
       });
@@ -243,6 +225,113 @@ html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" h
 </script>
 
 <script>
+
+      function calculatePercentage(amount,tt_charges){
+          var perc = (tt_charges / 100  ) * amount;
+          return perc;
+      }
+
+      $(".type").change(function(){
+
+          if( $(this).val() == "perc"){
+            $("#parcent").prop("hidden",false);
+            $("#parcent").prop("required",true);
+            var amount = $("#amount").val();
+            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
+          }else{
+            $("#parcent").prop("hidden",true);
+            $("#parcent").prop("required",false);
+            $("#tt_charges").val("");
+          }
+
+      });
+
+
+
+      $("#parcent").on("input",function(e){
+
+          var amount = $("#amount").val();
+          var type = $("[name='type']:checked").val();
+          if(type == "perc"){
+            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
+          }
+      });
+
+      $("#amount").on("input",function(e){
+          var amount = $(this).val();
+          var type = $("[name='type']:checked").val();
+          if(type == "perc"){
+            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
+          }
+      });
+
+      function validateNumber(amount,bank_value,cash_value){
+
+        if(isNaN(amount)){
+          alert("Amount is not a number ");
+          return false;
+        }
+
+        if(isNaN(bank_value)){
+          alert("Bank Value is not a number ");
+          return false;
+        }
+        if(isNaN(cash_value)){
+          alert("Cash Value is not a number ");
+          return false;
+        }
+      }
+
+      function checksum(amount,bank_value,cash_value){
+          var total = parseFloat(bank_value) + parseFloat(cash_value);
+
+          if( amount != total ){
+            alert("Bank value and cash value does not match Amount");
+            return false;
+          }
+      }
+
+      $("#payment_form").submit(function(e){
+
+        var amount = $("#amount").val();
+        var bank_value = $("#bk_value").val();
+        var cash_value = $("#cs_value").val();
+
+        if(validateNumber(amount,bank_value,cash_value) == false){
+          return false;
+        }
+
+        if(checksum(amount,bank_value,cash_value) == false ){
+          return false;
+        }
+
+
+
+      });
+
+    </script>
+
+    <style>
+
+      .info-card {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .info-card div{
+         padding: 1em;
+      }
+
+      .info-card div label{
+         font-weight: bold;
+      }
+
+    </style>
+
+    <script src="{{ asset('js/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}" defer></script>
+    <script>
 
       function calculatePercentage(amount,tt_charges){
           var perc = (tt_charges / 100  ) * amount;
@@ -307,7 +396,7 @@ html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" h
 
       function checksum(amount,bank_value,cash_value){
           var total = parseFloat(bank_value) + parseFloat(cash_value);
-          console.log(total);
+
           if( amount != total ){
             alert("Bank value and cash value does not match Amount");
             return false;
@@ -328,10 +417,8 @@ html += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" h
           return false;
         }
 
-
-
       });
 
     </script>
- 
+
 @endsection

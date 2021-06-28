@@ -126,12 +126,19 @@
           theme: 'bootstrap4',
 
        });
-       $('.date').datepicker({
-        format: 'dd/mm/yyyy',
-        autoclose: true,
-        orientation: 'bottom auto',
-       });
-       $('.date').mask('00/00/0000');
+
+       function datepicker(){
+         $('.date').datepicker({
+          format: 'dd/mm/yyyy',
+          autoclose: true,
+          orientation: 'bottom auto',
+         });
+         $('.date').mask('00/00/0000');
+       }
+
+       datepicker();
+
+
        $('.datatable').DataTable();
     </script>
     @yield('javascript')
