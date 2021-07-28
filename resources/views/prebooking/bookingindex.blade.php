@@ -21,7 +21,7 @@
 							<th>Supplier</th>
 							  <th>Company</th>
                             <th>PFI Number</th>
-                            <th>Lpo No</th>
+                            <th>LPO No</th>
 							<th></th>
 
                           </tr>

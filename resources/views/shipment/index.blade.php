@@ -15,22 +15,31 @@
                     </div>
                     <div class="card-body">
 						<div class="table-responsive">
-                                <table width="100%">
-                                    <tbody>
-									
-										<tr>
-											<td colspan="5">
-												<table class="table table-responsive-sm table-striped datatable" id="table" cellspacing="0" cellpadding="0" border="0" id="ctl00_ContentPlaceHolder1_dgshipmentInfo" style="border-style:None;width:100%;border-collapse:collapse;">
+                               
+												<table class="table table-responsive-sm table-striped datatable" >
+
+                            <thead>
+                          <tr>
+                            <th>SNo.</th>
+                          
+                            <th>Date</th>
+                            <th>CFI No</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+              
+
+                          </tr>
+                        </thead>
+
+
 												  <tbody>
-														<tr class="sorting_asc" align="left" valign="top" style="font-weight:bold;">
-														   <td align="left">SNo.</td><td align="left">Date</td><td align="left">CFI No</td><td align="left">Amount</td><td> Action </td>
-														</tr>
+														
 														@foreach($shipments as $key=>$shipment)
 															<tr>
 																<td> {{ ($key + 1 ) }} </td>
 																<td> {{ date('d/m/Y',strtotime($shipment->created_at)) }}</td>
 																<td> {{ $shipment->cfi_no }} </td>
-																<td class="text-right"> {{ number_format($shipment->goods_value,2) }} </td>
+																<td > {{ number_format($shipment->goods_value,2) }} </td>
 																<td class="d-flex flex-row">
 
                                   <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/shipment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">View</a>
@@ -50,10 +59,7 @@
 
 													</tbody>
 												</table>
-											</td>
-										</tr>
-									</tbody>
-								</table>
+										
                       </div>
                     </div>
                 </div>

@@ -88,22 +88,54 @@
 						</br>	
 
 
+
+
 					 <div class="row">
 				    <div class="col-4">
 				      <label><b> 
                         PFI Value<span class="required"> *</span></b></label>
 				    </div>
 				    <div class="col-2">
-				   <select required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
-								<option value="0">- Select Currency-</option>
+				   <select  required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
+								
 								@foreach($currency as $cmp)    
-                                <option value="{{$cmp->name}}">{{ $cmp->name }} </option>
+                                <option  <?php if($cmp->base_currency==1){ echo "selected";} else {echo "hidden"; } ?> value="{{$cmp->name}}">{{ $cmp->name }} </option>
 									@endforeach
 						</select>  
                     </div>
 
                      <div class="col-2">
 						 <input name="pfi_value" id="pfi_value" placeholder="Amount" type="number"  class="form-control"  autofocus="" style="width:100%;" required>
+                     </div>	
+
+				     <div class="col-3">
+				     	
+				     </div>
+				      <div class="col-1">
+				      </div>
+				  </div>			
+
+				</br>	
+
+
+
+
+					 <div class="row">
+				    <div class="col-4">
+				      <label><b> 
+                        Alternate Currency<span class="required"> *</span></b></label>
+				    </div>
+				    <div class="col-2">
+				   <select  required name="alternate_currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:100%;">
+								<option value="0">- Select Currency-</option>
+								@foreach($currency as $cmp)    
+                                <option <?php if($cmp->base_currency==1){ echo "hidden";}  ?> value="{{$cmp->name}}">{{ $cmp->name }} </option>
+									@endforeach
+						</select>  
+                    </div>
+
+                     <div class="col-2">
+						 <input name="alternate_currency_value" id="alternate_currency_value" placeholder="Alternate Amount" type="number"  class="form-control"  autofocus="" style="width:100%;" required>
                      </div>	
 
 				     <div class="col-3">
@@ -773,10 +805,17 @@ var date;
 			 
 			
 			var date = new Date(rfp_date);
-			var date_delivery=new Date();
+
+			var date_delivery=new Date(rfp_date);
 			var no_of_delivery_days= parseInt(delivery_period_days); 
-			date_delivery.setDate(date.getDate()+no_of_delivery_days);
+
+			
+			 date_delivery.setDate(date.getDate()+no_of_delivery_days);
+		//	alert(date_delivery);
+
 			var y=date_delivery.getFullYear();
+
+
 			var m=date_delivery.getMonth()+1; 
 			m=String(m);
 
@@ -812,7 +851,8 @@ var date;
 			 $('#checkbox2').prop("checked", true);
 			
 			var date = new Date(order_confirmation_date);
-			var date_delivery=new Date();
+		
+			var date_delivery=new Date(order_confirmation_date);
 			var no_of_delivery_days= parseInt(delivery_period_days); 
 			date_delivery.setDate(date.getDate()+no_of_delivery_days);
 			var y=date_delivery.getFullYear();
