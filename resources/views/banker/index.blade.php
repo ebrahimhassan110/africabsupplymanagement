@@ -20,6 +20,12 @@
                           <tr>
                             <td>ID</td>
                             <th>Name</th>
+                               <th>City</th>
+                                  <th>Country</th>
+                                     <th>Mobile</th>
+                                        <th>Email</th>
+
+
                             <th>Action</th>
 
                           </tr>
@@ -34,7 +40,7 @@
 								    <td>{{$banker->country }}</td>
 									  <td>{{$banker->mobile_no }}</td>
 									   <td>{{$banker->email }}</td>
-									    <td>{{$banker->country }}</td>
+									   
                               <td class="d-flex flex-row">
                                 @if(in_array("banker-edit", $all_permission))
                                 <a href="{{ url('/banker/' . $banker->id . '/edit') }}" class="btn  btn-primary btn-sm">Edit</a>

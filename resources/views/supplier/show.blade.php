@@ -9,7 +9,7 @@
           												<label>
           													Supplier Name
                                                                        </label>
-          													 <b> {{ $supplier->name }} </b>
+          													 <b> {{ $supplier->supplier_name }} </b>
           												<span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
           											</div>
           										</td>

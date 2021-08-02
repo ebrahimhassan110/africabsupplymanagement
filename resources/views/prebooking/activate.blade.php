@@ -1055,7 +1055,7 @@ var date;
        
       
       var date = new Date(rfp_date);
-      var date_delivery=new Date();
+      var date_delivery=new Date(rfp_date);
       var no_of_delivery_days= parseInt(delivery_period_days); 
       date_delivery.setDate(date.getDate()+no_of_delivery_days);
       var y=date_delivery.getFullYear();
@@ -1094,7 +1094,7 @@ var date;
        $('#checkbox2').prop("checked", true);
       
       var date = new Date(order_confirmation_date);
-      var date_delivery=new Date();
+      var date_delivery=new Date(order_confirmation_date);
       var no_of_delivery_days= parseInt(delivery_period_days); 
       date_delivery.setDate(date.getDate()+no_of_delivery_days);
       var y=date_delivery.getFullYear();

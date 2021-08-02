@@ -79,12 +79,12 @@
                                             <label>
                                               Currency<span class="required"> *</span></label>
                                           <select required name="currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
-                <option value="0">- Select -</option>
+              
                 @foreach($currency as $cmp)    
                    @php
                          $selected = 0;
                           if(  isset($prebooking->currency) AND  $prebooking->currency == $cmp->name)
-                            $selected = "selected";
+                            $selected = "selected" ;  else $selected="hidden";
                     @endphp
 
                                 <option {{ $selected}} value="{{$cmp->name}}" >{{ $cmp->name }} </option>
@@ -92,6 +92,47 @@
 
                   </select>  
                                         </div>
+
+
+                      <div class="form-group">
+                                            <label>
+                                               PFI Value<span class="required"> *</span></label>
+                                            <input value="{{$prebooking->pfi_value}}" name="pfi_value" id="pfi_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Value</span>
+                                        </div>            
+
+
+
+
+                      <div class="form-group">
+                                            <label>
+                                             Alternate Currency<span class="required"> *</span></label>
+                                          <select required name="alternate_currency" id="ctl00_ContentPlaceHolder1_ddlbusinesstype" tabindex="1" class="form-control" style="width:50%;">
+              
+                @foreach($currency as $cmp)    
+                   @php
+                         $selected = 0;
+                          if(  isset($prebooking->alternate_currency) AND  $prebooking->alternate_currency == $cmp->name)
+                            $selected = "selected" ;  
+
+                           if($cmp->base_currency=='1') $selected="hidden"; 
+
+                    @endphp
+
+                                <option {{ $selected}} value="{{$cmp->name}}" >{{ $cmp->name }} </option>
+                  @endforeach
+
+                  </select>  
+                                        </div>
+
+
+                      <div class="form-group">
+                                            <label>
+                                               Alternate Currency Value<span class="required"> *</span></label>
+                                            <input value="{{$prebooking->alternate_currency_value}}" name="alternate_currency_value" id="alternate_currency_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
+                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Value</span>
+                                        </div>                                       
+
                     
                     
                      <div class="form-group">
@@ -138,12 +179,7 @@
                     
                     
                     
-                     <div class="form-group">
-                                            <label>
-                                               PFI Value<span class="required"> *</span></label>
-                                            <input value="{{$prebooking->pfi_value}}" name="pfi_value" id="pfi_value" type="text"  class="form-control"  autofocus="" style="width:50%;" required>
-                                            <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">PFI Value</span>
-                                        </div>
+                   
                     
                      <div class="form-group">
                                             <label>
@@ -237,7 +273,7 @@
                 </thead>
                 
                 <tbody>
-
+                    <?php $ind=0; ?>
                    @foreach($prebooking_parts as $ii)
                 <tr>
                   <th scope="row">
@@ -245,7 +281,13 @@
                     <input class="form-control"  type="text"  value="{{$ii->name}}" name="partName[]" /></th>
                   <td><input class="form-control"  type="text" value="{{$ii->value}}"  oninput="validatesum()" name="partValue[]" /></td>
                   <td><input class="form-control"  type="date" value="{{$ii->date}}" name="partDate[]" /></td>
-                  <td> <button type="button" id="addpart">Add  </button></td>
+                  <td> 
+                    <?php if($ind==0) { ?>
+                    <button type="button" id="addpart">Add  </button>
+                  <?php }
+                    $ind=1;
+                   ?>
+                  </td>
                   
                 </tr>
                 @endforeach
@@ -254,7 +296,7 @@
                   </table>    
                   </div>
                 <?php   } ?>
-                    
+                    </br>
                       <div class="form-group">
                                             <label>
                                                INCOTERMS<span class="required"> *</span></label>
