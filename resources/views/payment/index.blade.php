@@ -5,7 +5,17 @@
 
         <div class="container-fluid">
           <div class="animated fadeIn">
-         <form method="POST" action="{{ route('payment.store') }}" id="payment_form">
+          @if(session('error'))
+                  <div class="form-group">
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach(session('error') as $err)
+                                  <li>{{$err}}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                  </div>
+              @endif
             <div class="row">
               <div class="col-sm-4">
                 <div class="card">
@@ -13,51 +23,44 @@
                       <span class="card-title">{{ 'Add Payment' }}</span>
                     </div>
                     <div class="card-body p-2">
+                        @csrf
+                      <div class="row form-group">
+                        <div class="col-sm-12">
+                        <label>
+                        Supplier
+                        </label>
+                        <select  name="supplier" id="supplier" class="form-control select2" width="50" data-placeholder="choose supplier" required>
+                          <option></option>
 
+                          @foreach($suppliers as $supplier)
 
-                          @csrf
-                          <div class="row form-group">
-                            <div class="col-sm-12">
-                            <label>
-                            Supplier
-                            </label>
-                            <select  name="supplier" id="supplier" class="form-control select2" data-placeholder="choose supplier" required>
-                              <option></option>
+                            @php
+                              $selected = 0;
+                              if(   old('supplier') == $supplier->id )
+                                $selected = "selected";
+                            @endphp
+                            <option {{$selected}} value="{{$supplier->id}}">{{ $supplier->supplier_name }} {{ '('.$supplier->address.')' }}</option>
+                          @endforeach
+                        </select>
+                        </div>
+                      </div>
 
-                              @foreach($suppliers as $supplier)
-
-                                @php
-                                  $selected = 0;
-                                  if(   old('supplier') == $supplier->id )
-                                    $selected = "selected";
-                                @endphp
-                                <option {{$selected}} value="{{$supplier->id}}">{{ $supplier->supplier_name }} {{ '('.$supplier->address.')' }}</option>
-                              @endforeach
-                            </select>
-                            </div>
-                          </div>
-
-                          <div class="row form-group">
-                          <div class="col-sm-12">
-                          <label>
+                    <div class="row form-group">
+                      <div class="col-sm-12">
+                        <label>
                           Payment For:
-                          </label>
-                          <select class="form-control select2" name="payment_type" data-placeholder="select payment type" required>
-                            <option></option>
-                            <option value="1">BOOKING</option>
-                            <option value="2">SHIPPING</option>
-                          </select>
-                          </div>
-                          </div>
-                          <div class="row form-group">
-                          <div class="col-sm-12 ajax-data">
-                          </div>
-                          </div>
-
-
-
-
-
+                        </label>
+                        <select class="form-control select2" name="payment_type"  width="100" data-placeholder="select payment type" required>
+                          <option></option>
+                          <option value="1">BOOKING</option>
+                          <option value="2">SHIPPING</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-sm-12 ajax-data">
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -70,42 +73,69 @@
                           </div>
             </div>
           </div>
-        </div>
-          </form>
+        </div>          
         </div>
 
 @endsection
 <style>
 
 .nav-tabs-boxed .nav-tabs{
-  border-bottom: 1px solid !important;
-   border-color: #c4c9d0!important;
-   padding: 0.75rem 1.25rem !important;
+    border-bottom: 1px solid !important;
+    border-color: #c4c9d0!important;
+    padding: 0.75rem 1.25rem !important;
  }
+ 
+ select{
+    max-width: 350px !important; 
+ }
+ 
+ .nav-link{
+     padding: 1rem 1rem !important;
+ }
+ 
+ .nav-tabs-boxed .nav-tabs{
+     padding:0 !important;
+ }
+ 
+</style>
+<style>
+
+      .info-card {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .info-card div{
+         padding: 1em;
+      }
+
+      .info-card div label{
+         font-weight: bold;
+      }
+
 </style>
 
 @section('javascript')
 
 @if(Session::get('message'))
 
-      <script>
-        $(document).ready(function(){
-          showToastr('success',"{{ session('message') }}");
-        });
-
-      </script>
-@endif
-
 <script>
+  $(document).ready(function(){
+    showToastr('success',"{{ session('message') }}");
+  });
+
+</script>
+@endif
+<script src="{{ asset('js/Chart.min.js') }}"></script>
+<script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
+<!-- <script src="{{ asset('js/main.js') }}" defer></script> -->
+<script>      
       var getData = function(payment_type,supplier_id){
            $.ajax({
              data: { supplier_id : supplier_id, payment_type: payment_type },
              url: "{{ route("payment.getdata") }}",
              success: function(data){
-                $('.ajax-data').html(data);
-                $('.select2').select2({
-                    theme: 'bootstrap4',
-                });
+                $('.ajax-data').html(data);               
              }
            });
       }
@@ -138,14 +168,13 @@
           url = "shipment/"+preebooking_id;
         }
 
-
         $.ajax({
           type: "GET",
           url: url,
           beforeSend: function(){
             $("#loader").show();
           },
-          success: function(data){
+          success: function(data){           
               var html = "<div class='card  nav-tabs-boxed'>";
               html  += '<ul class="nav nav-tabs" role="tablist"><li class="nav-item"><a class="nav-link booking_details_tab active" data-toggle="tab" href="#booking_details_tab" role="tab" aria-controls="home" aria-selected="true">View Details</a></li>';
               html  += '<li class="nav-item "><a class="nav-link profile-3" data-toggle="tab" href="#profile-3" role="tab" aria-controls="profile" aria-selected="false">Payment History </a></li>';
@@ -162,15 +191,13 @@
               html  += '</div>';
               html  += '</div>';
               html  += "</div>";
-
               html  += "</div>";
-              $(".prebooking-details").html(html);
-              $("#loader").hide();
+              $(".prebooking-details").html(html);                        
           },
           error: function(data){
             $("#myModal .modal-body").html(data);
           },complete:function(){
-
+                    
           }
         });
 
@@ -222,17 +249,13 @@
           });
       });
 
-</script>
-
-<script>
 
       function calculatePercentage(amount,tt_charges){
           var perc = (tt_charges / 100  ) * amount;
           return perc;
       }
 
-      $(".type").change(function(){
-
+      $(document).on("change",".type",function(){
           if( $(this).val() == "perc"){
             $("#parcent").prop("hidden",false);
             $("#parcent").prop("required",true);
@@ -243,13 +266,9 @@
             $("#parcent").prop("required",false);
             $("#tt_charges").val("");
           }
-
       });
 
-
-
-      $("#parcent").on("input",function(e){
-
+      $(document).on("input","#parcent",function(e){
           var amount = $("#amount").val();
           var type = $("[name='type']:checked").val();
           if(type == "perc"){
@@ -257,13 +276,53 @@
           }
       });
 
-      $("#amount").on("input",function(e){
+      $(document).on("input","#amount",function(e){
           var amount = $(this).val();
           var type = $("[name='type']:checked").val();
           if(type == "perc"){
             $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-          }
+          }        
       });
+
+      function validateNumber(amount,bank_value,cash_value){
+        if(isNaN(amount)){
+          alert("Amount is not a number ");
+          return false;
+        }
+        if(isNaN(bank_value)){
+          alert("Bank Value is not a number ");
+          return false;
+        }
+        if(isNaN(cash_value)){
+          alert("Cash Value is not a number ");
+          return false;
+        }
+      }
+
+      function checksum(amount,bank_value,cash_value){
+          var total = parseFloat(bank_value) + parseFloat(cash_value);
+          if( amount != total ){
+            alert("Bank value and cash value does not match Amount");
+            return false;
+          }
+      }
+
+      $("#payment_form").submit(function(e){
+        var amount = $("#amount").val();
+        var bank_value = $("#bk_value").val();
+        var cash_value = $("#cs_value").val();
+        if(validateNumber(amount,bank_value,cash_value) == false){
+          return false;
+        }
+        if(checksum(amount,bank_value,cash_value) == false ){
+          return false;
+        }
+      });
+
+      function calculatePercentage(amount,tt_charges){
+          var perc = (tt_charges / 100  ) * amount;
+          return perc;
+      }
 
       function validateNumber(amount,bank_value,cash_value){
 
@@ -291,120 +350,8 @@
           }
       }
 
-      $("#payment_form").submit(function(e){
-
-        var amount = $("#amount").val();
-        var bank_value = $("#bk_value").val();
-        var cash_value = $("#cs_value").val();
-
-        if(validateNumber(amount,bank_value,cash_value) == false){
-          return false;
-        }
-
-        if(checksum(amount,bank_value,cash_value) == false ){
-          return false;
-        }
-
-
-
-      });
-
-    </script>
-
-    <style>
-
-      .info-card {
-        display: flex;
-        flex-wrap: nowrap;
-      }
-
-      .info-card div{
-         padding: 1em;
-      }
-
-      .info-card div label{
-         font-weight: bold;
-      }
-
-    </style>
-
-    <script src="{{ asset('js/Chart.min.js') }}"></script>
-    <script src="{{ asset('js/coreui-chartjs.bundle.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}" defer></script>
-    <script>
-
-      function calculatePercentage(amount,tt_charges){
-          var perc = (tt_charges / 100  ) * amount;
-          return perc;
-      }
-
-      $(".type").change(function(){
-
-          if( $(this).val() == "perc"){
-            $("#parcent").prop("hidden",false);
-            $("#parcent").prop("required",true);
-            var amount = $("#amount").val();
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-          }else{
-            $("#parcent").prop("hidden",true);
-            $("#parcent").prop("required",false);
-            $("#tt_charges").val("");
-          }
-
-      });
-
-
-
-      $("#parcent").on("input",function(e){
-
-          var amount = $("#amount").val();
-          var type = $("[name='type']:checked").val();
-          if(type == "perc"){
-
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
-          }
-      });
-
-      $("#amount").on("input",function(e){
-
-          var amount = $(this).val();
-          var type = $("[name='type']:checked").val();
-          if(type == "perc"){
-
-            $("#tt_charges").val(calculatePercentage(amount,$("#parcent").val()));
-
-          }
-      });
-
-      function validateNumber(amount,bank_value,cash_value){
-
-        if(isNaN(amount)){
-          alert("Amount is not a number ");
-          return false;
-        }
-
-        if(isNaN(bank_value)){
-          alert("Bank Value is not a number ");
-          return false;
-        }
-        if(isNaN(cash_value)){
-          alert("Cash Value is not a number ");
-          return false;
-        }
-      }
-
-      function checksum(amount,bank_value,cash_value){
-          var total = parseFloat(bank_value) + parseFloat(cash_value);
-
-          if( amount != total ){
-            alert("Bank value and cash value does not match Amount");
-            return false;
-          }
-      }
-
-      $("#payment_form").submit(function(e){
-
+      $(document).on("submit","#payment_form",function(e){
+           
         var amount = $("#amount").val();
         var bank_value = $("#bk_value").val();
         var cash_value = $("#cs_value").val();
@@ -418,6 +365,10 @@
         }
 
       });
+      
+     
+      
+       
 
     </script>
 

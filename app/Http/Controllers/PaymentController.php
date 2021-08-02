@@ -59,14 +59,18 @@ class PaymentController extends Controller
         }
         if(  $payment_type  == 1){
             $prebooking = PreBooking::with("supplier")->where("id",$id)->first();
+            $filter_column = "booking_no";
         }
         else {
             $prebooking = Shipment::with("supplier")->where("id",$id)->first();
+            $filter_column = "shipment_id";
         }
-
-        $payment_types = DB::table("payment_types")->get();
+        $query = array("amount as total_paid");
+        $paymentdetails = Payment::where($filter_column,$prebooking->id)->selectRaw(implode(',', $query))->first();
+        
+        $payment_types = DB::table("payment_types")->where("status",1)->get();
         $bankers = DB::table("tbbanker")->get();
-        return  view("payment.create",compact("prebooking","payment_types","bankers","payment_type"));
+        return  view("payment.create",compact("prebooking","payment_types","bankers","payment_type","paymentdetails"));
     }
 
     public function paymentlist()
@@ -218,70 +222,58 @@ class PaymentController extends Controller
                 $all_permission[] = $permission->name;
             if(empty($all_permission))
                 $all_permission[] = 'dummy text';
-
+            
+            $data = $request->all();
             $_payment_type = $request->_payment_type;
             $payment_type  = $request->payment_type;
-
+           
+            $date = Carbon::createFromFormat('d/m/Y',$request->payment_date);
+            $payment_date = $date->format("Y-m-d");
+            
+          
+            //return $_payment_type;
             if($_payment_type == 1 ){
+                //booking payment
                 $prebookingData =  PreBooking::find($request->booking_no);
                 if( $payment_type == 1 ){
+                    //return "here";
                     $tobepayed = $request->amount + $prebookingData->actual_advance_paid;
 
                     if( $tobepayed > $prebookingData->advance_paid  ){
-                        $error["payment"] = "Amount exceeds advance payment value";
+                        $error["payment"] = "Amount to be paid exceeds advance payment value";
                         return redirect()->back()->with("error",$error)->withInput();
                     }
-                    $prebookingData->advance_payment_date = $request->payment_date;
+               
+                    if($prebookingData->radio == 1){
+
+                        $delivery_period_days = $prebookingData->delivery_period_days;
+                    
+                        $prebookingData->delivery_date =  date('Y-m-d',strtotime("+$delivery_period_days days",strtotime($payment_date)));
+
+                    }
+
+                    $prebookingData->advance_payment_date = $payment_date;
                     $prebookingData->actual_advance_paid = $tobepayed;
                     $prebookingData->save();
                 }
             }
             else{
+                //shipping payment                
                 $prebookingData =  Shipment::find($request->booking_no);
-                if( $payment_type == 1 ){
-                    $tobepayed = $request->amount + $prebookingData->actual_advance_paid;
-
-                    if( $tobepayed > $prebookingData->advance_paid_value ||  $tobepayed > ($prebookingData->actual_advance_paid + $request->amount) ){
-                        $error["payment"] = "Amount exceeds advance payment value";
-                        return redirect()->back()->with("error",$error)->withInput();
-                    }
-                    $prebookingData->actual_advance_paid = $tobepayed;
-                    $prebookingData->save();
-                }else if( $payment_type == 2 ){
-
-                }else if( $payment_type == 3 ){
-                    //return "number 3";
-                    //booking amount
-
-                    $tobepayed_book_value =  ($prebookingData->goods_value - $prebookingData->advance_paid_value)  - $prebookingData->actual_paid;
-                    $error = [];
-
-                    if($tobepayed_book_value < 1){
-
-                        $error["payment"] = "Payment completed";
-
-                        return redirect()->back()->with("error",$error)->withInput();
-
-                    }
-
-
-                    $actual_paid = $prebookingData->actual_paid + $request->amount;
-                    if($tobepayed_book_value > $actual_paid){
-                        $error["payment"] = "Payment exceed proforma invoice value";
-                        return redirect()->back()->with("error",$error)->withInput();
-                    }
-
-                    $prebookingData->actual_paid = $actual_paid;
-                    $prebookingData->bank_value = $request->bank_value;
-                    $prebookingData->cash_value = $request->cash_value;
-                    $prebookingData->save();
-
-
+                $availableForPayment = ( $prebookingData->goods_value + $prebookingData->other_expense_value ) - $prebookingData->actual_paid;
+                if( $request->amount > $availableForPayment ){
+                    $error["payment"] = "Amount exceeds advance payment value";
+                    return redirect()->back()->with("error",$error)->withInput();
                 }
+                $prebookingData->actual_paid = $prebookingData->actual_paid + $request->amount;
+                $data["booking_no"] = null;
+                $data["shipment_id"]  = $request->booking_no;
             }
-            $data = $request->all();
+           
+            
             $data["user_id"] =  Auth::id();
             $prebookingData =  Payment::create($data);
+            
             return redirect()->route("payment.index")->with("message","Payment added successfully");
 
         }
@@ -306,11 +298,11 @@ class PaymentController extends Controller
 
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if (!is_null($role->hasPermissionTo('payment-add')) && $role->hasPermissionTo('payment-add')){
-  return view("payment.payment_history",compact("id","type"));
-}
-else{
-  return "Not Allowed";
-}
+            return view("payment.payment_history",compact("id","type"));
+        }
+        else{
+          return "Not Allowed";
+        }
     }
 
 

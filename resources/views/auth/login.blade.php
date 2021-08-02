@@ -43,12 +43,11 @@
                     </div>
               </div>
             </div>
-            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
-              <div class="card-body text-center">
+            <div class="card p-4 text-white" style="width:44%">
+              <div class="card-body text-center login-bg">
                 <div>
-                  <h3>Africab Supply Management </h3>
-                  <p><img  class="c-sidebar-brand-full" src="{{ url('/assets/brand/logo.png') }}" width="200" height="200" alt="CoreUI Logo"></p>
-
+                  <h4 class="text-dark">Africab Supply Management </h4>
+               
                 </div>
               </div>
             </div>
@@ -56,6 +55,16 @@
         </div>
       </div>
     </div>
+
+<style>
+
+.login-bg{
+  background: url({{ url('/assets/brand/logo.png') }});
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+</style>
 
 @endsection
 
