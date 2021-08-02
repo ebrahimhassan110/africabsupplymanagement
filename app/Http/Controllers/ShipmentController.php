@@ -8,6 +8,8 @@ use App\Models\FeeType;
 use App\Models\PreBooking;
 use App\Models\PreBookingPart;
 use App\Models\Shipment;
+use App\Models\ShipmentPart;
+use App\Models\Payment;
 use App\Models\Supplier;
 //suse App\Models\ShipmentDetails;
 use Auth;
@@ -376,6 +378,77 @@ class ShipmentController extends Controller
      */
     public function destroy($id)
     {
+
+       $shipment = Payment::where('shipment_id',$id)->count();
+        if($shipment){
+            return redirect()->route('shipment.index')->with('message', 'Cannot Delete as Payment entry is already created');
+        }else{
+            
+        $shipment = Shipment::find($id);        
+
+            if(!is_null($shipment))
+            {
+
+              $shipped_value=$shipment->goods_value;
+              $bid=$shipment->booking_id;
+              $id=$shipment->id;
+
+              $advance_paid_value=$shipment->advance_paid_value;
+
+              $pbooking = Prebooking::find($bid);
+
+              //minus shipped value in prebooking
+               $sv=$pbooking->shipped_value;
+                $pbooking->shipped_value =  $sv-$shipped_value;
+
+                //minus advance paid
+                $av= $pbooking->advance_shipped_value;
+                $pbooking->advance_shipped_value =  $av-$advance_paid_value;
+
+               $pbooking->save();  
+              $shipment->delete();
+
+              $shipment_parts = DB::select("Select sum(goods_value) goods_value,part_id,id,shipment_id from shipment_part where shipment_id='$id' group By part_id");
+
+
+                /*
+                $shipment_parts = ShipmentPart::where('shipment_id',$id)->select(
+                  [DB::raw("SUM(goods_value) as goods_value"), DB::raw("part_id")])
+                 ->groupBy('part_id')
+                ->get();
+                */
+                foreach ($shipment_parts as $sp) {
+
+                  $pid=$sp->part_id;
+                  $gv=$sp->goods_value;
+                  $spid=$sp->id;
+                  $shipment_id=$sp->shipment_id;
+
+                  //preooking part edit values
+                   $pbooking = PrebookingPart::find($pid);
+                   $sv = $pbooking->shipped_value;
+                   $pbooking->shipped_value=$sv-$gv;
+                   $pbooking->save();  
+
+
+                    // $shipment = ShipmentPart::find($spid);  
+                    // $shipment->delete();     
+
+                }
+
+                ShipmentPart::where('shipment_id',$shipment_id)->delete();
+                
+
+            
+
+
+            }
+
+          
+        }
+
+        return redirect()->route('shipment.index')->with('message', 'Successfully deleted');
+
         //
     }
 }
