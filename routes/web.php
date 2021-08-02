@@ -126,6 +126,7 @@ Route::group(['middleware' => ['get.menu']], function () {
 
         Route::get('/timesheetforclient/report', 'ReportTimeSheetClientController@index')->name("timesheetclient-report");
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
+        Route::get('/alert/report', 'ReportAlertController@index')->name("alert-report");
         
 
 
