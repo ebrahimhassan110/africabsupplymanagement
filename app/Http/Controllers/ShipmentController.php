@@ -32,7 +32,7 @@ class ShipmentController extends Controller
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
 
-        $shipments = Shipment::get();
+        $shipments = Shipment::WhereNull('shipment_date')->get();
 
         return view("shipment.index",compact("shipments","all_permission"));
       }
@@ -155,9 +155,7 @@ class ShipmentController extends Controller
                 $valueinc=$goods_value[$key];
                  $prebooking_parts->shipped_value =  $shipped_value+$valueinc;
                $prebooking_parts->save();   
-
-
-              }
+            }
            
 
 
@@ -437,7 +435,7 @@ class ShipmentController extends Controller
                 }
 
                 ShipmentPart::where('shipment_id',$shipment_id)->delete();
-                
+
 
             
 

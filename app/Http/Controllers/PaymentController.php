@@ -53,7 +53,7 @@ class PaymentController extends Controller
 
         $id = $request->prebooking;
         $payment_type = $request->payment_type;
-
+     
         if(is_null($id)){
             return redirect()->back();
         }
@@ -70,6 +70,7 @@ class PaymentController extends Controller
         
         $payment_types = DB::table("payment_types")->where("status",1)->get();
         $bankers = DB::table("tbbanker")->get();
+
         return  view("payment.create",compact("prebooking","payment_types","bankers","payment_type","paymentdetails"));
     }
 
@@ -260,17 +261,24 @@ class PaymentController extends Controller
             else{
                 //shipping payment                
                 $prebookingData =  Shipment::find($request->booking_no);
-                $availableForPayment = ( $prebookingData->goods_value + $prebookingData->other_expense_value ) - $prebookingData->actual_paid;
+                $availableForPayment = ( $prebookingData->goods_value + $prebookingData->other_expense_value ) - $prebookingData->actual_paid-$prebookingData->advance_paid_value;
                 if( $request->amount > $availableForPayment ){
                     $error["payment"] = "Amount exceeds advance payment value";
                     return redirect()->back()->with("error",$error)->withInput();
                 }
-                $prebookingData->actual_paid = $prebookingData->actual_paid + $request->amount;
+
+                $prebookingData->actual_paid_value = $prebookingData->actual_paid_value + $request->amount;
+                  $prebookingData->save();
+
+                  $bid=$prebookingData->booking_id;
+
+
+
                 $data["booking_no"] = null;
                 $data["shipment_id"]  = $request->booking_no;
             }
            
-            
+           
             $data["user_id"] =  Auth::id();
             $prebookingData =  Payment::create($data);
             

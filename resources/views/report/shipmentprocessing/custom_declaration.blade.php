@@ -78,19 +78,27 @@
                             <th>ETD </th>
                              <th> Date Created </th>
                               <th> Status</th>
+
+                              <th> Action</th>
+                          </tr>
                           </tr>
                         </thead>
                         <tbody>
                           @foreach($shipments as $key=>$pre)
                             <tr>
                               <td> {{   ($key+1) }}</td>
-                              <td> {{   $pre->supplier->supplier_name  }} </td>
+                              <td> @if(isset($pre->supplier_name)) {{ $pre->supplier_name }} @endif </td>
                               <td> {{   $pre->pfi_no  }} </td>
                               <td> {{   is_null($pre->po_number) ? '-':$pre->po_number  }} </td>
                               <td> {{   is_null($pre->goods_value) ? '-':$pre->goods_value  }} </td>
                               <td> {{   is_null($pre->bl_no) ? '-' : $pre->bl_no  }} </td>
                               <td> {{   $pre->etd  }} </td>
-                               <td> {{   $pre->created_at->format('d/m/Y')  }} </td>    
+
+                              <?php
+                                $d=$pre->created_at;
+                                $d=date_create($d);
+                               ?>
+                               <td> {{   date_format($d,'d/m/Y')  }} </td>    
                                 <td> <?php  if($pre->time=='OVER')  {
                                   echo "OVERTIME";
                                 }
@@ -99,6 +107,9 @@
                                 }
                                 ?>
                                  </td>    
+                                  <td>
+                                    <a class="btn btn-success btn-sm  view" href="{{ url('/shipment-process-get/' . $pre->id. '') }}" data-shipmentid="{{ $pre->id }}"  type="button" data-toggle="modal" data-target="#myModal">Process</a>
+                                  </td>
                             </tr>
                           @endforeach
                         </tbody>
@@ -110,10 +121,65 @@
           </div>
         </div>
 
+
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+           <div class="modal-dialog" role="document">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h4 class="modal-title">Shipment Processing </h4>
+                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+               </div>
+               <div class="modal-body">
+                 <p>Loading ....... …</p>
+               </div>
+               <div class="modal-footer">
+                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+
+               </div>
+             </div>
+             <!-- /.modal-content-->
+           </div>
+           <!-- /.modal-dialog-->
+         </div>
+
+
+
 @endsection
 
 
 @section('javascript')
+
+
+
+<script>
+
+
+
+$(".table").on("click",".view",function(){
+
+    var shipmentId = $(this).data('shipmentid');
+
+    $.ajax({
+      type: "GET",
+      url: "shipment-process-get/"+shipmentId+"/{{$status}}" ,
+      beforeSend: function(){
+        $("#loader").show();
+      },
+      success: function(data){
+          $("#myModal .modal-body").html(data);
+          $("#loader").hide();
+      },
+      error: function(data){
+        $("#myModal .modal-body").html(data);
+      }
+    });
+
+});
+
+
+</script>
+
+
 @if(Session::get('message'))
       <script>
         $(document).ready(function(){

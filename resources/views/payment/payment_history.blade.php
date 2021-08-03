@@ -2,7 +2,7 @@
                                    @php
 
                                  
-                                if($type="Booking"){
+                                if($type=="Booking"){
                                 $payments = \DB::table("payments")->where("booking_no",$id)->get();
 
                                 }    
@@ -25,7 +25,7 @@
                                                                                 
                                                                             </thead>
                                                                             <tbody>
-                                                                              <?php  $cashsum=0; $banksum=0;?>
+                                                                              <?php  $cashsum=0; $banksum=0; $amount=0?>
                                                                                 @foreach($payments as $p)
                                                                                     <tr class="sorting_asc" align="left" valign="top">
 
@@ -40,6 +40,7 @@
                                                                                           <td>{{ $p->banker}}</td>
                                                                         <?php  $cashsum=$p->cash_value+$cashsum;  
                                                                         $banksum=$p->bank_value+$banksum;
+                                                                        $amount=$amount+$p->amount;
                                                                         ?>                     
                                                                                     </tr>
                         
@@ -47,9 +48,10 @@
 
                                                                                 <tr>
                                                                                 <td> </td>    
-                                                                                 <td> </td>    
-                                                                                  <td> </td>    
+
                                                                                    <td> TOTAL</td>    
+                                                                                    <td> {{ number_format($amount,2) }}</td>  
+                                                                                    <td> </td>  
                                                                                     <td> {{ number_format($cashsum,2) }}</td>    
                                                                                      <td>{{ number_format($banksum,2) }}</td>    
                                                                                       <td> </td>    

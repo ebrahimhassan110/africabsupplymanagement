@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('logout', '\app\Http\Controllers\Auth\LoginController@logout');
 Route::group(['middleware' => ['get.menu']], function () {
 
@@ -103,6 +104,26 @@ Route::group(['middleware' => ['get.menu']], function () {
 
         Route::post('/shipmentlocal/complete/{id}', 'ShipmentLocalController@completepost')->name('shipmentlocal-complete-post');
 
+
+     Route::get('shipment/custom_declaration/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get');
+    Route::post('/shipment-process-post/{id}', 'ShipmentLocalController@processShipment')->name('shipment-process-post');
+
+
+//modal for process
+    Route::get('shipment/org_bl_received/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+ Route::get('shipment/info_to_stores/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+  Route::get('shipment/alert_for_duty/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+   Route::get('shipment/alert_for_payment/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+    Route::get('shipment/clearing_bill/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+     Route::get('shipment/alert_for_costing/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+
+
          Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
         Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
          Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
@@ -119,6 +140,16 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::post('/supplier/individual/report', 'ReportSupplierIndividualController@show')->name("supplier-individual-report");
 
         Route::get('/shipment/custom_declaration/report', 'ReportShipmentProcessingController@index')->name("shipment-processing-report");
+
+        Route::get('/shipment/org_bl_received/report', 'ReportShipmentProcessingController@org_bl_received')->name("shipment-processing-report-2");
+
+          Route::get('/shipment/info_to_stores/report', 'ReportShipmentProcessingController@info_to_stores')->name("shipment-processing-report-2");
+            Route::get('/shipment/alert_for_duty/report', 'ReportShipmentProcessingController@alert_for_duty')->name("shipment-processing-report-2");
+              Route::get('/shipment/alert_for_payment/report', 'ReportShipmentProcessingController@alert_for_payment')->name("shipment-processing-report-2");
+                Route::get('/shipment/clearing_bill/report', 'ReportShipmentProcessingController@clearing_bill')->name("shipment-processing-report-2");
+                  Route::get('/shipment/alert_for_costing/report', 'ReportShipmentProcessingController@alert_for_costing')->name("shipment-processing-report-2");
+                  
+
 
         Route::get('/workplan/report', 'ReportWorkPlanController@index')->name("workplan-report");
         Route::post('/workplan/report', 'ReportWorkPlanController@show')->name("workplan-report");

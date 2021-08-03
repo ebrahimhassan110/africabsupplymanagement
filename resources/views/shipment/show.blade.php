@@ -97,14 +97,14 @@
                                                                          <div class="form-group">
                                                                               <label>
                                                                               Shipment Goods Value</label>
-                                                                               <b> {{   $shipment->goods_value  }} </b>
+                                                                               <b> {{   number_format($shipment->goods_value,2)  }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
                                                                     <td style="width: 33%;" valign="top">
                                                                          <div class="form-group">
                                                                               <label>
                                                                              Other Expense Value</label>
-                                                                               <b> {{ $shipment->other_expense_value }} </b>
+                                                                               <b> {{ number_format($shipment->other_expense_value,2) }} </b>
                                                                               <span id="ctl00_ContentPlaceHolder1_RequiredFieldValidator3" class="star" style="color:Red;display:none;">Date</span>
                                                                     </td>
                                                                </tr>
@@ -115,7 +115,7 @@
                                                                               <label>
                                                                                    Advance Paid Value
                                                                                </label>
-                                                                                    <b> {{ $shipment->advance_paid_value  }} </b>
+                                                                                    <b> {{ number_format($shipment->advance_paid_value,2)  }} </b>
 
                                                                               <span id="ctl00_ContentPlaceHolder1_rfvfname" style="color:Red;display:none;">Customer</span>
                                                                          </div>
@@ -209,9 +209,9 @@
                                                                                 @foreach($shipment_parts as $pre_booking)
                                                                                     <tr class="sorting_asc" align="left" valign="top">
                                                                                         <td>{{ $pre_booking->part_name }}</td>
-                                                                                        <td>{{ $pre_booking->goods_value}}</td>
-                                                                                         <td>{{ $pre_booking->other_expense_value}}</td>
-                                                                                          <td>{{ $pre_booking->advance_paid_value}}</td>
+                                                                                        <td>{{ number_format($pre_booking->goods_value,2)}}</td>
+                                                                                         <td>{{ number_format($pre_booking->other_expense_value,2)}}</td>
+                                                                                          <td>{{ number_format($pre_booking->advance_paid_value,2)}}</td>
                                                                                     </tr>
 
                                                                                 @endforeach
