@@ -75,7 +75,8 @@
                                             
                                             <th>PFI Number</th>
                                             <th>PFI Value</th>
-                                            <th>Amount</th>
+                                             <th>Advance Required</th>
+                                            <th>Amount Paid</th>
                                             
 
                                         </tr>
@@ -91,6 +92,7 @@
                                             
                                             <td> {{$payment->pfi_no}} </td>
                                             <td> {{ number_format( $payment->pfi_value,2) }}</td>
+                                             <td> {{ number_format( $payment->advance_paid,2) }}</td>
                                             <td>{{ number_format( $payment->amount,2) }}</td>
                                             
                                            

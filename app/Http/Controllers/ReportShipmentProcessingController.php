@@ -6,12 +6,78 @@ use App\Models\Supplier;
 use App\Models\PreBooking;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Shipment;
 use DB;
 
 
 class ReportShipmentProcessingController extends Controller
 {
   
+
+
+
+    public function processView($id){
+            
+      $shipments= Shipment::where('id',$id);
+      $suppliers =  Supplier::all();
+      $shipment_id=$id;  
+      return view('report.shipmentprocessing.custom_declaraton_form',compact('shipments','shipment_id'));   
+    }
+
+
+     public function processShipment($id, Request $request,$status){
+
+      
+                
+        $image = $request->file('attachment');
+         $temp= [];
+ 
+      if($image){
+          $imageName = time()."".$image->getClientOriginalName();
+          
+             $temp['attachment'] = $imageName;
+
+            if($image->move('attachments\shipments', $imageName)){
+          
+         
+         }
+      }else{
+
+          $temp['attachment'] = NULL;
+      }
+  
+      $data = $request->all();
+         $data['attachment'] = $temp['attachment'];
+       //  print_r($data['attachment']);
+        // die;
+       
+        unset($data['_token']);
+        unset($data['submit']);
+        unset($data['cancel']);
+       $data["created_by"] = Auth::user()->id;
+        $shipment = Shipment::find($id);
+        $shipment->status=$status+1;
+        $shipment->save();
+
+
+         $idinserted = DB::table('shipment_processing')->insertGetId(
+                $data
+        );
+
+         if(!is_null($idinserted))
+            $request->session()->flash('message', 'Successfully processed Shipment');
+            return redirect()->route('prebooking.index');
+
+
+
+
+    }
+    
+
+
+
+
+
     public function index(){
       $today = date('Y-m-d');
       $_start_date = date('d/m/Y',strtotime($today));
@@ -36,9 +102,144 @@ $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
 	  
       // return $attendance_report_data;
       $suppliers =  Supplier::all();
-      
-      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date'));
+      $status=2;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
     }
+
+
+
+      public function org_bl_received(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+      $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+        CASE 
+            WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+        WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+        ELSE NULL END as time
+          from shipment a,supplier s,prebooking  b where where a.status = 3 and a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+        
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=3;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+
+      public function info_to_stores(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+    $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+    CASE 
+        WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+    WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+    ELSE NULL END as time
+       from shipment a,supplier s,prebooking  b where a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+     
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=4;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+      public function alert_for_duty(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+    $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+    CASE 
+        WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+    WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+    ELSE NULL END as time
+       from shipment a,supplier s,prebooking  b where a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+     
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=5;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+      public function alert_for_payment(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+    $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+    CASE 
+        WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+    WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+    ELSE NULL END as time
+       from shipment a,supplier s,prebooking  b where a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+     
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=6;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+      public function clearing_bill(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+    $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+    CASE 
+        WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+    WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+    ELSE NULL END as time
+       from shipment a,supplier s,prebooking  b where a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+     
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=7;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+      public function alert_for_costing(){
+      $today = date('Y-m-d');
+      $_start_date = date('d/m/Y',strtotime($today));
+      $_end_date = date('d/m/Y',strtotime($today));
+
+                
+    $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
+    CASE 
+        WHEN DATEDIFF('$today' ,a.created_at) > 10  THEN 'OVER'
+    WHEN DATEDIFF('$today' ,a.created_at) <= 10  THEN 'LESS' 
+    ELSE NULL END as time
+       from shipment a,supplier s,prebooking  b where a.booking_id=b.id and a.supplier_id=s.id and DATEDIFF('$today' ,a.created_at) >= 3");
+     
+    
+      // return $attendance_report_data;
+      $suppliers =  Supplier::all();
+      $status=8;
+      return view('report.shipmentprocessing.custom_declaration',compact('shipments','suppliers','_start_date','_end_date','status'));
+    
+    }
+
+
+
+
+
 
 
 

@@ -16,11 +16,15 @@
                     <div class="card-body">
 					       	<div class="table-responsive">
                                
-											 <table class="table table-responsive-sm table-striped datatable">
-												  <tbody>
+											 <table class="table table-responsive-sm table-striped datatable" >
+												  <thead>
 														<tr >
 														   <td align="left">SNo.</td><td align="left">Date</td><td align="left">CFI No</td><td align="left">Amount</td> <td>Status</td><td> Action </td>
 														</tr>
+
+                        </thead>
+
+                        <tbody>
 														@foreach($shipments as $key=>$shipment)
 															<tr>
 																<td> {{ ($key + 1 ) }} </td>

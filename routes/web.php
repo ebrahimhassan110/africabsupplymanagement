@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('logout', '\app\Http\Controllers\Auth\LoginController@logout');
 Route::group(['middleware' => ['get.menu']], function () {
 
@@ -102,12 +103,35 @@ Route::group(['middleware' => ['get.menu']], function () {
 
 
         Route::post('/shipmentlocal/complete/{id}', 'ShipmentLocalController@completepost')->name('shipmentlocal-complete-post');
-        Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
+
+
+     Route::get('shipment/custom_declaration/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get');
+    Route::post('/shipment-process-post/{id}', 'ShipmentLocalController@processShipment')->name('shipment-process-post');
+
+
+//modal for process
+    Route::get('shipment/org_bl_received/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+ Route::get('shipment/info_to_stores/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+  Route::get('shipment/alert_for_duty/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+   Route::get('shipment/alert_for_payment/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+    Route::get('shipment/clearing_bill/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+     Route::get('shipment/alert_for_costing/shipment-process-get/{id}/{status}','ReportShipmentProcessingController@processView')->name('shipment-process-get'); 
+
+
+
+         Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
         Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
         Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
 		Route::get('/shipment/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
         Route::post('/shipment/addshipmentattachment/store','ShipmentController@addShipmentAttachment')->name('addshipmentattachment');
-		
+        Route::post('/shipment/add_originalbilloflading_attachment/store','ShipmentController@addOriginalBillOfLadingAttachment')->name('addoriginalbillofladingattachement');
+        Route::post('/shipment/addinfotostoreattachement/store','ShipmentController@addInfoToStoreAttachment')->name('addinfotostoreattachement');
+        
         Route::resource('shipment', ShipmentController::class);
         Route::resource('shipment_local', ShipmentLocalController::class);
         Route::resource('Recordregister', RecordRegisterController::class);
@@ -118,6 +142,16 @@ Route::group(['middleware' => ['get.menu']], function () {
 
         Route::get('/shipment/custom_declaration/report', 'ReportShipmentProcessingController@index')->name("shipment-processing-report");
 
+        Route::get('/shipment/org_bl_received/report', 'ReportShipmentProcessingController@org_bl_received')->name("shipment-processing-report-2");
+
+          Route::get('/shipment/info_to_stores/report', 'ReportShipmentProcessingController@info_to_stores')->name("shipment-processing-report-2");
+            Route::get('/shipment/alert_for_duty/report', 'ReportShipmentProcessingController@alert_for_duty')->name("shipment-processing-report-2");
+              Route::get('/shipment/alert_for_payment/report', 'ReportShipmentProcessingController@alert_for_payment')->name("shipment-processing-report-2");
+                Route::get('/shipment/clearing_bill/report', 'ReportShipmentProcessingController@clearing_bill')->name("shipment-processing-report-2");
+                  Route::get('/shipment/alert_for_costing/report', 'ReportShipmentProcessingController@alert_for_costing')->name("shipment-processing-report-2");
+                  
+
+
         Route::get('/workplan/report', 'ReportWorkPlanController@index')->name("workplan-report");
         Route::post('/workplan/report', 'ReportWorkPlanController@show')->name("workplan-report");
 
@@ -126,8 +160,8 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
         Route::get('/alert/report', 'ReportAlertController@index')->name("alert-report");
         Route::get('/alert/customdeclaration/report', 'ReportAlertController@customdeclaration_report')->name("customdeclaration-report");
-        
-
+        Route::get('/alert/originalbilloflading/report', 'ReportAlertController@orgBillOfLadingRCVD_report')->name("originalbilloflading-report");
+        Route::get('/alert/addinfotostore/report','ReportAlertController@infoToStore')->name('infotostore');
 
 
         Route::get('/payment/history/{id}/{type}','PaymentController@paymentHistory')->name('payment-history');

@@ -16,6 +16,10 @@
                       </div>
                   </div>
               @endif
+             <?php
+
+             $pt=$payment_type;   
+                          ?>
 
       <div class="row">
         <div class="col-md-12">
@@ -36,9 +40,9 @@
 
                       <div class="text-value-lg">
                           @if( $payment_type == 1)
-                            {{ $prebooking->pfi_value  }}
+                            {{ number_format($prebooking->pfi_value)  }}
                           @else
-                            {{ $prebooking->goods_value  }}
+                            {{ number_format($prebooking->goods_value)  }}
                           @endif
                       </div>
 
@@ -51,9 +55,9 @@
                     <div class="card-body">
                       <span class="font-weight-bold"> Advance Payment </span>
                       @if( $payment_type == 1)
-                          <?php $advance_paid_value =  $prebooking->advance_paid; ?>
+                          <?php $advance_paid_value =  number_format($prebooking->advance_paid); ?>
                       @else
-                          <?php $advance_paid_value = $prebooking->advance_paid_value; ?>
+                          <?php $advance_paid_value = number_format($prebooking->advance_paid_value); ?>
                       @endif
                       <div class="text-value-lg"> {{ $advance_paid_value }} </div>
                     </div>
@@ -70,7 +74,7 @@
                           <?php $actual_paid = $prebooking->actual_paid; ?>
                       @endif
                       
-                      <div class="text-value-lg">{{ $actual_paid }}</div>
+                      <div class="text-value-lg">{{ number_format($actual_paid,2) }}</div>
 
                     </div>
                   </div>
@@ -103,7 +107,14 @@
                         @if( $payment_type == 1)
                           <input type="hidden" name="payment_type" value="1" >
                           <input type="text" class="form-control " value="Advance Payment" readonly/>
-                        @elseif( $payment_type == 2 )                       
+                        @elseif( $payment_type == 2 )     
+
+
+                          <input type="hidden" name="payment_type" value="2" >
+                          <input type="text" class="form-control " value="Shipment Payment" readonly/>
+
+
+                        <!--                  
                             <select class="form-control select2" name="payment_type" data-placeholder="select payment type">
                               <option></option>
                               @foreach($payment_types as $payment_type)
@@ -115,6 +126,7 @@
                                 <option {{ $selected }} value="{{$payment_type->id}}">{{ $payment_type->description  }} </option>
                               @endforeach
                             </select>
+                          -->
                         @endif
                       </div>
 
@@ -125,7 +137,28 @@
                     <div class="row form-group">
                       <div class="col-md-4">
                         <label> Amount: </label>
-                        <input class="form-control" type="text" placeholder="{{ 'Amount' }}" id="amount" name="amount" value="{{ old('amount') }}" required>
+                          <?php
+
+                          if( $pt == 1){
+                          $ap=  $prebooking->advance_paid;
+                            $aap=  $prebooking->actual_advance_paid;
+                            $rem=$ap-$aap;
+
+                            }
+                          
+                          else
+                           {
+                          $gv=  $prebooking->goods_value;
+                            $apv=  $prebooking->actual_paid_value;
+                            $oev=$prebooking->other_expense_value;
+                            $advpv=$prebooking->advance_paid_value;
+                            $rem=$gv+$oev-$apv-$advpv;
+
+                            }
+
+                          ?>
+                        <b> Max {{number_format($rem,2)}}</b> 
+                        <input  max="{{$rem}}"  class="form-control" type="number" placeholder="{{ 'Amount' }}" id="amount" name="amount" value="{{ old('amount') }}" required>
                       </div>
                       <div class="col-md-4">
                           <label> Bank Value: </label>

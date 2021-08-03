@@ -33,7 +33,7 @@ class ShipmentController extends Controller
         if(empty($all_permission))
             $all_permission[] = 'dummy text';
 
-        $shipments = Shipment::get();
+        $shipments = Shipment::WhereNull('shipment_date')->get();
 
         return view("shipment.index",compact("shipments","all_permission"));
       }
@@ -156,9 +156,7 @@ class ShipmentController extends Controller
                 $valueinc=$goods_value[$key];
                  $prebooking_parts->shipped_value =  $shipped_value+$valueinc;
                $prebooking_parts->save();   
-
-
-              }
+            }
            
 
 
@@ -403,6 +401,58 @@ class ShipmentController extends Controller
 
     }
 
+     public function addOriginalBillOfLadingAttachment(Request $request)
+    {
+        $data = $request->all();
+        $image = $request->file('attachment');
+        $temp= []; 
+        if($image){
+            $imageName = time()."".$image->getClientOriginalName();
+            $temp['attachment'] = $imageName;
+            if($image->move('attachments\shipments', $imageName)){
+            }
+        }else{
+            $temp['attachment'] = NULL;
+        }
+    
+        
+        $data['attachment'] = $temp['attachment']; 
+        $data['created_by'] = Auth::id();      
+        ShipmentProcess::create($data);
+        $shipment = Shipment::find($request->shipmentid);
+        $shipment->status = 4;
+        $shipment->save();
+        return redirect()->back()->with("message","Data saved successfully");
+
+    }
+
+
+     public function addInfoToStoreAttachment(Request $request)
+     {
+        $data = $request->all();
+       
+        $image = $request->file('attachment');
+        $temp= []; 
+        if($image){
+            $imageName = time()."".$image->getClientOriginalName();
+            $temp['attachment'] = $imageName;
+            if($image->move('attachments\shipments', $imageName)){
+            }
+        }else{
+            $temp['attachment'] = NULL;
+        }
+            
+        $data['attachment'] = $temp['attachment']; 
+        $data['created_by'] = Auth::id();      
+        ShipmentProcess::create($data);
+        $shipment = Shipment::find($request->shipmentid);
+        $shipment->status = 5;
+        $shipment->save();
+        return redirect()->back()->with("message","Data saved successfully");
+    }
+
+    
+
     public function destroy($id)
     {
 
@@ -464,7 +514,7 @@ class ShipmentController extends Controller
                 }
 
                 ShipmentPart::where('shipment_id',$shipment_id)->delete();
-                
+
 
             
 

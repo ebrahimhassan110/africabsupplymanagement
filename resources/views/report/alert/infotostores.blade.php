@@ -8,32 +8,56 @@
               <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
-                      <span class="card-title">{{ 'Custom Declaration Alert Center ' }}</span>
+                      <span class="card-title">{{ 'INFO TO STORES' }}</span>
+
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-2">
+                
+
                         <table class="table table-responsive-sm table-striped datatable">
                         <thead>
-                            <tr>
-                            <th>SNo.</th>
-                            <th>Date</th>
-                            <th>CFI No</th>
-                            <th> Days </th>
-                            <th>Amount</th>
-                            <th>Actions</th>
+                          <tr>
+                            <th> SN </th>
+                            <th> Supplier Name</th>
+                            <th> PFI No</th>
+                            <th> PO Number</th>
+                            <th> Goods Value</th>
+                            <th> BL No </th>
+                            <th>ETD </th>
+                            <th> Date Created </th>
+                            <th> Status</th>
+                            <th> Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach($customdeclarational as $key=>$shipment)
-                              <tr>
-                                <td> {{ ($key + 1 ) }} </td>
-                                <td> {{ date('d/m/Y',strtotime($shipment->created_at)) }}</td>
-                                <td> {{ $shipment->cfi_no }} </td>
-                                <td > {{ number_format($shipment->goods_value,2) }} </td>
-                                <td class="d-flex flex-row">
-                                  <a class="btn btn-success btn-sm mb-1 view" href="{{ url('/shipment/' . $shipment->id. '/view') }}" data-shipmentid="{{ $shipment->id }}" type="button" data-toggle="modal" data-target="#myModal">Add Attachment</a>
-                                </td>
-                              </tr>
-                            @endforeach
+                          @foreach($orgBillOfLading as $key=>$pre)
+                            <tr>
+                              <td> {{   ($key+1) }}</td>
+                              <td> @if(isset($pre->supplier_name)) {{ $pre->supplier_name }} @endif </td>
+                              <td> {{   $pre->pfi_no  }} </td>
+                              <td> {{   is_null($pre->po_number) ? '-':$pre->po_number  }} </td>
+                              <td> {{   is_null($pre->goods_value) ? '-':$pre->goods_value  }} </td>
+                              <td> {{   is_null($pre->bl_no) ? '-' : $pre->bl_no  }} </td>
+                              <td> {{   $pre->etd  }} </td>
+
+                              <?php
+                                $d=$pre->created_at;
+                                $d=date_create($d);
+                               ?>
+                               <td> {{   date_format($d,'d/m/Y')  }} </td>    
+                                <td> <?php  if($pre->time=='OVER')  {
+                                  echo "OVERTIME";
+                                }
+                                else{
+                                  echo "LESSTIME";
+                                }
+                                ?>
+                                 </td>    
+                                  <td>
+                                    <a class="btn btn-success btn-sm  view" href="{{ url('/shipment-process-get/' . $pre->id. '') }}" data-shipmentid="{{ $pre->id }}"  type="button" data-toggle="modal" data-target="#myModal">Process</a>
+                                  </td>
+                            </tr>
+                          @endforeach
                         </tbody>
                       </table>
                     </div>
@@ -43,6 +67,7 @@
           </div>
         </div>
 
+
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
            <div class="modal-dialog" role="document">
              <div class="modal-content">
@@ -51,7 +76,7 @@
                  <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                </div>
                <div class="modal-body">
-                <form method="post" action="{{ route('addshipmentattachment') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('addinfotostoreattachement') }}" enctype="multipart/form-data">
                   @csrf
                   <input type="hidden" name="shipmentid" id="shipmentid"/>
                   <div class="form-group">
@@ -80,9 +105,20 @@
            </div>
            <!-- /.modal-dialog-->
          </div>
+
+
+
 @endsection
+
+
 @section('javascript')
+
+
+
 <script>
+
+
+
 $(".table").on("click",".view",function(){
     var shipmentid = $(this).data('shipmentid');
     $("#shipmentid").val(shipmentid);
@@ -95,6 +131,8 @@ $("#myModal").on("hidden.bs.modal",function(){
 });
 
 </script>
+
+
 @if(Session::get('message'))
       <script>
         $(document).ready(function(){

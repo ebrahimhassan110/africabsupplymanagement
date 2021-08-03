@@ -38,13 +38,41 @@ class ReportAlertController extends Controller
         return $orgBillOfLading;
     }
 
+     private function getDutyPayment(){
+        
+        $orgBillOfLading = Shipment::where("status",5 )->whereRaw("datediff(created_at, now())*-1 >= 1")->count();   
+        return $orgBillOfLading;
+    }
+
+    private function getGoodsRCVD(){
+        
+        $orgBillOfLading = Shipment::where("status",6 )->whereRaw("datediff(created_at, now())*-1 >= 1")->count();   
+        return $orgBillOfLading;
+    }
+
+    private function getClearingBillCount(){
+        
+        $orgBillOfLading = Shipment::where("status",7 )->whereRaw("datediff(created_at, now())*-1 >= 1")->count();   
+        return $orgBillOfLading;
+    }
+
+    private function getCostingCount(){
+        
+        $orgBillOfLading = Shipment::where("status",8 )->whereRaw("datediff(created_at, now())*-1 >= 1")->count();   
+        return $orgBillOfLading;
+    }
+
     public function index(){
+
         $bookingalert           = $this->getBookingAlertCount();
         $customdeclarationalert = $this->getCustomDeclarationCount();
-        $OrgBillOfLeadingRCVD   = $this->getOrgBillOfLadingRCVDCount(); 
-        $infoToStories   = $this->getInfoToStoriesCount(); 
-
-        return view("report.alert.index",compact("bookingalert","customdeclarationalert","OrgBillOfLeadingRCVD","infoToStories"));
+        $OrgBillOfLeadingRCVD   = $this->getOrgBillOfLadingRCVDCount();
+        $infoToStories          = $this->getInfoToStoriesCount();
+        $dutyPayment            = $this->getDutyPayment(); 
+        $goodsRCVD              = $this->getGoodsRCVD(); 
+        $clearingBillCount      = $this->getClearingBillCount(); 
+        $costingCount           = $this->getCostingCount(); 
+        return view("report.alert.index",compact("bookingalert","customdeclarationalert","OrgBillOfLeadingRCVD","infoToStories","dutyPayment","goodsRCVD","clearingBillCount","costingCount"));
     }
 
 
@@ -53,4 +81,24 @@ class ReportAlertController extends Controller
     
         return view("report.alert.customdeclaration",compact('customdeclarational'));
     }
+
+    public function orgBillOfLadingRCVD_report(){
+        $orgBillOfLading = Shipment::join('supplier','shipment.supplier_id','supplier.id')
+                                    ->join('prebooking','shipment.booking_id','prebooking.id')
+                                    ->where("shipment.status",3 )->whereRaw("datediff(shipment.created_at, now())*-1 >= 1")
+                                    ->select("shipment.*","prebooking.pfi_no","prebooking.po_number","supplier.supplier_name")
+                                    ->get();   
+        return view("report.alert.originalbilloflading",compact('orgBillOfLading'));
+    } 
+
+    public function infoToStore(){
+        $orgBillOfLading = Shipment::join('supplier','shipment.supplier_id','supplier.id')
+                                    ->join('prebooking','shipment.booking_id','prebooking.id')
+                                    ->where("shipment.status",4 )->whereRaw("datediff(shipment.created_at, now())*-1 >= 1")
+                                    ->select("shipment.*","prebooking.pfi_no","prebooking.po_number","supplier.supplier_name")
+                                    ->get();   
+        return view("report.alert.infotostores",compact('orgBillOfLading'));
+    }
+
+    
 }
