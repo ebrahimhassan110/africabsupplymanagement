@@ -159,7 +159,7 @@ $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
     
     }
 
-      public function org_bl_received(){
+      public function alert_for_duty(){
       $today = date('Y-m-d');
       $_start_date = date('d/m/Y',strtotime($today));
       $_end_date = date('d/m/Y',strtotime($today));
@@ -180,7 +180,7 @@ $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
     
     }
 
-      public function info_to_stores(){
+      public function alert_for_payment(){
       $today = date('Y-m-d');
       $_start_date = date('d/m/Y',strtotime($today));
       $_end_date = date('d/m/Y',strtotime($today));
@@ -201,7 +201,7 @@ $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
     
     }
 
-      public function alert_for_duty(){
+      public function clearing_bill(){
       $today = date('Y-m-d');
       $_start_date = date('d/m/Y',strtotime($today));
       $_end_date = date('d/m/Y',strtotime($today));
@@ -222,7 +222,7 @@ $shipments= DB::select("select   a.*,b.pfi_no,b.po_number,s.supplier_name,
     
     }
 
-      public function org_bl_received(){
+      public function alert_for_costing(){
       $today = date('Y-m-d');
       $_start_date = date('d/m/Y',strtotime($today));
       $_end_date = date('d/m/Y',strtotime($today));
