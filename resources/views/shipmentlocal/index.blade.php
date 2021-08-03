@@ -42,7 +42,7 @@
                                   <a hidden href="{{ url('/shipment_local/' . $shipment->id. '/edit') }}" class="btn  btn-primary btn-sm mb-1">Edit</a>
                                   @endif
                                   @if(in_array("shipment-delete", $all_permission))
-                                  <form action="{{ route('shipment_local.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item'); ">
+                                  <form action="{{ route('shipment.destroy', $shipment->id  ) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this shipment'); ">
 																	  @method('DELETE')
 																	  @csrf
 																	  <button class="btn btn-danger btn-sm">Delete</button>
