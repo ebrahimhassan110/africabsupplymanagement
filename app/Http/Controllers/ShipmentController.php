@@ -9,6 +9,7 @@ use App\Models\PreBooking;
 use App\Models\PreBookingPart;
 use App\Models\Shipment;
 use App\Models\Supplier;
+use App\Models\ShipmentProcess;
 //suse App\Models\ShipmentDetails;
 use Auth;
 use DB;
@@ -374,6 +375,32 @@ class ShipmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function addShipmentAttachment(Request $request)
+    {
+        $data = $request->all();
+        $image = $request->file('attachment');
+        $temp= []; 
+        if($image){
+            $imageName = time()."".$image->getClientOriginalName();
+            $temp['attachment'] = $imageName;
+            if($image->move('attachments\shipments', $imageName)){
+            }
+        }else{
+            $temp['attachment'] = NULL;
+        }
+    
+        
+        $data['attachment'] = $temp['attachment']; 
+        $data['created_by'] = Auth::id();      
+        ShipmentProcess::create($data);
+        $shipment = Shipment::find($request->shipmentid);
+        $shipment->status = 3;
+        $shipment->save();
+        return redirect()->back()->with("message","Data saved successfully");
+
+    }
+
     public function destroy($id)
     {
         //

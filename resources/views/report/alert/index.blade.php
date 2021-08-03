@@ -52,7 +52,7 @@
                                        
                     </div>
                     <div class="card-footer px-3 py-2">
-                      <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="#">
+                      <a class="btn-block text-muted d-flex justify-content-between align-items-center" href="{{ route('customdeclaration-report') }}">
                         <span class="small font-weight-bold">View More</span>
                         <i class="c-icon cil-chevron-right"></i>
                       </a>

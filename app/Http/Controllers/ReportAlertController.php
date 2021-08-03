@@ -46,4 +46,11 @@ class ReportAlertController extends Controller
 
         return view("report.alert.index",compact("bookingalert","customdeclarationalert","OrgBillOfLeadingRCVD","infoToStories"));
     }
+
+
+    public function customdeclaration_report(){
+        $customdeclarational = Shipment::where("status",2 )->whereRaw("datediff(created_at, now())*-1 >= 3")->get();   
+    
+        return view("report.alert.customdeclaration",compact('customdeclarational'));
+    }
 }

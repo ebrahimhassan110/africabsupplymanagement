@@ -102,16 +102,14 @@ Route::group(['middleware' => ['get.menu']], function () {
 
 
         Route::post('/shipmentlocal/complete/{id}', 'ShipmentLocalController@completepost')->name('shipmentlocal-complete-post');
-
-         Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
+        Route::get('/adjustment/getPFI/{id}','AdjustmentController@getPFI')->name('adjustment-getPFI');
         Route::get('/shipment/getBl/','ShipmentController@getBl')->name('shipping-getBl');
-         Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
+        Route::get('/shipment/getBooking/{id}','ShipmentController@getBooking')->name('shipping-getBooking');
 		Route::get('/shipment/getBookingPart/{id}','ShipmentController@getBookingPart')->name('shipping-getBookingPart');
-		Route::resource('shipment', ShipmentController::class);
-
+        Route::post('/shipment/addshipmentattachment/store','ShipmentController@addShipmentAttachment')->name('addshipmentattachment');
+		
+        Route::resource('shipment', ShipmentController::class);
         Route::resource('shipment_local', ShipmentLocalController::class);
-
-
         Route::resource('Recordregister', RecordRegisterController::class);
 
 
@@ -127,6 +125,7 @@ Route::group(['middleware' => ['get.menu']], function () {
         Route::get('/timesheetforclient/report', 'ReportTimeSheetClientController@index')->name("timesheetclient-report");
         Route::post('/timesheetforclient/report', 'ReportTimeSheetClientController@show')->name("timesheetclient-report");
         Route::get('/alert/report', 'ReportAlertController@index')->name("alert-report");
+        Route::get('/alert/customdeclaration/report', 'ReportAlertController@customdeclaration_report')->name("customdeclaration-report");
         
 
 
